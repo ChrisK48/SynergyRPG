@@ -25,11 +25,11 @@ public abstract class CharBattle : MonoBehaviour
         // temp damage calculation
         Debug.Log(charName + " takes " + amt + " damage.");
         Hp = Mathf.Clamp(Hp - amt, 0, maxHp);
-            if (Hp < 0)
-                isAlive = false;
+            if (Hp == 0)
+                Die();
     }
 
-    public void Die()
+    public virtual void Die()
     {
         Debug.Log(charName + " has died.");
         isAlive = false;

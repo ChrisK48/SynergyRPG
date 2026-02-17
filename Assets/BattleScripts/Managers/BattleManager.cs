@@ -5,6 +5,7 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance;
     public List<PlayerCharBattle> playerChars;
+    public List<PlayerCharBattle> alivePlayerChars => playerChars.FindAll(pc => pc.isAlive);
     public List<NpcBattle> npcChars;
     private TurnManager turnManager;
 

@@ -22,8 +22,8 @@ public class CaveBatBattle : NpcBattle
 
     public override CharBattle NpcTargetingLogic(Ability ability)
     {
-        int randomIndex = Random.Range(0, BattleManager.instance.playerChars.Count);
-        CharBattle target = BattleManager.instance.playerChars[randomIndex];
+        int randomIndex = Random.Range(0, BattleManager.instance.alivePlayerChars.Count);
+        CharBattle target = BattleManager.instance.alivePlayerChars[randomIndex];
         return target;
     }
 }

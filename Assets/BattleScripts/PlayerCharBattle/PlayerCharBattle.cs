@@ -47,4 +47,10 @@ public abstract class PlayerCharBattle : CharBattle
         base.Heal(amt);
         OnStatsChanged?.Invoke();
     }
+
+    public override void Die()
+    {
+        base.Die();
+        BattleManager.instance.alivePlayerChars.Remove(this);
+    }
 }
