@@ -46,8 +46,12 @@ public class BattleManager : MonoBehaviour
     public void NextTurn()
     {
         BattleUIManager.instance.ClearCommandMenu();
-        CharBattle currentChar = turnManager.getNextTurn();
-        Debug.Log("Current Turn: " + currentChar.charName);
+
+        CharBattle currentChar = turnManager.getCurrentChar();
+        
+        BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentChar, turnManager.GetCurrentTurnIndex());
+
+        turnManager.AdvanceTurn();
 
         if (currentChar is PlayerCharBattle)
         {
@@ -55,13 +59,7 @@ public class BattleManager : MonoBehaviour
         }
         else if (currentChar is NpcBattle npc)
         {
-            Debug.Log("Enemy turn for: " + npc.charName);
             npc.PerformAITurn();
         }
-
-        for (int i = currentChar.activeBuffs.Count - 1; i >= 0; i--)
-            {
-                currentChar.activeBuffs[i].TickBuff(currentChar);
-            }
     }
 }

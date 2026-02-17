@@ -113,8 +113,9 @@ MonoBehaviour:
   Matk: 30
   Def: 5
   Mdef: 10
-  Spd: 0
+  Spd: 10
   Luck: 5
+  isAlive: 1
   abilities:
   - {fileID: 11400000, guid: 4f929e352798b8846b7d99fd8bdcf78a, type: 2}
   - {fileID: 11400000, guid: f9d69595a623967459d7f4d7db11793b, type: 2}
