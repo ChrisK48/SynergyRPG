@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9826b457f49bd44e914cda81b50509d, type: 3}
-  m_Name: TestAttack
+  m_Name: Attack
   m_EditorClassIdentifier: Assembly-CSharp::AtkAbility
-  abilityName: TestAttack
-  description: Does damage
-  mpCost: 4
+  abilityName: Attack
+  description: The default attack triggered by the attack button
+  mpCost: 0
   hpCost: 0
   uniqueCost: 0
-  elementType: 0
+  elementType: 7
   targetType: 5
   dmgMultiplier: 1
-  isMissable: 0
+  isMissable: 1
   atkType: 0

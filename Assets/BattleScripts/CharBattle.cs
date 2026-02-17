@@ -7,7 +7,7 @@ public abstract class CharBattle : MonoBehaviour
     BattleUIManager battleUIManager;
     public string charName;
     public int maxHp, maxMp, Hp, Mp, Atk, Matk, Def, Mdef, Spd, Luck;
-    bool isAlive = true;
+    public bool isAlive = true;
     public List<Ability> abilities;
     public List<Buff> activeBuffs;
 
@@ -23,6 +23,7 @@ public abstract class CharBattle : MonoBehaviour
     public virtual void TakeDamage(int amt)
     {
         // temp damage calculation
+        Debug.Log(charName + " takes " + amt + " damage.");
         Hp = Mathf.Clamp(Hp - amt, 0, maxHp);
             if (Hp < 0)
                 isAlive = false;

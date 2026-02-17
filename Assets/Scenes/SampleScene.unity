@@ -749,7 +749,8 @@ MonoBehaviour:
   playerChars:
   - {fileID: 7643124037856912594, guid: 59c7b5f2637b72e44b949a27167e476a, type: 3}
   - {fileID: 3932255046324115680, guid: 04994195d8de16844974f7d4fad7a253, type: 3}
-  enemyChars: []
+  npcChars:
+  - {fileID: 2610517544235656324, guid: b01416a4ebe966446b234af1287ee6dc, type: 3}
 --- !u!4 &1745198394
 Transform:
   m_ObjectHideFlags: 0

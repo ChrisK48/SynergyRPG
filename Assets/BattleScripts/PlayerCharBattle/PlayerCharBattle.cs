@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCharBattle : CharBattle
+public abstract class PlayerCharBattle : CharBattle
 {
     public GameObject uniqueUIPrefab;
     public event Action OnStatsChanged;

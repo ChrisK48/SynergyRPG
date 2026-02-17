@@ -15,7 +15,7 @@ public class TurnManager
         turnOrder = new Queue<CharBattle>();
         List<CharBattle> allChars = new List<CharBattle>();
         allChars.AddRange(BattleManager.instance.playerChars);
-        allChars.AddRange(BattleManager.instance.enemyChars);
+        allChars.AddRange(BattleManager.instance.npcChars);
 
         allChars.Sort((a, b) => b.Spd.CompareTo(a.Spd));
 

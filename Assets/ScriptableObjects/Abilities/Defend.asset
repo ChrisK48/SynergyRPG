@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae8ae258ebe7cc5408ac4b28ef990a8a, type: 3}
+  m_Name: Defend
+  m_EditorClassIdentifier: Assembly-CSharp::BuffAbility
+  abilityName: Defend
+  description: Default defend ability. Applies the defending buff
+  mpCost: 0
+  hpCost: 0
+  uniqueCost: 0
+  elementType: 7
+  targetType: 2
+  buffToApply: {fileID: 11400000, guid: bda9ee9b5f6103048af432bba614f174, type: 2}

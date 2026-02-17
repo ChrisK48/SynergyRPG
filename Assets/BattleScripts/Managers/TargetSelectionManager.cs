@@ -21,10 +21,10 @@ public class TargetSelectionManager : MonoBehaviour
         {
             case TargetType.SingleEnemy:
                 // Temp selection of first enemy
-                targets.AddRange(BattleManager.instance.enemyChars);
+                targets.AddRange(BattleManager.instance.npcChars);
                 break;
             case TargetType.AllEnemies:
-                targets.AddRange(BattleManager.instance.enemyChars);
+                targets.AddRange(BattleManager.instance.npcChars);
                 break;
             case TargetType.SingleAlly:
                 // Temp selection of first ally
@@ -38,11 +38,11 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
             case TargetType.AnyChar:
                 targets.AddRange(BattleManager.instance.playerChars);
-                targets.AddRange(BattleManager.instance.enemyChars);
+                targets.AddRange(BattleManager.instance.npcChars);
                 break;
             case TargetType.AllChars:
                 targets.AddRange(BattleManager.instance.playerChars);
-                targets.AddRange(BattleManager.instance.enemyChars);
+                targets.AddRange(BattleManager.instance.npcChars);
                 break;
         }
 
@@ -83,7 +83,7 @@ public class TargetSelectionManager : MonoBehaviour
                 targets.Add(target);
                 break;
             case TargetType.AllEnemies:
-                targets.AddRange(BattleManager.instance.enemyChars);
+                targets.AddRange(BattleManager.instance.npcChars);
                 break;
             case TargetType.AllAllies:
                 targets.AddRange(BattleManager.instance.playerChars);
@@ -96,7 +96,7 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
             case TargetType.AllChars:
                 targets.AddRange(BattleManager.instance.playerChars);
-                targets.AddRange(BattleManager.instance.enemyChars);
+                targets.AddRange(BattleManager.instance.npcChars);
                 break;
         }
 
