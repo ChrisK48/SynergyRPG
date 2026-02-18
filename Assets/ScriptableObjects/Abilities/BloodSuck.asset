@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a480d12dad9eaa45b72b9dc33813b6e, type: 3}
+  m_Name: BloodSuck
+  m_EditorClassIdentifier: Assembly-CSharp::DrainAtkAbility
+  abilityName: Blood Suck
+  description: Attacks a target with physical damage. Heals user for 10% of the damage
+    dealt
+  mpCost: 0
+  hpCost: 0
+  uniqueCost: 0
+  elementType: 7
+  targetType: 0
+  dmgMultiplier: 2
+  isMissable: 0
+  atkType: 0
+  drainPercentage: 10

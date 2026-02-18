@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.UI;
 public class TargetSelectionManager : MonoBehaviour
@@ -20,29 +22,27 @@ public class TargetSelectionManager : MonoBehaviour
         switch (targetType)
         {
             case TargetType.SingleEnemy:
-                // Temp selection of first enemy
-                targets.AddRange(BattleManager.instance.npcChars);
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
                 break;
             case TargetType.AllEnemies:
-                targets.AddRange(BattleManager.instance.npcChars);
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
                 break;
             case TargetType.SingleAlly:
-                // Temp selection of first ally
-                targets.AddRange(BattleManager.instance.playerChars);
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
                 break;
             case TargetType.AllAllies:
-                targets.AddRange(BattleManager.instance.playerChars);
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
                 break;
             case TargetType.Self:
                 targets.Add(user);
                 break;
             case TargetType.AnyChar:
-                targets.AddRange(BattleManager.instance.playerChars);
-                targets.AddRange(BattleManager.instance.npcChars);
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
                 break;
             case TargetType.AllChars:
-                targets.AddRange(BattleManager.instance.playerChars);
-                targets.AddRange(BattleManager.instance.npcChars);
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
                 break;
         }
 

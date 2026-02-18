@@ -15,6 +15,5 @@ public abstract class Ability : ScriptableObject
 
     public virtual void ExecuteAbility(CharBattle user, CharBattle target)
     {
-        Debug.Log($"{user.charName} uses ability on {target.charName}!");
     }
 }

@@ -20,13 +20,20 @@ public abstract class CharBattle : MonoBehaviour
         Hp = Mathf.Clamp(Hp + amt, 0, maxHp);
     }
 
-    public virtual void TakeDamage(int amt)
+    public virtual void TakeDamage(int amt, System.Action<int> onDamageDealt = null)
     {
         // temp damage calculation
-        Debug.Log(charName + " takes " + amt + " damage.");
-        Hp = Mathf.Clamp(Hp - amt, 0, maxHp);
+        int damage = Mathf.Max(amt - Def, 1);
+
+        int finalDamage = Mathf.Min(damage, Hp);
+        Debug.Log(charName + " takes " + finalDamage + " damage.");
+
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, maxHp);
             if (Hp == 0)
                 Die();
+
+        onDamageDealt?.Invoke(finalDamage);
+
     }
 
     public virtual void Die()

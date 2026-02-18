@@ -10,7 +10,13 @@ public class AtkAbility : Ability
     public override void ExecuteAbility(CharBattle user, CharBattle target)
     {
         base.ExecuteAbility(user, target);
-        int damage = user.Atk * dmgMultiplier;
+        int damage = calculateDamage(user);
         target.TakeDamage(damage);
+    }
+
+    public int calculateDamage(CharBattle user)
+    {
+        // Placeholder for more complex damage calculations based on attack type, elements, etc.
+        return user.Atk * dmgMultiplier;
     }
 }

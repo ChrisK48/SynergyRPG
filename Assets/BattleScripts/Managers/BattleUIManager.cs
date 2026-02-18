@@ -28,15 +28,6 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void GenerateTurnOrderUI(List<CharBattle> turnOrder)
-    {
-        foreach (CharBattle character in turnOrder)
-        {
-            GameObject turnOrderElem = Instantiate(turnOrderIconPrefab, TurnOrderUIContainer);
-            turnOrderElem.GetComponentInChildren<TextMeshProUGUI>().text = character.charName;
-        }
-    }
-
     public void UpdateTurnOrderUI(List<CharBattle> turnOrder, CharBattle currentChar, int currentTurnIndex)
     {
         foreach (Transform child in TurnOrderUIContainer)

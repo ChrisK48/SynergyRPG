@@ -3,22 +3,19 @@ using System.Collections.Generic;
 
 public class CaveBatBattle : NpcBattle
 {
-    public override void PerformAITurn()
-    {
-        List<CharBattle> targets = new List<CharBattle>();
-        targets.Add(NpcTargetingLogic(abilities[0]));
-        PerformAbility(abilities[0], targets);
-        BattleManager.instance.NextTurn();
-    }
 
-    public override void PerformAbility(Ability ability, List<CharBattle> targets)
+    public override Ability NpcAbilitySelectionLogic()
     {
-        foreach (CharBattle target in targets)
+        int randomInt = Random.Range(0, 100);
+        if (Hp < maxHp * 0.5 && randomInt < 50)
         {
-            Debug.Log(charName + " uses " + ability.abilityName + " on " + target.charName);
-            ability.ExecuteAbility(this, target);
+            return abilities[1]; // Drain Attack
         }
-    }
+        else
+        {
+            return abilities[0]; // Regular Attack
+        }
+    }  
 
     public override CharBattle NpcTargetingLogic(Ability ability)
     {

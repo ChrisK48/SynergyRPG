@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BattleManager : MonoBehaviour
 {
@@ -60,6 +61,22 @@ public class BattleManager : MonoBehaviour
         else if (currentChar is NpcBattle npc)
         {
             npc.PerformAITurn();
+        }
+
+        CheckBattleEnd();
+    }
+
+    private void CheckBattleEnd()
+    {
+        if (playerChars.All(pc => !pc.isAlive))
+        {
+            Debug.Log("All players defeated! Game Over.");
+            // Handle game over logic here
+        }
+        else if (npcChars.All(npc => !npc.isAlive))
+        {
+            Debug.Log("All enemies defeated! Victory!");
+            // Handle victory logic here
         }
     }
 }

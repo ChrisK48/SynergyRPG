@@ -26,8 +26,6 @@ public class TurnManager
             if (character.isAlive)
                 turnOrder.Add(character);
         }
-
-        BattleUIManager.instance.GenerateTurnOrderUI(turnOrder);
         return turnOrder;
     }
 

@@ -36,9 +36,9 @@ public abstract class PlayerCharBattle : CharBattle
         }
     }
 
-    public override void TakeDamage(int amt)
+    public override void TakeDamage(int amt, System.Action<int> onDamageDealt = null)
     {
-        base.TakeDamage(amt);
+        base.TakeDamage(amt, onDamageDealt);
         OnStatsChanged?.Invoke();
     }
 
