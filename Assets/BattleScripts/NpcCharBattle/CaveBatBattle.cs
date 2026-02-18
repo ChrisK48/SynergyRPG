@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CaveBatBattle : NpcBattle
 {
@@ -19,8 +20,9 @@ public class CaveBatBattle : NpcBattle
 
     public override CharBattle NpcTargetingLogic(Ability ability)
     {
-        int randomIndex = Random.Range(0, BattleManager.instance.alivePlayerChars.Count);
-        CharBattle target = BattleManager.instance.alivePlayerChars[randomIndex];
+        List<PlayerCharBattle> alivePlayers = BattleManager.instance.playerChars.Where(pc => pc.isAlive).ToList();
+        int randomIndex = Random.Range(0, alivePlayers.Count());
+        CharBattle target = alivePlayers[randomIndex];
         return target;
     }
 }

@@ -51,6 +51,5 @@ public abstract class PlayerCharBattle : CharBattle
     public override void Die()
     {
         base.Die();
-        BattleManager.instance.alivePlayerChars.Remove(this);
     }
 }
