@@ -18,9 +18,11 @@ MonoBehaviour:
   mpCost: 0
   hpCost: 0
   uniqueCost: 0
-  elementType: 7
+  elementTypes: 
   targetType: 0
-  dmgMultiplier: 2
-  isMissable: 0
+  isMissable: 1
+  hitChance: 100
+  scalingStat: 0
+  scalingMultiplier: 2
   atkType: 0
   drainPercentage: 10

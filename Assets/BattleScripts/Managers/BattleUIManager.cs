@@ -11,6 +11,8 @@ public class BattleUIManager : MonoBehaviour
     public Transform commandMenuUIContainer;
     public Transform TurnOrderUIContainer;
     public GameObject commandMenuPrefab;
+    public GameObject commandSubMenuPrefab;
+    public GameObject commandMenuButtonPrefab;
     public GameObject turnOrderIconPrefab;
 
     void Awake()
@@ -57,6 +59,19 @@ public class BattleUIManager : MonoBehaviour
         Button defendBtn = cm.transform.Find("Defend").GetComponent<Button>();
         defendBtn.onClick.AddListener(() => 
             TargetSelectionManager.instance.BeginTargetSelection(pc, pc.abilities[1]));
+
+        Button abilityBtn = cm.transform.Find("Ability").GetComponent<Button>();
+        abilityBtn.onClick.AddListener(() =>
+        {
+            GameObject abilityMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
+            foreach (Ability ability in pc.abilities)
+            {
+                GameObject abilityBtnSub = Instantiate(commandMenuButtonPrefab, abilityMenu.transform);
+                abilityBtnSub.GetComponentInChildren<TextMeshProUGUI>().text = ability.abilityName;
+                abilityBtnSub.GetComponent<Button>().onClick.AddListener(() =>
+                    TargetSelectionManager.instance.BeginTargetSelection(pc, ability));
+            }
+        });
     }
 
     public void ClearCommandMenu()

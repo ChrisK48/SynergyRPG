@@ -17,6 +17,10 @@ MonoBehaviour:
   mpCost: 0
   hpCost: 0
   uniqueCost: 0
-  elementType: 7
+  elementTypes: 
   targetType: 2
+  isMissable: 0
+  hitChance: 100
+  scalingStat: 0
+  scalingMultiplier: 0
   buffToApply: {fileID: 11400000, guid: bda9ee9b5f6103048af432bba614f174, type: 2}

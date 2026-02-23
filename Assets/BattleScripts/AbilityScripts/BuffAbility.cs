@@ -5,9 +5,8 @@ public class BuffAbility : Ability
 {
     public Buff buffToApply;
 
-    public override void ExecuteAbility(CharBattle user, CharBattle target)
+    protected override void ApplyEffect(CharBattle user, CharBattle target)
     {
-        base.ExecuteAbility(user, target);
         target.ReceiveBuff(buffToApply);   
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class NpcBattle : CharBattle
 {
     public int exp;
+    public List<ElementType> elementalWeaknesses;
+    public List<ElementType> elementalResistances;
 
     public virtual void PerformAITurn()
     {

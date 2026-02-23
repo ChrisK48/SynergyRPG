@@ -5,9 +5,9 @@ public class DrainAtkAbility : AtkAbility
 {
     public float drainPercentage;
 
-    public override void ExecuteAbility(CharBattle user, CharBattle target)
+    protected override void ApplyEffect(CharBattle user, CharBattle target)
     {
-        int power = calculateDamage(user);        
+        int power = calculateDamage(user, target);        
         target.TakeDamage(power, (finalAmount) => {
             int heal = Mathf.RoundToInt(finalAmount * (drainPercentage / 100f));
             user.Heal(heal);
