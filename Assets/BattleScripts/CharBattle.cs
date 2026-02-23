@@ -17,6 +17,7 @@ public abstract class CharBattle : MonoBehaviour
     }
 
     public virtual void Heal(int amt) {
+        Debug.Log(charName + " heals for " + amt + " HP.");
         Hp = Mathf.Clamp(Hp + amt, 0, maxHp);
     }
 
@@ -42,7 +43,7 @@ public abstract class CharBattle : MonoBehaviour
         isAlive = false;
     }
 
-    public abstract void PerformAbility(Ability ability, List<CharBattle> targets);
+    public abstract void PerformAction(ITargetableAction action, List<CharBattle> targets);
 
     public void ReceiveBuff(Buff buff)
     {

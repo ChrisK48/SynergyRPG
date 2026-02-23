@@ -14,10 +14,10 @@ public class TargetSelectionManager : MonoBehaviour
         instance = this;
     }
 
-    public void BeginTargetSelection(CharBattle user, Ability ability)
+    public void BeginTargetSelection(CharBattle user, ITargetableAction action)
     {
         List<CharBattle> targets = new List<CharBattle>();
-        TargetType targetType = ability.targetType;
+        TargetType targetType = action.Targets;
 
         switch (targetType)
         {
@@ -46,10 +46,10 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
         }
 
-        ShowPopups(user, ability, targets);
+        ShowPopups(user, action, targets);
     }
 
-    void ShowPopups(CharBattle user, Ability ability, List<CharBattle> targets)
+    void ShowPopups(CharBattle user, ITargetableAction action, List<CharBattle> targets)
     {
         foreach (CharBattle target in targets)
         {
@@ -57,7 +57,7 @@ public class TargetSelectionManager : MonoBehaviour
             Button btn = Instantiate(TargetPopupPrefab, TargetPopupContainer);
             Vector3 screenPos = Camera.main.WorldToScreenPoint(target.transform.position + Vector3.up);
             btn.GetComponent<RectTransform>().position = screenPos;
-            btn.onClick.AddListener(() => OnTargetSelected(user, ability, target));
+            btn.onClick.AddListener(() => OnTargetSelected(user, action, target));
         }
     }
 
@@ -69,12 +69,12 @@ public class TargetSelectionManager : MonoBehaviour
         }
     }
 
-    void OnTargetSelected(CharBattle user, Ability ability, CharBattle target)
+    void OnTargetSelected(CharBattle user, ITargetableAction action, CharBattle target)
     {
         Debug.Log("Target selected: " + target.charName);
         List<CharBattle> targets = new List<CharBattle>();
 
-        switch (ability.targetType)
+        switch (action.Targets)
         {
             case TargetType.SingleEnemy:
                 targets.Add(target);
@@ -100,7 +100,7 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
         }
 
-        user.PerformAbility(ability, targets);
+        action.PerformAction(user, targets);
         ClearPopups();
         BattleUIManager.instance.commandMenuUIContainer.gameObject.SetActive(true);
         BattleManager.instance.NextTurn();

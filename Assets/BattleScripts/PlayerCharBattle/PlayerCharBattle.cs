@@ -18,7 +18,19 @@ public abstract class PlayerCharBattle : CharBattle
         
     }
 
-    public override void PerformAbility(Ability ability, List<CharBattle> targets)
+    public override void PerformAction(ITargetableAction action, List<CharBattle> targets)
+    {
+        if (action is Ability ability) 
+        {
+            PerformAbility(ability, targets);
+        }
+        else
+        {
+            // logic for items or other actions
+        }
+    }
+
+    public void PerformAbility(Ability ability, List<CharBattle> targets)
     {
         if (Mp >= ability.mpCost && Hp >= ability.hpCost)
         {
@@ -32,7 +44,7 @@ public abstract class PlayerCharBattle : CharBattle
         }
         else
         {
-            Debug.Log(charName + " does not have enough resources to perform " + ability.abilityName);
+            Debug.Log(charName + " does not have enough resources to perform " + ability.Name);
         }
     }
 
@@ -45,6 +57,13 @@ public abstract class PlayerCharBattle : CharBattle
     public override void Heal(int amt)
     {
         base.Heal(amt);
+        OnStatsChanged?.Invoke();
+    }
+
+    public void ChangeMp(int amt)
+    {
+        Debug.Log(charName + (amt >= 0 ? " restores " : " loses ") + Mathf.Abs(amt) + " MP.");
+        Mp = Mathf.Clamp(Mp + amt, 0, maxMp);
         OnStatsChanged?.Invoke();
     }
 

@@ -64,12 +64,37 @@ public class BattleUIManager : MonoBehaviour
         abilityBtn.onClick.AddListener(() =>
         {
             GameObject abilityMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
-            foreach (Ability ability in pc.abilities)
+            for (int i = 2; i < pc.abilities.Count; i++)
             {
                 GameObject abilityBtnSub = Instantiate(commandMenuButtonPrefab, abilityMenu.transform);
-                abilityBtnSub.GetComponentInChildren<TextMeshProUGUI>().text = ability.abilityName;
+                Ability ability = pc.abilities[i];
+                abilityBtnSub.GetComponentInChildren<TextMeshProUGUI>().text = ability.Name;
                 abilityBtnSub.GetComponent<Button>().onClick.AddListener(() =>
-                    TargetSelectionManager.instance.BeginTargetSelection(pc, ability));
+                {
+                    TargetSelectionManager.instance.BeginTargetSelection(pc, ability);
+                    Destroy(abilityMenu);
+                });
+            }
+        });
+
+        Button itemBtn = cm.transform.Find("Item").GetComponent<Button>();
+        itemBtn.onClick.AddListener(() =>
+        {
+            GameObject itemMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
+            foreach (var pair in InventoryManager.instance.items)
+            {
+                Item item = pair.Key;
+                int count = pair.Value;
+
+                GameObject itemBtnObj = Instantiate(commandMenuButtonPrefab, itemMenu.transform);
+                // Show name and quantity: "Potion (x5)"
+                itemBtnObj.GetComponentInChildren<TextMeshProUGUI>().text = $"{item.Name} (x{count})";
+
+                itemBtnObj.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    // The Target Manager handles Items and Abilities exactly the same!
+                    TargetSelectionManager.instance.BeginTargetSelection(pc, item);
+                });
             }
         });
     }

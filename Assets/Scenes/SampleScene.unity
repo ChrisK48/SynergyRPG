@@ -713,6 +713,7 @@ GameObject:
   - component: {fileID: 1745198393}
   - component: {fileID: 1745198392}
   - component: {fileID: 1745198395}
+  - component: {fileID: 1745198396}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -736,6 +737,8 @@ MonoBehaviour:
   commandMenuUIContainer: {fileID: 223545475}
   TurnOrderUIContainer: {fileID: 1863272251}
   commandMenuPrefab: {fileID: 5947869147851484053, guid: 102759e3b65bdab439fe5df7ecde343c, type: 3}
+  commandSubMenuPrefab: {fileID: 9190725669612168266, guid: a03c845a078bc7040afa5d8e9a7434ee, type: 3}
+  commandMenuButtonPrefab: {fileID: 8824185341487032075, guid: a4c82902910a7cc4fbe004c173f6f8fe, type: 3}
   turnOrderIconPrefab: {fileID: 9057333052356850714, guid: 4cf5e4607238d05499208944fe8d116c, type: 3}
 --- !u!114 &1745198393
 MonoBehaviour:
@@ -781,8 +784,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e359d639c63a454eacdaf4f5e58a04e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetSelectionManager
-  TargetPopupPrefab: {fileID: 1214782993615006613, guid: f20c1d570cac8984c9d2ccb2283e99f3, type: 3}
+  TargetPopupPrefab: {fileID: 8220627881575383576, guid: a4c82902910a7cc4fbe004c173f6f8fe, type: 3}
   TargetPopupContainer: {fileID: 2078442414}
+--- !u!114 &1745198396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745198391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74336068452c44f46ae3eddef307d678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
+  startingInventory: []
 --- !u!1 &1863272250
 GameObject:
   m_ObjectHideFlags: 0

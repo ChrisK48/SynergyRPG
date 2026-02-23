@@ -7,15 +7,17 @@ public enum ScalingStat { Atk, Matk, Def, Mdef, Spd, Luck }
 public enum ElementType { Fire, Ice, Lightning, Water, Earth, Light, Void, None }
 public enum TargetType { SingleEnemy, AllEnemies, Self, SingleAlly, AllAllies, AnyChar, AllChars }
 
-public abstract class Ability : ScriptableObject
+public abstract class Ability : ScriptableObject, ITargetableAction
 {
     public string abilityName;
+    public string Name => abilityName;
     public string description;
     public int mpCost;
     public int hpCost;
     public int uniqueCost;
     public List<ElementType> elementTypes;
     public TargetType targetType;
+    public TargetType Targets => targetType;
     public bool isMissable;
     public int hitChance;
     public ScalingStat scalingStat; 
@@ -62,5 +64,10 @@ public abstract class Ability : ScriptableObject
             default:
                 return 0;
         }
+    }
+
+    public void PerformAction(CharBattle user, List<CharBattle> targets)
+    {
+        user.PerformAction(this, targets);
     }
 }

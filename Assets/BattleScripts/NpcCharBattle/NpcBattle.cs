@@ -13,7 +13,7 @@ public abstract class NpcBattle : CharBattle
         List<CharBattle> targets = new List<CharBattle>();
         Ability selectedAbility = NpcAbilitySelectionLogic();
         targets.Add(NpcTargetingLogic(selectedAbility));
-        PerformAbility(selectedAbility, targets);
+        PerformAction(selectedAbility, targets);
         BattleManager.instance.NextTurn();   
     }
 
@@ -21,11 +21,22 @@ public abstract class NpcBattle : CharBattle
 
     public abstract Ability NpcAbilitySelectionLogic();
 
-    public override void PerformAbility(Ability ability, List<CharBattle> targets)
+    public override void PerformAction(ITargetableAction action, List<CharBattle> targets)
+    {        
+        if (action is Ability ability) 
+        {
+            PerformAbility(ability, targets);
+        }
+        else
+        {
+            // logic for items or other actions
+        }
+    }
+
+    public void PerformAbility(Ability ability, List<CharBattle> targets)
     {
         foreach (CharBattle target in targets)
         {
-            Debug.Log(charName + " uses " + ability.abilityName + " on " + target.charName);
             ability.ExecuteAbility(this, target);
         }
     }
