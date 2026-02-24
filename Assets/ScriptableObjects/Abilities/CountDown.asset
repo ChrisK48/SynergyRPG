@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae8ae258ebe7cc5408ac4b28ef990a8a, type: 3}
-  m_Name: Defend
+  m_Name: CountDown
   m_EditorClassIdentifier: Assembly-CSharp::BuffAbility
-  abilityName: Defend
-  description: Default defend ability. Applies the defending buff
-  mpCost: 0
+  abilityName: CountDown
+  description: Applies a 5 turn countdown
+  mpCost: 5
   hpCost: 0
   uniqueCost: 0
   elementTypes: 
-  targetType: 2
+  targetType: 5
   isMissable: 0
-  hitChance: 100
+  hitChance: 0
   scalingStat: 0
   scalingMultiplier: 0
-  buffToApply: {fileID: 11400000, guid: bda9ee9b5f6103048af432bba614f174, type: 2}
-  buffDuration: 1
+  buffToApply: {fileID: 11400000, guid: 4410a46e6bf9113478fa78a89b2cc010, type: 2}
+  buffDuration: 2
+  maxDuration: 2

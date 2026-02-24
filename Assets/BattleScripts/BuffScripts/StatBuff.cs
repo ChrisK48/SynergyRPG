@@ -4,80 +4,63 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Stat Buff", menuName = "Buffs/Stat Buff")]
 public class StatBuff : Buff
 {
-    public int AtkPercentChange;
-    public int MatkPercentChange;
-    public int DefPercentChange;
-    public int MdefPercentChange;
-    public int SpdPercentChange;
-    public int LuckPercentChange;
-    private int originalAtk;
-    private int originalMatk;
-    private int originalDef;
-    private int orginalMdef;
-    private int orginalSpd;
-    private int orginalLuck;
-    public override void StartBuff(CharBattle target)
+    public int AtkPercentChange, MatkPercentChange, DefPercentChange, MdefPercentChange, SpdPercentChange, LuckPercentChange, AccPercentChange, EvaPercentChange;
+
+    public override void StartBuff(CharBattle target, ActiveBuff buffWrapper)
     {
-        Debug.Log(target.charName + " has started Stat Buff.");
-        if (AtkPercentChange != 0)
-        {
-            originalAtk = target.Atk;
-            target.Atk += target.Atk * AtkPercentChange / 100;
-        }
-        if (MatkPercentChange != 0)
-        {
-            originalMatk = target.Matk;
-            target.Matk += target.Matk * MatkPercentChange / 100;
-        }
-        if (DefPercentChange != 0)
-        {
-            originalDef = target.Def;
-            target.Def += target.Def * DefPercentChange / 100;
-        }
-        if (MdefPercentChange != 0)
-        {
-            orginalMdef = target.Mdef;
-            target.Mdef += target.Mdef * MdefPercentChange / 100;
-        }
-        if (SpdPercentChange != 0)
-        {
-            orginalSpd = target.Spd;
-            target.Spd += target.Spd * SpdPercentChange / 100;
-        }
-        if (LuckPercentChange != 0)
-        {
-            orginalLuck = target.Luck;
-            target.Luck += target.Luck * LuckPercentChange / 100;
-        }
+        Debug.Log($"{target.charName} started Stat Buff: {buffName}");
+
+        // Use a helper to apply and record each stat
+        ApplyStatChange(target, buffWrapper, "Atk", AtkPercentChange, (val) => target.Atk += val);
+        ApplyStatChange(target, buffWrapper, "Matk", MatkPercentChange, (val) => target.Matk += val);
+        ApplyStatChange(target, buffWrapper, "Def", DefPercentChange, (val) => target.Def += val);
+        ApplyStatChange(target, buffWrapper, "Mdef", MdefPercentChange, (val) => target.Mdef += val);
+        ApplyStatChange(target, buffWrapper, "Spd", SpdPercentChange, (val) => target.Spd += val);
+        ApplyStatChange(target, buffWrapper, "Acc", AccPercentChange, (val) => target.Acc += val);
+        ApplyStatChange(target, buffWrapper, "Eva", EvaPercentChange, (val) => target.Eva += val);
+        ApplyStatChange(target, buffWrapper, "Luck", LuckPercentChange, (val) => target.Luck += val);
     }
 
-    public override void EndBuff(CharBattle target)
+    private void ApplyStatChange(CharBattle target, ActiveBuff wrapper, string key, int percent, System.Action<int> applyEffect)
     {
-        base.EndBuff(target);
-        if (AtkPercentChange != 0)
-        {
-            target.Atk = originalAtk;
+        if (percent == 0) return;
+
+        // Calculate the flat value based on current stat
+        // For example: 50 Atk * 20 / 100 = 10
+        int changeValue = 0;
+        
+        // Use a switch or reflection if you want to get the base value dynamically, 
+        // but for now, we'll just pass the logic through the action.
+        // We need the value to calculate the change:
+        int currentVal = 0;
+        switch(key) {
+            case "Atk": currentVal = target.Atk; break;
+            case "Matk": currentVal = target.Matk; break;
+            case "Def": currentVal = target.Def; break;
+            case "Mdef": currentVal = target.Mdef; break;
+            case "Spd": currentVal = target.Spd; break;
+            case "Acc": currentVal = target.Acc; break;
+            case "Eva": currentVal = target.Eva; break;
+            case "Luck": currentVal = target.Luck; break;
         }
-        if (MatkPercentChange != 0)
-        {
-            target.Matk = originalMatk;
-        }
-        if (DefPercentChange != 0)
-        {
-            target.Def = originalDef;
-        }
-        if (MdefPercentChange != 0)
-        {
-            target.Mdef = orginalMdef;
-        }
-        if (SpdPercentChange != 0)
-        {
-            target.Spd = orginalSpd;
-        }
-        if (LuckPercentChange != 0)
-        {
-            target.Luck = orginalLuck;
-        }
-        target.activeBuffs.Remove(this);
+
+        changeValue = currentVal * percent / 100;
+        applyEffect(changeValue);
+        
+        // Store it so we can undo it later
+        wrapper.statChanges[key] = changeValue;
+    }
+
+    public override void EndBuff(CharBattle target, ActiveBuff buffWrapper)
+    {
+        base.EndBuff(target, buffWrapper);
+
+        // Undo whatever we stored in the dictionary
+        if (buffWrapper.statChanges.TryGetValue("Atk", out int atk)) target.Atk -= atk;
+        if (buffWrapper.statChanges.TryGetValue("Matk", out int matk)) target.Matk -= matk;
+        if (buffWrapper.statChanges.TryGetValue("Def", out int def)) target.Def -= def;
+        if (buffWrapper.statChanges.TryGetValue("Mdef", out int mdef)) target.Mdef -= mdef;
+        if (buffWrapper.statChanges.TryGetValue("Spd", out int spd)) target.Spd -= spd;
+        if (buffWrapper.statChanges.TryGetValue("Luck", out int luck)) target.Luck -= luck;
     }
 }

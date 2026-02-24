@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemScript
   itemName: Healing Potion
   itemDescription: Heals the user for 100 HP
-  itemEffects:
-  - {fileID: 0}
   targetType: 0
+  itemEffects:
+  - rid: 9008615971002253389
+  references:
+    version: 2
+    RefIds:
+    - rid: 9008615971002253389
+      type: {class: HealEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 100

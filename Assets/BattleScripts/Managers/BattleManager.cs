@@ -7,6 +7,8 @@ public class BattleManager : MonoBehaviour
     public static BattleManager instance;
     public List<PlayerCharBattle> playerChars;
     public List<NpcBattle> npcChars;
+    public List<Transform> playerSpawnPoints;
+    public List<Transform> npcSpawnPoints;
     private TurnManager turnManager;
 
      void Awake()
@@ -20,19 +22,21 @@ public class BattleManager : MonoBehaviour
 
         List<PlayerCharBattle> spawnedPlayers = new List<PlayerCharBattle>();
 
-        foreach (PlayerCharBattle playerChar in playerChars)
+        for (int i = 0; i < playerChars.Count; i++)
         {
             // Spawn the clone
-            PlayerCharBattle clone = Instantiate(playerChar);
+            Transform spawnPoint = playerSpawnPoints[i];
+            PlayerCharBattle clone = Instantiate(playerChars[i], spawnPoint.position, spawnPoint.rotation);
             spawnedPlayers.Add(clone);
         }
 
         List<NpcBattle> spawnedNpcs = new List<NpcBattle>();
 
-        foreach (NpcBattle npcChar in npcChars)
+        for (int i = 0; i < npcChars.Count; i++)        
         {
             // Spawn the clone
-            NpcBattle ncpClone = Instantiate(npcChar);
+            Transform spawnPoint = npcSpawnPoints[i];
+            NpcBattle ncpClone = Instantiate(npcChars[i], spawnPoint.position, spawnPoint.rotation);
             spawnedNpcs.Add(ncpClone);
         }
 
@@ -52,6 +56,14 @@ public class BattleManager : MonoBehaviour
         BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentChar, turnManager.GetCurrentTurnIndex());
 
         turnManager.AdvanceTurn();
+
+        currentChar.ProcessTurnBuffs();
+
+        if (!currentChar.isAlive)
+        {
+            NextTurn();
+            return;
+        }
 
         if (currentChar is PlayerCharBattle)
         {

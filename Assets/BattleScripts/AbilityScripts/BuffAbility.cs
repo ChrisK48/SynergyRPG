@@ -4,9 +4,10 @@ using UnityEngine;
 public class BuffAbility : Ability
 {
     public Buff buffToApply;
+    public int buffDuration;
 
-    protected override void ApplyEffect(CharBattle user, CharBattle target)
+    public override void ApplyEffect(CharBattle user, CharBattle target)
     {
-        target.ReceiveBuff(buffToApply);   
+        target.ReceiveBuff(buffToApply, buffDuration);   
     }
 }

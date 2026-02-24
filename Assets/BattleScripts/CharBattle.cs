@@ -6,10 +6,10 @@ public abstract class CharBattle : MonoBehaviour
 {
     BattleUIManager battleUIManager;
     public string charName;
-    public int maxHp, maxMp, Hp, Mp, Atk, Matk, Def, Mdef, Spd, Luck;
+    public int maxHp, maxMp, Hp, Mp, Atk, Matk, Def, Mdef, Spd, Acc, Eva, Luck;
     public bool isAlive = true;
     public List<Ability> abilities;
-    public List<Buff> activeBuffs;
+    public List<ActiveBuff> activeBuffs;
 
     void Awake()
     {
@@ -44,20 +44,35 @@ public abstract class CharBattle : MonoBehaviour
     }
 
     public abstract void PerformAction(ITargetableAction action, List<CharBattle> targets);
-
-    public void ReceiveBuff(Buff buff)
+    public void ReceiveBuff(Buff buff, int duration)
     {
-        Buff instance = Instantiate(buff);
-        foreach(Buff active in activeBuffs)
+
+        ActiveBuff existing = activeBuffs.Find(b => b.buff == buff);
+        if (existing != null)
         {
-            if(active.buffName == instance.buffName)
+            existing.remainingDuration = Mathf.Max(existing.remainingDuration + duration);
+            return;
+        }
+
+        ActiveBuff newBuff = new ActiveBuff(buff, duration);
+        activeBuffs.Add(newBuff);
+        buff.StartBuff(this, newBuff);
+    }
+
+    public void ProcessTurnBuffs()
+    {
+        for (int i = activeBuffs.Count - 1; i >= 0; i--)
+        {
+            ActiveBuff active = activeBuffs[i];
+            
+            active.Tick(this);
+            
+            active.remainingDuration--;
+
+            if (active.remainingDuration <= 0)
             {
-                active.duration = Mathf.Max(active.duration, instance.duration);
-                Debug.Log(charName + "'s " + buff.buffName + " buff duration refreshed to " + buff.duration + " turns.");
-                return;
+                activeBuffs.RemoveAt(i);
             }
         }
-        activeBuffs.Add(instance);
-        instance.StartBuff(this);
     }
 }

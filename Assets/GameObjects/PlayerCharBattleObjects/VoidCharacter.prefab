@@ -114,12 +114,15 @@ MonoBehaviour:
   Def: 5
   Mdef: 10
   Spd: 10
-  Luck: 5
+  Acc: 0
+  Eva: 0
+  Luck: 500
   isAlive: 1
   abilities:
   - {fileID: 11400000, guid: 4f929e352798b8846b7d99fd8bdcf78a, type: 2}
   - {fileID: 11400000, guid: f9d69595a623967459d7f4d7db11793b, type: 2}
   - {fileID: 11400000, guid: 706622feb8a36314c8f0cb7e1015d1b8, type: 2}
+  - {fileID: 11400000, guid: d9b90bdf467fdce45afe466e12f76292, type: 2}
   activeBuffs: []
   uniqueUIPrefab: {fileID: 135941075479709308, guid: 2eec79b1c6888fe40bfae70fde8a48e4, type: 3}
   voidPoints: 0

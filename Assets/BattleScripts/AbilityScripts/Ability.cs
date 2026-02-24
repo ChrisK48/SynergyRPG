@@ -29,7 +29,7 @@ public abstract class Ability : ScriptableObject, ITargetableAction
         ApplyEffect(user, target);
     }
 
-    protected abstract void ApplyEffect(CharBattle user, CharBattle target);
+    public abstract void ApplyEffect(CharBattle user, CharBattle target);
 
     protected bool CheckIfHit(CharBattle user, CharBattle target)
     {

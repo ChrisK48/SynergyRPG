@@ -49,7 +49,9 @@ public class BattleUIManager : MonoBehaviour
         GameObject cm = Instantiate(commandMenuPrefab, commandMenuUIContainer);
 
         // Position the command menu near the character (this needs to be changed but works for now)
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(pc.transform.position + Vector3.right);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(pc.transform.position);
+        screenPos.x += 125;
+        screenPos.y -= 50;
         cm.GetComponent<RectTransform>().position = screenPos;
 
         Button attackBtn = cm.transform.Find("Attack").GetComponent<Button>();
