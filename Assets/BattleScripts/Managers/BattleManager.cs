@@ -73,7 +73,6 @@ public class BattleManager : MonoBehaviour
         {
             npc.PerformAITurn();
         }
-
         CheckBattleEnd();
     }
 

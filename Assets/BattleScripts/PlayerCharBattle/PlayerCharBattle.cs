@@ -36,7 +36,7 @@ public abstract class PlayerCharBattle : CharBattle
         {
             Mp -= ability.mpCost;
             Hp -= ability.hpCost;
-            OnStatsChanged?.Invoke();
+            TriggerStatsUpdate();
             foreach (CharBattle target in targets)
             {
                 ability.ExecuteAbility(this, target);
@@ -51,21 +51,23 @@ public abstract class PlayerCharBattle : CharBattle
     public override void TakeDamage(int amt, System.Action<int> onDamageDealt = null)
     {
         base.TakeDamage(amt, onDamageDealt);
-        OnStatsChanged?.Invoke();
+        TriggerStatsUpdate();
     }
 
     public override void Heal(int amt)
     {
         base.Heal(amt);
-        OnStatsChanged?.Invoke();
+        TriggerStatsUpdate();
     }
 
     public void ChangeMp(int amt)
     {
         Debug.Log(charName + (amt >= 0 ? " restores " : " loses ") + Mathf.Abs(amt) + " MP.");
         Mp = Mathf.Clamp(Mp + amt, 0, maxMp);
-        OnStatsChanged?.Invoke();
+        TriggerStatsUpdate();
     }
+
+    protected void TriggerStatsUpdate() => OnStatsChanged?.Invoke();
 
     public override void Die()
     {

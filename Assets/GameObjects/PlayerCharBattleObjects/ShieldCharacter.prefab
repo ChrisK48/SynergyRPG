@@ -114,11 +114,14 @@ MonoBehaviour:
   Def: 25
   Mdef: 20
   Spd: 0
+  Acc: 0
+  Eva: 0
   Luck: 10
+  isAlive: 1
   abilities:
   - {fileID: 11400000, guid: 4f929e352798b8846b7d99fd8bdcf78a, type: 2}
   - {fileID: 11400000, guid: f9d69595a623967459d7f4d7db11793b, type: 2}
   activeBuffs: []
   uniqueUIPrefab: {fileID: 135941075479709308, guid: a4f0e0802b97a2946a8c43252f1fafd0, type: 3}
-  maxShieldPoints: 0
-  ShieldPoints: 0
+  maxShieldPoints: 10
+  shieldPoints: 0

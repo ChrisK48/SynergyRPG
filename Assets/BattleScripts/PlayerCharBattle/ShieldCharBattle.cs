@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class ShieldCharBattle : PlayerCharBattle
 {
-    public int maxShieldPoints;
-    public int ShieldPoints;
+    public int maxShieldPoints = 10;
+    public int shieldPoints = 0;
 
     public void GainShield(int amt)
     {
-        ShieldPoints = Mathf.Clamp(ShieldPoints + amt, 0, maxShieldPoints);
+        shieldPoints = Mathf.Clamp(shieldPoints + amt, 0, maxShieldPoints);
+        TriggerStatsUpdate();
     }
 
     public void LoseShield(int amt)
     {
-        ShieldPoints = Mathf.Clamp(ShieldPoints - amt, 0, maxShieldPoints);
+        shieldPoints = Mathf.Clamp(shieldPoints - amt, 0, maxShieldPoints);
+        TriggerStatsUpdate();
     }
 }
