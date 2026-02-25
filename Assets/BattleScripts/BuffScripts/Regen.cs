@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Regen Buff", menuName = "Buffs/Regen Buff")]
-public class Regen : Buff
+[System.Serializable]
+public class Regen : BuffEffect
 {
     public int regenAmount;
 

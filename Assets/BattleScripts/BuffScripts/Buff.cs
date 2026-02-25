@@ -1,20 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Buff : ScriptableObject
+[CreateAssetMenu(fileName = "New Buff", menuName = "Buff")]
+public class Buff : ScriptableObject
 {
     public string buffName;
     public string description;
 
+    [SerializeReference]
+    public BuffEffect buffEffect;
+
     public virtual void StartBuff(CharBattle target, ActiveBuff buffWrapper)
     {
+        buffEffect.StartBuff(target, buffWrapper);
+        Debug.Log(target.charName + " has started " + buffName + " buff.");
     }
     public virtual void TickBuff(CharBattle target, ActiveBuff buffWrapper)
     {
-
+        buffEffect.TickBuff(target, buffWrapper);
     }
     public virtual void EndBuff(CharBattle target, ActiveBuff buffWrapper)
     {
+        buffEffect.EndBuff(target, buffWrapper);
         Debug.Log(target.charName + "'s " + buffName + " buff has ended.");
     }
 }

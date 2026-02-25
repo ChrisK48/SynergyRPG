@@ -32,10 +32,13 @@ public abstract class PlayerCharBattle : CharBattle
 
     public void PerformAbility(Ability ability, List<CharBattle> targets)
     {
-        if (Mp >= ability.mpCost && Hp >= ability.hpCost)
+        bool hasUniqueCost = ability.uniqueResourceCost != null;
+
+        if (Mp >= ability.mpCost && Hp >= ability.hpCost && (!hasUniqueCost || ability.uniqueResourceCost.CanPayCost(this)))
         {
             Mp -= ability.mpCost;
             Hp -= ability.hpCost;
+            if (hasUniqueCost) ability.uniqueResourceCost.PayCost(this);
             TriggerStatsUpdate();
             foreach (CharBattle target in targets)
             {
@@ -48,9 +51,9 @@ public abstract class PlayerCharBattle : CharBattle
         }
     }
 
-    public override void TakeDamage(int amt, System.Action<int> onDamageDealt = null)
+    public override void TakeDamage(int amt, AtkType atkType, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {
-        base.TakeDamage(amt, onDamageDealt);
+        base.TakeDamage(amt, atkType, ignoreDef, onDamageDealt);
         TriggerStatsUpdate();
     }
 

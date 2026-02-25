@@ -9,16 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96e00aa17cc16d48a45bc400b4343f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c0f8f3b7b813bf4d84731f8c0d83e2a, type: 3}
   m_Name: Defending
-  m_EditorClassIdentifier: Assembly-CSharp::StatBuff
+  m_EditorClassIdentifier: Assembly-CSharp::Buff
   buffName: Defending
-  description: The buff that is applied when a character does a normal defend. Increases
-    Def and MDef by 20%
-  duration: 1
-  AtkPercentChange: 0
-  MatkPercentChange: 0
-  DefPercentChange: 20
-  MdefPercentChange: 20
-  SpdPercentChange: 0
-  LuckPercentChange: 0
+  description: Basic buff that is applied when defending. Increases Def and Mdef
+    by 20%
+  buffEffect:
+    rid: 9008615993518587983
+  references:
+    version: 2
+    RefIds:
+    - rid: 9008615993518587983
+      type: {class: StatBuff, ns: , asm: Assembly-CSharp}
+      data:
+        AtkPercentChange: 0
+        MatkPercentChange: 0
+        DefPercentChange: 20
+        MdefPercentChange: 20
+        SpdPercentChange: 0
+        LuckPercentChange: 0
+        AccPercentChange: 0
+        EvaPercentChange: 0

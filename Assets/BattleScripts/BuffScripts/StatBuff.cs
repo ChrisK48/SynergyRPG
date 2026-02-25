@@ -1,18 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Stat Buff", menuName = "Buffs/Stat Buff")]
-public class StatBuff : Buff
+[System.Serializable]
+public class StatBuff : BuffEffect
 {
     public int AtkPercentChange, MatkPercentChange, DefPercentChange, MdefPercentChange, SpdPercentChange, LuckPercentChange, AccPercentChange, EvaPercentChange;
 
     public override void StartBuff(CharBattle target, ActiveBuff buffWrapper)
     {
-        Debug.Log($"{target.charName} started Stat Buff: {buffName}");
-
         // Use a helper to apply and record each stat
         ApplyStatChange(target, buffWrapper, "Atk", AtkPercentChange, (val) => target.Atk += val);
-        ApplyStatChange(target, buffWrapper, "Matk", MatkPercentChange, (val) => target.Matk += val);
+        ApplyStatChange(target, buffWrapper, "Matk", MatkPercentChange, (val) => target.Mag += val);
         ApplyStatChange(target, buffWrapper, "Def", DefPercentChange, (val) => target.Def += val);
         ApplyStatChange(target, buffWrapper, "Mdef", MdefPercentChange, (val) => target.Mdef += val);
         ApplyStatChange(target, buffWrapper, "Spd", SpdPercentChange, (val) => target.Spd += val);
@@ -35,7 +33,7 @@ public class StatBuff : Buff
         int currentVal = 0;
         switch(key) {
             case "Atk": currentVal = target.Atk; break;
-            case "Matk": currentVal = target.Matk; break;
+            case "Matk": currentVal = target.Mag; break;
             case "Def": currentVal = target.Def; break;
             case "Mdef": currentVal = target.Mdef; break;
             case "Spd": currentVal = target.Spd; break;
@@ -57,7 +55,7 @@ public class StatBuff : Buff
 
         // Undo whatever we stored in the dictionary
         if (buffWrapper.statChanges.TryGetValue("Atk", out int atk)) target.Atk -= atk;
-        if (buffWrapper.statChanges.TryGetValue("Matk", out int matk)) target.Matk -= matk;
+        if (buffWrapper.statChanges.TryGetValue("Matk", out int matk)) target.Mag -= matk;
         if (buffWrapper.statChanges.TryGetValue("Def", out int def)) target.Def -= def;
         if (buffWrapper.statChanges.TryGetValue("Mdef", out int mdef)) target.Mdef -= mdef;
         if (buffWrapper.statChanges.TryGetValue("Spd", out int spd)) target.Spd -= spd;

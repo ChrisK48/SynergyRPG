@@ -110,23 +110,20 @@ MonoBehaviour:
   Hp: 500
   Mp: 100
   Atk: 20
-  Matk: 30
+  Mag: 20
   Def: 5
   Mdef: 10
   Spd: 10
   Acc: 0
   Eva: 0
-  Luck: 500
+  Luck: 15
   isAlive: 1
   abilities:
-  - {fileID: 11400000, guid: 4f929e352798b8846b7d99fd8bdcf78a, type: 2}
-  - {fileID: 11400000, guid: f9d69595a623967459d7f4d7db11793b, type: 2}
-  - {fileID: 11400000, guid: 706622feb8a36314c8f0cb7e1015d1b8, type: 2}
-  - {fileID: 11400000, guid: d9b90bdf467fdce45afe466e12f76292, type: 2}
-  - {fileID: 11400000, guid: 6a0fbd305547c9a4ebaefac34b961ffa, type: 2}
-  - {fileID: 11400000, guid: 8a50220c1a5c8cb498598da116821332, type: 2}
-  - {fileID: 11400000, guid: 1b7070df02af6954ca4169185b544ac3, type: 2}
+  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
+  - {fileID: 11400000, guid: 70b7692e3c3aa9940b112c05335541f2, type: 2}
+  - {fileID: 11400000, guid: bf5a8dfdaa839734b9e7648d807a14ca, type: 2}
   activeBuffs: []
   uniqueUIPrefab: {fileID: 135941075479709308, guid: 2eec79b1c6888fe40bfae70fde8a48e4, type: 3}
-  voidPoints: 0
   maxVoidPoints: 100
+  voidPoints: 0

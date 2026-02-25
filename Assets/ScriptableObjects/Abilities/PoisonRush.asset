@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
+  m_Name: PoisonRush
+  m_EditorClassIdentifier: Assembly-CSharp::Ability
+  abilityName: Poison Rush
+  description: Dash at the target and swing twice, with a chance to inflict poison
+    status on each swing.
+  mpCost: 10
+  hpCost: 0
+  uniqueResourceCost:
+    rid: -2
+  targetType: 0
+  isMissable: 0
+  hitChance: 0
+  abilityEffects:
+  - rid: 9008615993518587982
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 9008615993518587982
+      type: {class: AtkBuffAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        scalingStat: 0
+        scalingMultiplier: 1
+        effectIsMissable: 1
+        effectHitChance: 50
+        elementTypes: 
+        atkType: 0
+        numHits: 2
+        ignoreDef: 0
+        buff: {fileID: 11400000, guid: e292f777103779e439e2ca4aabe31afa, type: 2}
+        duration: 2
+        buffHitChance: 100

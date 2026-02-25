@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Accessibility;
 
@@ -6,7 +7,7 @@ public abstract class CharBattle : MonoBehaviour
 {
     BattleUIManager battleUIManager;
     public string charName;
-    public int maxHp, maxMp, Hp, Mp, Atk, Matk, Def, Mdef, Spd, Acc, Eva, Luck;
+    public int maxHp, maxMp, Hp, Mp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
     public bool isAlive = true;
     public List<Ability> abilities;
     public List<ActiveBuff> activeBuffs;
@@ -21,10 +22,18 @@ public abstract class CharBattle : MonoBehaviour
         Hp = Mathf.Clamp(Hp + amt, 0, maxHp);
     }
 
-    public virtual void TakeDamage(int amt, System.Action<int> onDamageDealt = null)
+    public virtual void TakeDamage(int amt, AtkType atkType, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {
         // temp damage calculation
-        int damage = Mathf.Max(amt - Def, 1);
+        int damage = 0;
+
+        if (!ignoreDef)
+            if (atkType == AtkType.Physical)
+                damage = Mathf.Max(amt - Def, 1);
+            else
+                damage = Mathf.Max(amt - Mdef, 1);
+        else
+            damage = amt;
 
         int finalDamage = Mathf.Min(damage, Hp);
         Debug.Log(charName + " takes " + finalDamage + " damage.");

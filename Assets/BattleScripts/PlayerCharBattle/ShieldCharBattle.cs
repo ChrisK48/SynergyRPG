@@ -16,4 +16,9 @@ public class ShieldCharBattle : PlayerCharBattle
         shieldPoints = Mathf.Clamp(shieldPoints - amt, 0, maxShieldPoints);
         TriggerStatsUpdate();
     }
+
+    public bool CanPayShieldCost(int cost)
+    {
+        return shieldPoints >= cost;
+    }
 }

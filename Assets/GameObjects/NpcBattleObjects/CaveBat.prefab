@@ -114,10 +114,14 @@ MonoBehaviour:
   Def: 0
   Mdef: 0
   Spd: 1
+  Acc: 0
+  Eva: 0
   Luck: 0
   isAlive: 1
   abilities:
-  - {fileID: 11400000, guid: 4f929e352798b8846b7d99fd8bdcf78a, type: 2}
-  - {fileID: 11400000, guid: e10eef35229a74b48816c153012bda77, type: 2}
+  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  - {fileID: 0}
   activeBuffs: []
   exp: 0
+  elementalWeaknesses: 
+  elementalResistances: 

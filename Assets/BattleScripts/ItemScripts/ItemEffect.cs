@@ -27,14 +27,14 @@ public class RestoreMPEffect : ItemEffect
 }
 
 [System.Serializable]
-public class AbilityEffect : ItemEffect
+public class ItemAbilityEffect : ItemEffect
 {
     public Ability ability;
-    public override void Apply(CharBattle user, CharBattle target) => ability.ApplyEffect(user, target);
+    public override void Apply(CharBattle user, CharBattle target) => ability.ExecuteAbility(user, target);
 }
 
 [System.Serializable]
-public class BuffEffect : ItemEffect
+public class ItemBuffEffect : ItemEffect
 {
     public Buff buff;
     public int duration;
