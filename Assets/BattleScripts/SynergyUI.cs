@@ -2,30 +2,30 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SynergyUI : MonoBehaviour
+public class FlowUI : MonoBehaviour
 {
-    private Slider synergySlider;
-    private TextMeshProUGUI synergyText;
+    private Slider flowSlider;
+    private TextMeshProUGUI flowText;
 
      void Start()
     {
-        synergySlider = GetComponentInChildren<Slider>();
-        synergyText = GetComponentInChildren<TextMeshProUGUI>();
-        SynergyManager.instance.OnSynergyChanged += UpdateVisuals;
+        flowSlider = GetComponentInChildren<Slider>();
+        flowText = GetComponentInChildren<TextMeshProUGUI>();
+        FlowManager.instance.OnFlowChanged += UpdateVisuals;
         setupUI();
     }
 
     public void setupUI()
     {
-        synergySlider.maxValue = SynergyManager.instance.maxSynergy;
-        synergySlider.value = SynergyManager.instance.currentSynergy;
-        synergyText.text = $"{SynergyManager.instance.currentSynergy}/{SynergyManager.instance.maxSynergy} SP";
+        flowSlider.maxValue = FlowManager.instance.maxFlow;
+        flowSlider.value = FlowManager.instance.currentFlow;
+        flowText.text = $"{FlowManager.instance.currentFlow}/{FlowManager.instance.maxFlow} Flow";
     }
 
-    void UpdateVisuals(float currentSynergy, float maxSynergy)
+    void UpdateVisuals(float currentFlow, float maxFlow)
     {
-        synergySlider.value = currentSynergy;
-        synergySlider.maxValue = maxSynergy;
-        synergyText.text = $"{currentSynergy}/{maxSynergy} SP";
+        flowSlider.value = currentFlow;
+        flowSlider.maxValue = maxFlow;
+        flowText.text = $"{currentFlow}/{maxFlow} Flow";
     }
 }

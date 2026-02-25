@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 416623543}
   - component: {fileID: 416623542}
   m_Layer: 5
-  m_Name: SynergyText
+  m_Name: FlowText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -651,7 +651,7 @@ GameObject:
   - component: {fileID: 601652022}
   - component: {fileID: 601652023}
   m_Layer: 5
-  m_Name: SynergySlider
+  m_Name: FlowSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1491,8 +1491,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ca1e12d55abe4347b9bb89b0b175d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SynergyManager
-  currentSynergy: 0
-  maxSynergy: 100
+  currentFlow: 0
+  maxFlow: 100
 --- !u!1 &1863272250
 GameObject:
   m_ObjectHideFlags: 0
@@ -1714,7 +1714,7 @@ GameObject:
   - component: {fileID: 2101003505}
   - component: {fileID: 2101003507}
   m_Layer: 5
-  m_Name: SynergyBarContainer
+  m_Name: FlowBarContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

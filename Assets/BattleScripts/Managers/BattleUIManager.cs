@@ -15,6 +15,8 @@ public class BattleUIManager : MonoBehaviour
     public GameObject commandMenuButtonPrefab;
     public GameObject turnOrderIconPrefab;
 
+    private GameObject activeSubMenu;
+
     void Awake()
     {
         instance = this;
@@ -50,7 +52,7 @@ public class BattleUIManager : MonoBehaviour
 
         // Position the command menu near the character (this needs to be changed but works for now)
         Vector3 screenPos = Camera.main.WorldToScreenPoint(pc.transform.position);
-        screenPos.x += 125;
+        screenPos.x += 120;
         screenPos.y -= 50;
         cm.GetComponent<RectTransform>().position = screenPos;
 
@@ -65,16 +67,20 @@ public class BattleUIManager : MonoBehaviour
         Button abilityBtn = cm.transform.Find("Ability").GetComponent<Button>();
         abilityBtn.onClick.AddListener(() =>
         {
-            GameObject abilityMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
+            ClearSubMenu();
+            activeSubMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
+            Vector3 screenPos = cm.GetComponent<RectTransform>().position;
+            screenPos.x += 165;
+            activeSubMenu.GetComponent<RectTransform>().position = screenPos;
             for (int i = 2; i < pc.abilities.Count; i++)
             {
-                GameObject abilityBtnSub = Instantiate(commandMenuButtonPrefab, abilityMenu.transform);
+                GameObject abilityBtnSub = Instantiate(commandMenuButtonPrefab, activeSubMenu.transform);
                 Ability ability = pc.abilities[i];
                 abilityBtnSub.GetComponentInChildren<TextMeshProUGUI>().text = ability.Name;
                 abilityBtnSub.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     TargetSelectionManager.instance.BeginTargetSelection(pc, ability);
-                    Destroy(abilityMenu);
+                    Destroy(activeSubMenu);
                 });
             }
         });
@@ -82,13 +88,17 @@ public class BattleUIManager : MonoBehaviour
         Button itemBtn = cm.transform.Find("Item").GetComponent<Button>();
         itemBtn.onClick.AddListener(() =>
         {
-            GameObject itemMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
+            ClearSubMenu();
+            activeSubMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
+            Vector3 screenPos = cm.GetComponent<RectTransform>().position;
+            screenPos.x += 165;
+            activeSubMenu.GetComponent<RectTransform>().position = screenPos;
             foreach (var pair in InventoryManager.instance.items)
             {
                 Item item = pair.Key;
                 int count = pair.Value;
 
-                GameObject itemBtnObj = Instantiate(commandMenuButtonPrefab, itemMenu.transform);
+                GameObject itemBtnObj = Instantiate(commandMenuButtonPrefab, activeSubMenu.transform);
                 // Show name and quantity: "Potion (x5)"
                 itemBtnObj.GetComponentInChildren<TextMeshProUGUI>().text = $"{item.Name} (x{count})";
 
@@ -107,5 +117,10 @@ public class BattleUIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public void ClearSubMenu()
+    {
+        Destroy(activeSubMenu);
     }
 }

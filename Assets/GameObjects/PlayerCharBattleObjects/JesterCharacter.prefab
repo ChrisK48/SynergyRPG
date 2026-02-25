@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6519251819137544688}
   - component: {fileID: 6906181670227740107}
-  - component: {fileID: 7643124037856912594}
+  - component: {fileID: -7790583121598180660}
   m_Layer: 0
-  m_Name: VoidCharacter
+  m_Name: JesterCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.21348633, g: 0.064613745, b: 0.41509432, a: 1}
+  m_Color: {r: 0.6059704, g: 0.39005575, b: 0.7169812, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &7643124037856912594
+--- !u!114 &-7790583121598180660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,29 +101,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1111310288733244526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e73115d82d08db48b11cd26d8ac4d91, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f151bf6730f0a548a914cf78e34bdf4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VoidCharBattle
-  charName: Eldric
-  maxHp: 500
-  maxMp: 100
-  Hp: 500
-  Mp: 100
-  Atk: 20
-  Mag: 20
-  Def: 5
-  Mdef: 10
-  Spd: 10
+  m_EditorClassIdentifier: Assembly-CSharp::JesterCharBattle
+  charName: Jethro
+  maxHp: 0
+  maxMp: 0
+  Hp: 0
+  Mp: 0
+  Atk: 0
+  Mag: 0
+  Def: 0
+  Mdef: 0
+  Spd: 0
   Acc: 0
   Eva: 0
-  Luck: 15
+  Luck: 0
   isAlive: 1
-  abilities:
-  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
-  - {fileID: 11400000, guid: 70b7692e3c3aa9940b112c05335541f2, type: 2}
-  - {fileID: 11400000, guid: bf5a8dfdaa839734b9e7648d807a14ca, type: 2}
+  abilities: []
   activeBuffs: []
-  uniqueUIPrefab: {fileID: 135941075479709308, guid: 2eec79b1c6888fe40bfae70fde8a48e4, type: 3}
-  maxVoidPoints: 100
-  voidPoints: 0
+  uniqueUIPrefab: {fileID: 0}

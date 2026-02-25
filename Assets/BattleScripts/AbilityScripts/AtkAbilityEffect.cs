@@ -21,7 +21,7 @@ public class AtkAbilityEffect : AbilityEffect
         if (Random.value > 0.95f - (user.Luck / 1000f))
         {
             damage *= 1.5f;
-            if (user is PlayerCharBattle && atkType == AtkType.Physical) SynergyManager.instance.GainSP(10); // Temp 10 SP gain on crit, can be adjusted or removed later.
+            if (user is PlayerCharBattle && atkType == AtkType.Physical) FlowManager.instance.GainFlow(10); // Temp 10 SP gain on crit, can be adjusted or removed later.
             Debug.Log("Critical hit dealt by " + user.charName + "!");
         }
 
