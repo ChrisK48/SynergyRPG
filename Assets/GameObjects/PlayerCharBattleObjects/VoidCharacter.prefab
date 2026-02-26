@@ -123,6 +123,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
   - {fileID: 11400000, guid: 70b7692e3c3aa9940b112c05335541f2, type: 2}
   - {fileID: 11400000, guid: bf5a8dfdaa839734b9e7648d807a14ca, type: 2}
+  - {fileID: 11400000, guid: 23d23238c1dcaa046912d78d8c88f0f3, type: 2}
   activeBuffs: []
   uniqueUIPrefab: {fileID: 135941075479709308, guid: 2eec79b1c6888fe40bfae70fde8a48e4, type: 3}
   maxVoidPoints: 100

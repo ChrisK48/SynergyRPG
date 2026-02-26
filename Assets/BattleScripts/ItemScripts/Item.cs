@@ -24,12 +24,12 @@ public class Item : ScriptableObject, ITargetableAction
         }
     }
 
-    public void PerformAction(CharBattle user, List<CharBattle> targets)
+    public void PerformAction(CharBattle[] user, List<CharBattle> targets)
     {
         InventoryManager.instance.RemoveItem(this);
         foreach (CharBattle target in targets)
         {
-            UseItem(user, target);
+            UseItem(user[0], target);
         }
     }
 }

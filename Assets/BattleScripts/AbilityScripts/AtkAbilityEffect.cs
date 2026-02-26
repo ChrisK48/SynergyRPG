@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 [System.Serializable]
 public class AtkAbilityEffect : AbilityEffect
 {
@@ -7,22 +8,33 @@ public class AtkAbilityEffect : AbilityEffect
     public AtkType atkType;
     public bool ignoreDef;
 
-    public override void ApplyEffect(CharBattle user, CharBattle target)
+    public override void ApplyEffect(CharBattle[] users, CharBattle target)
     {
-        int damage = calculateDamage(user, target);
+        int damage = calculateDamage(users, target);
         target.TakeDamage(damage, atkType, ignoreDef);   
     }
 
-    public int calculateDamage(CharBattle user, CharBattle target)
+    public float CheckIfCrit(CharBattle[] users, float damage)
     {
-        float damage = GetUserStat(user) * scalingMultiplier;
 
         // This is a placeholder for critical hit calculation. Currently a flat 5% chance to deal 50% more damage.
-        if (Random.value > 0.95f - (user.Luck / 1000f))
+        if (Random.value > 0.95f - (GetUserStat(users) / 1000f))
         {
             damage *= 1.5f;
-            if (user is PlayerCharBattle && atkType == AtkType.Physical) FlowManager.instance.GainFlow(10); // Temp 10 SP gain on crit, can be adjusted or removed later.
-            Debug.Log("Critical hit dealt by " + user.charName + "!");
+            if (users[0] is PlayerCharBattle) FlowManager.instance.GainFlow(10); // Temp 10 SP gain on crit, can be adjusted or removed later.
+            Debug.Log("Critical hit dealt by " + users[0].charName + "!");
+        }      
+
+        return damage;
+    }
+
+    public int calculateDamage(CharBattle[] users, CharBattle target)
+    {
+        float damage = GetUserStat(users) * scalingMultiplier;
+
+        if (atkType == AtkType.Physical)
+        {
+            damage = CheckIfCrit(users, damage);
         }
 
         // Temp weakness/resistance calculation. Currently doubles or halves damage based on a single matching element.

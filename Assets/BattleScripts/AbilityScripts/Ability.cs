@@ -24,12 +24,20 @@ public class Ability : ScriptableObject, ITargetableAction
     {
         foreach (AbilityEffect effect in abilityEffects)
         {
-            effect.ExecuteEffect(user, target);
+            effect.ExecuteEffect(new CharBattle[] {user}, target);
         }
     }
 
-    public void PerformAction(CharBattle user, List<CharBattle> targets)
+    public void PerformAction(CharBattle[] user, List<CharBattle> targets)
     {
-        user.PerformAction(this, targets);
+        if (user[0] is PlayerCharBattle player)
+        {
+            if (!player.CanPerformAbility(this, targets)) return;
+        }
+        
+        foreach (CharBattle target in targets)
+        {
+            ExecuteAbility(user[0], target);
+        }
     }
 }

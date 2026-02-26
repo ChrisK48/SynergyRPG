@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public abstract class PlayerCharBattle : CharBattle
 {
     public GameObject uniqueUIPrefab;
     public event Action OnStatsChanged;
+    private Ability storedSynergy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,19 +20,7 @@ public abstract class PlayerCharBattle : CharBattle
         
     }
 
-    public override void PerformAction(ITargetableAction action, List<CharBattle> targets)
-    {
-        if (action is Ability ability) 
-        {
-            PerformAbility(ability, targets);
-        }
-        else
-        {
-            // logic for items or other actions
-        }
-    }
-
-    public void PerformAbility(Ability ability, List<CharBattle> targets)
+    public bool CanPerformAbility(Ability ability, List<CharBattle> targets)
     {
         bool hasUniqueCost = ability.uniqueResourceCost != null;
 
@@ -40,14 +30,12 @@ public abstract class PlayerCharBattle : CharBattle
             Hp -= ability.hpCost;
             if (hasUniqueCost) ability.uniqueResourceCost.PayCost(this);
             TriggerStatsUpdate();
-            foreach (CharBattle target in targets)
-            {
-                ability.ExecuteAbility(this, target);
-            }
+            return true;
         }
         else
         {
             Debug.Log(charName + " does not have enough resources to perform " + ability.Name);
+            return false;
         }
     }
 
@@ -67,6 +55,19 @@ public abstract class PlayerCharBattle : CharBattle
     {
         Debug.Log(charName + (amt >= 0 ? " restores " : " loses ") + Mathf.Abs(amt) + " MP.");
         Mp = Mathf.Clamp(Mp + amt, 0, maxMp);
+        TriggerStatsUpdate();
+    }
+
+    public void StoreSynergy(Ability synergy)
+    {
+        storedSynergy = synergy;
+    }
+
+    public void DeductSynergyResourceCosts()
+    {
+        Hp -= storedSynergy.hpCost;
+        Mp -= storedSynergy.mpCost;
+        if (storedSynergy.uniqueResourceCost != null) storedSynergy.uniqueResourceCost.PayCost(this);
         TriggerStatsUpdate();
     }
 

@@ -110,7 +110,7 @@ MonoBehaviour:
   Hp: 1000
   Mp: 50
   Atk: 15
-  Matk: 5
+  Mag: 5
   Def: 25
   Mdef: 20
   Spd: 0
@@ -121,7 +121,10 @@ MonoBehaviour:
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
+  - {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
   activeBuffs: []
+  isPreppingSynergy: 0
+  currentSynergy: {fileID: 0}
   uniqueUIPrefab: {fileID: 135941075479709308, guid: a4f0e0802b97a2946a8c43252f1fafd0, type: 3}
   maxShieldPoints: 10
   shieldPoints: 0

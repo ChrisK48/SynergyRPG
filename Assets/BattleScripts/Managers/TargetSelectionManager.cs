@@ -14,7 +14,7 @@ public class TargetSelectionManager : MonoBehaviour
         instance = this;
     }
 
-    public void BeginTargetSelection(CharBattle user, ITargetableAction action)
+    public void BeginTargetSelection(CharBattle[] users, ITargetableAction action)
     {
         List<CharBattle> targets = new List<CharBattle>();
         TargetType targetType = action.Targets;
@@ -34,7 +34,7 @@ public class TargetSelectionManager : MonoBehaviour
                 targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
                 break;
             case TargetType.Self:
-                targets.Add(user);
+                targets.AddRange(users);
                 break;
             case TargetType.AnyChar:
                 targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
@@ -46,10 +46,10 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
         }
 
-        ShowPopups(user, action, targets);
+        ShowPopups(users, action, targets);
     }
 
-    void ShowPopups(CharBattle user, ITargetableAction action, List<CharBattle> targets)
+    void ShowPopups(CharBattle[] users, ITargetableAction action, List<CharBattle> targets)
     {
         foreach (CharBattle target in targets)
         {
@@ -57,7 +57,7 @@ public class TargetSelectionManager : MonoBehaviour
             Button btn = Instantiate(TargetPopupPrefab, TargetPopupContainer);
             Vector3 screenPos = Camera.main.WorldToScreenPoint(target.transform.position + Vector3.up);
             btn.GetComponent<RectTransform>().position = screenPos;
-            btn.onClick.AddListener(() => OnTargetSelected(user, action, target));
+            btn.onClick.AddListener(() => OnTargetSelected(users, action, target));
         }
     }
 
@@ -69,7 +69,7 @@ public class TargetSelectionManager : MonoBehaviour
         }
     }
 
-    void OnTargetSelected(CharBattle user, ITargetableAction action, CharBattle target)
+    void OnTargetSelected(CharBattle[] users, ITargetableAction action, CharBattle target)
     {
         Debug.Log("Target selected: " + target.charName);
         List<CharBattle> targets = new List<CharBattle>();
@@ -89,7 +89,7 @@ public class TargetSelectionManager : MonoBehaviour
                 targets.AddRange(BattleManager.instance.playerChars);
                 break;
             case TargetType.Self:
-                targets.Add(user);
+                targets.AddRange(users);
                 break;
             case TargetType.AnyChar:
                 targets.Add(target);
@@ -100,7 +100,8 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
         }
 
-        action.PerformAction(user, targets);
+        Debug.Log("Users: " + string.Join(", ", users.Select(u => u.charName)));
+        action.PerformAction(users, targets);
         ClearPopups();
         BattleUIManager.instance.commandMenuUIContainer.gameObject.SetActive(true);
         BattleManager.instance.NextTurn();

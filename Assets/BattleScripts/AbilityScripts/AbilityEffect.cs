@@ -10,58 +10,91 @@ public abstract class AbilityEffect
     public int effectHitChance;
     public int numHits;
 
-    public void ExecuteEffect(CharBattle user, CharBattle target)
+    public void ExecuteEffect(CharBattle[] users, CharBattle target)
     {
         for (int i = 0; i < numHits; i++)
-         {
-             if (!CheckIfHit(user, target)) 
-             {
-                continue;
-             }
-             ApplyEffect(user, target);
-         }
+        {
+            if (effectIsMissable)
+            {
+                if (!CheckIfHit(users, target)) 
+                {
+                    continue;
+                }
+            }
+            ApplyEffect(users, target);
+        }
     }
-    public abstract void ApplyEffect(CharBattle user, CharBattle target);
+    public abstract void ApplyEffect(CharBattle[] users, CharBattle target);
 
-    protected int GetUserStat(CharBattle user)
+    protected int GetUserStat(CharBattle[] users)
     {
+        int stat = 0;
         switch (scalingStat)
         {
             case ScalingStat.Atk:
-                return user.Atk;
+                foreach (CharBattle user in users)
+                {
+                    stat += user.Atk;
+                }
+                return stat;
             case ScalingStat.Mag:
-                return user.Mag;
+                foreach (CharBattle user in users)
+                {
+                    stat += user.Mag;
+                }
+                return stat;
             case ScalingStat.Def:
-                return user.Def;
+                foreach (CharBattle user in users)
+                {
+                    stat += user.Def;
+                }
+                return stat;
             case ScalingStat.Mdef:
-                return user.Mdef;
+                foreach (CharBattle user in users)
+                {
+                    stat += user.Mdef;
+                }
+                return stat;
             case ScalingStat.Spd:
-                return user.Spd;
+                foreach (CharBattle user in users)
+                {
+                    stat += user.Spd;
+                }
+                return stat;
             case ScalingStat.Acc:
-                return user.Acc;
+                foreach (CharBattle user in users)
+                {
+                    stat += user.Acc;
+                }
+                return stat;
             case ScalingStat.Eva:
-                return user.Eva;
+                foreach (CharBattle user in users)
+                {
+                    stat += user.Eva;
+                }
+                return stat;
             case ScalingStat.Luck:
-                return user.Luck;
+                foreach (CharBattle user in users)      
+                {
+                    stat += user.Luck;
+                }
+                return stat;
             default:
                 return 0;
-        }
+        }   
     }
 
-    protected bool CheckIfHit(CharBattle user, CharBattle target)
+    protected bool CheckIfHit(CharBattle[] users, CharBattle target)
     {
-        if (effectIsMissable)
+
+        // temp hit calculation. Need to account for target's evasion later.
+        if (Random.value <= (effectHitChance / 100f))
         {
-            // temp hit calculation. Need to account for target's evasion later.
-            if (Random.value <= (effectHitChance / 100f))
-            {
-                return true;
-            } else
-            {
-                Debug.Log($"{user.charName}'s ability missed {target.charName}!");
-                return false;
-            }
+            return true;
         }
-        return true;
+
+        string userName = users.Length > 1 ? "The party" : users[0].charName;
+        Debug.Log($"{userName} missed {target.charName}!");
+        return false;
     }
 }

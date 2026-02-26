@@ -15,11 +15,18 @@ public class BattleUIManager : MonoBehaviour
     public GameObject commandMenuButtonPrefab;
     public GameObject turnOrderIconPrefab;
 
+
+    private TwoMemberSynergyAbility[] masterSynergyList;
     private GameObject activeSubMenu;
 
     void Awake()
     {
         instance = this;
+    }
+
+    void Start()
+    {
+        masterSynergyList = Resources.LoadAll<TwoMemberSynergyAbility>("Synergies");
     }
 
     public void GeneratePartyUI(List<PlayerCharBattle> playerChars)
@@ -48,6 +55,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void ShowCommandMenu(CharBattle pc)
     {
+        CharBattle[] users = new CharBattle[] { pc };
         GameObject cm = Instantiate(commandMenuPrefab, commandMenuUIContainer);
 
         // Position the command menu near the character (this needs to be changed but works for now)
@@ -58,11 +66,11 @@ public class BattleUIManager : MonoBehaviour
 
         Button attackBtn = cm.transform.Find("Attack").GetComponent<Button>();
         attackBtn.onClick.AddListener(() => 
-            TargetSelectionManager.instance.BeginTargetSelection(pc, pc.abilities[0]));
+            TargetSelectionManager.instance.BeginTargetSelection(users, pc.abilities[0]));
 
         Button defendBtn = cm.transform.Find("Defend").GetComponent<Button>();
         defendBtn.onClick.AddListener(() => 
-            TargetSelectionManager.instance.BeginTargetSelection(pc, pc.abilities[1]));
+            TargetSelectionManager.instance.BeginTargetSelection(users, pc.abilities[1]));
 
         Button abilityBtn = cm.transform.Find("Ability").GetComponent<Button>();
         abilityBtn.onClick.AddListener(() =>
@@ -79,7 +87,7 @@ public class BattleUIManager : MonoBehaviour
                 abilityBtnSub.GetComponentInChildren<TextMeshProUGUI>().text = ability.Name;
                 abilityBtnSub.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    TargetSelectionManager.instance.BeginTargetSelection(pc, ability);
+                    TargetSelectionManager.instance.BeginTargetSelection(users, ability);
                     Destroy(activeSubMenu);
                 });
             }
@@ -105,8 +113,46 @@ public class BattleUIManager : MonoBehaviour
                 itemBtnObj.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     // The Target Manager handles Items and Abilities exactly the same!
-                    TargetSelectionManager.instance.BeginTargetSelection(pc, item);
+                    TargetSelectionManager.instance.BeginTargetSelection(users, item);
                 });
+            }
+        });
+
+        Button teamUpBtn = cm.transform.Find("TeamUps").GetComponent<Button>(); 
+        teamUpBtn.onClick.AddListener(() =>
+        {
+            ClearSubMenu();
+            activeSubMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
+            Vector3 screenPos = cm.GetComponent<RectTransform>().position;
+            screenPos.x += 165;
+            activeSubMenu.GetComponent<RectTransform>().position = screenPos;
+
+            List<PlayerCharBattle> party = BattleManager.instance.playerChars;
+
+            foreach (TwoMemberSynergyAbility synergy in masterSynergyList)
+            {
+                if (synergy.IsPossible(pc, party))
+                {
+                    GameObject synergyBtnObj = Instantiate(commandMenuButtonPrefab, activeSubMenu.transform);
+                    synergyBtnObj.GetComponentInChildren<TextMeshProUGUI>().text = synergy.Name;
+
+                    synergyBtnObj.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        PlayerCharBattle prepper = party.Find(p => p.isPreppingSynergy && p.currentSynergy == synergy);
+
+                        if (prepper != null)
+                        {
+                            // EXECUTE: This character is the Activator!
+                            TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] {prepper, pc}, synergy);
+                            prepper.ResetSynergy();
+                        }
+                        else
+                        {
+                            // PREP: This character is the first one to start it
+                            synergy.Prep(pc);
+                        }
+                    });
+                }
             }
         });
     }

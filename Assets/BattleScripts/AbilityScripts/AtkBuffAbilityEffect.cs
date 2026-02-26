@@ -7,19 +7,20 @@ public class AtkBuffAbilityEffect : AtkAbilityEffect
     public int duration;
     public int buffHitChance;
 
-    public override void ApplyEffect(CharBattle user, CharBattle target)
+    public override void ApplyEffect(CharBattle[] users, CharBattle target)
     {
-        int damage = calculateDamage(user, target);
+        int damage = calculateDamage(users, target);
         target.TakeDamage(damage, atkType,ignoreDef);
-        OnHit(user, target);
+        OnHit(users, target);
     }
 
-    public void OnHit(CharBattle user, CharBattle target)
+    public void OnHit(CharBattle[] users, CharBattle target)
     {
         if (Random.value <= (buffHitChance / 100f))
         {
             target.ReceiveBuff(buff, duration);
-            Debug.Log($"{target.charName} received {buff.buffName} buff for {duration} turns!");
+            string userName = users.Length > 1 ? "The party" : users[0].charName;
+            Debug.Log($"{userName} gave {target.charName} the {buff.buffName} buff for {duration} turns!");
         }
     }
 }

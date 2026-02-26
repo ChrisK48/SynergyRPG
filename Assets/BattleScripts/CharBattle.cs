@@ -11,6 +11,8 @@ public abstract class CharBattle : MonoBehaviour
     public bool isAlive = true;
     public List<Ability> abilities;
     public List<ActiveBuff> activeBuffs;
+    public bool isPreppingSynergy;
+    public TwoMemberSynergyAbility currentSynergy;
 
     void Awake()
     {
@@ -52,7 +54,6 @@ public abstract class CharBattle : MonoBehaviour
         isAlive = false;
     }
 
-    public abstract void PerformAction(ITargetableAction action, List<CharBattle> targets);
     public void ReceiveBuff(Buff buff, int duration)
     {
 
@@ -83,5 +84,11 @@ public abstract class CharBattle : MonoBehaviour
                 activeBuffs.RemoveAt(i);
             }
         }
+    }
+
+    public void ResetSynergy()
+    {
+        isPreppingSynergy = false;
+        currentSynergy = null;
     }
 }

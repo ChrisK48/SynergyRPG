@@ -120,4 +120,4 @@ MonoBehaviour:
   isAlive: 1
   abilities: []
   activeBuffs: []
-  uniqueUIPrefab: {fileID: 0}
+  uniqueUIPrefab: {fileID: 4003600137503552053, guid: b2e91756373579a48b298d7894f9e8ea, type: 3}
