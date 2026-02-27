@@ -12,29 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
   m_Name: Attack
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  abilityName: Attack
-  description: The basic attack ability that triggers when the attack button is clicked
-  mpCost: 0
-  hpCost: 0
-  uniqueResourceCost:
+  AbilityName: Attack
+  Description: 
+  ScalingStat: 0
+  ScalingMultiplier: 1
+  MpCost: 0
+  HpCost: 0
+  UniqueResourceCost:
     rid: -2
-  targetType: 5
-  isMissable: 1
-  hitChance: 0
-  abilityEffects:
-  - rid: 9008615993518587974
+  TargetType: 0
+  AbilityEffects:
+  - rid: 9008616039178567747
+  SynergyTags: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 9008615993518587974
+    - rid: 9008616039178567747
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        scalingStat: 0
-        scalingMultiplier: 1
         effectIsMissable: 1
         effectHitChance: 100
+        numHits: 1
         elementTypes: 
         atkType: 0
-        numHits: 1
+        ignoreDef: 0

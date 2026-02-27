@@ -17,7 +17,7 @@ public class Item : ScriptableObject, ITargetableAction
 
     public void UseItem(CharBattle user, CharBattle target)
     {
-        Debug.Log(user.charName + " uses " + Name + "!");
+        Debug.Log(user.CharName + " uses " + Name + "!");
         foreach (ItemEffect effect in itemEffects)
         {
             effect.Apply(user, target);

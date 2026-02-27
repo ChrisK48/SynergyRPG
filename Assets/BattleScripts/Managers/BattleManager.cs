@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance;
     public List<PlayerCharBattle> playerChars;
     public List<NpcBattle> npcChars;
+    private List<SynergyStance> synergyStances = new List<SynergyStance>();
     public List<Transform> playerSpawnPoints;
     public List<Transform> npcSpawnPoints;
     private TurnManager turnManager;
@@ -14,11 +16,11 @@ public class BattleManager : MonoBehaviour
      void Awake()
     {
         instance = this;
+        turnManager = new TurnManager();
     }
 
     void Start()
     {
-        turnManager = new TurnManager();
 
         List<PlayerCharBattle> spawnedPlayers = new List<PlayerCharBattle>();
 
@@ -28,6 +30,7 @@ public class BattleManager : MonoBehaviour
             Transform spawnPoint = playerSpawnPoints[i];
             PlayerCharBattle clone = Instantiate(playerChars[i], spawnPoint.position, spawnPoint.rotation);
             spawnedPlayers.Add(clone);
+            Debug.Log("Spawned player character: " + clone.CharName + " with HP: " + clone.getHp() + " and MP: " + clone.getMp());
         }
 
         List<NpcBattle> spawnedNpcs = new List<NpcBattle>();
@@ -50,43 +53,73 @@ public class BattleManager : MonoBehaviour
     public void NextTurn()
     {
         BattleUIManager.instance.ClearCommandMenu();
-
-        CharBattle currentChar = turnManager.getCurrentChar();
-        
-        BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentChar, turnManager.GetCurrentTurnIndex());
-
-        turnManager.AdvanceTurn();
-
-        currentChar.ProcessTurnBuffs();
-
-        if (!currentChar.isAlive)
+        ITurnEntity currentEntity = turnManager.getCurrentChar();
+        if (currentEntity is CharBattle currentChar)
         {
-            NextTurn();
-            return;
+            if (!currentChar.GetIfAlive())
+            {
+                turnManager.AdvanceTurn(); 
+                NextTurn();   
+                return;
+            }   
         }
 
-        if (currentChar is PlayerCharBattle)
+        BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentEntity, turnManager.GetCurrentTurnIndex());
+
+        currentEntity.ProcessTurnBuffs();
+        CheckIfNotFollowedUp(currentEntity);
+
+        turnManager.AdvanceTurn(); 
+
+        if (currentEntity is PlayerCharBattle || currentEntity is SynergyStance)
         {
-            BattleUIManager.instance.ShowCommandMenu(currentChar);
+            BattleUIManager.instance.ShowCommandMenu(currentEntity);
         }
-        else if (currentChar is NpcBattle npc)
+        else if (currentEntity is NpcBattle npc)
         {
             npc.PerformAITurn();
         }
+        
         CheckBattleEnd();
+    }
+
+    private void CheckIfNotFollowedUp(ITurnEntity currentChar)
+    {
+        if (currentChar.entityIsPreppingSynergy && currentChar is PlayerCharBattle player)
+        {
+            Debug.Log(currentChar.entityName + " did not follow up on their synergy prep! Synergy failed.");
+            FlowManager.instance.ConsumeFlow(20); // Arbitrary flow penalty for not following up on synergy
+            currentChar.EndPrep();
+        }
     }
 
     private void CheckBattleEnd()
     {
-        if (playerChars.All(pc => !pc.isAlive))
+        if (playerChars.All(pc => !pc.GetIfAlive()))
         {
             Debug.Log("All players defeated! Game Over.");
             // Handle game over logic here
         }
-        else if (npcChars.All(npc => !npc.isAlive))
+        else if (npcChars.All(npc => !npc.GetIfAlive()))
         {
             Debug.Log("All enemies defeated! Victory!");
             // Handle victory logic here
         }
+    }
+
+    public TurnManager GetTurnManager()
+    {
+        return turnManager;
+    }
+
+    public void InsertSynergyStance(SynergyStance stance)
+    {
+        synergyStances.Add(stance);
+        turnManager.InsertSynergy(stance);
+    }
+
+    public List<SynergyStance> GetSynergyStances()
+    {
+        return synergyStances;
     }
 }

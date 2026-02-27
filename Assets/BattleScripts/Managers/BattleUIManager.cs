@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using System.Linq;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateTurnOrderUI(List<CharBattle> turnOrder, CharBattle currentChar, int currentTurnIndex)
+    public void UpdateTurnOrderUI(List<ITurnEntity> turnOrder, ITurnEntity currentChar, int currentTurnIndex)
     {
         foreach (Transform child in TurnOrderUIContainer)
         {
@@ -49,11 +50,22 @@ public class BattleUIManager : MonoBehaviour
         for(int i = currentTurnIndex; i < turnOrder.Count; i++)
         {
             GameObject turnOrderElemOther = Instantiate(turnOrderIconPrefab, TurnOrderUIContainer);
-            turnOrderElemOther.GetComponentInChildren<TextMeshProUGUI>().text = turnOrder[i].charName;
+            turnOrderElemOther.GetComponentInChildren<TextMeshProUGUI>().text = turnOrder[i].entityName;
         }
     }
 
-    public void ShowCommandMenu(CharBattle pc)
+    public void ShowCommandMenu(ITurnEntity entity)
+    {
+        if (entity is PlayerCharBattle pc)
+        {
+            ShowStandardCommandMenu(pc);
+        } else if (entity is SynergyStance stance)
+        {
+            ShowSynergyCommandMenu(stance);
+        }
+    }
+
+    public void ShowStandardCommandMenu(PlayerCharBattle pc)
     {
         CharBattle[] users = new CharBattle[] { pc };
         GameObject cm = Instantiate(commandMenuPrefab, commandMenuUIContainer);
@@ -87,6 +99,35 @@ public class BattleUIManager : MonoBehaviour
                 abilityBtnSub.GetComponentInChildren<TextMeshProUGUI>().text = ability.Name;
                 abilityBtnSub.GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    bool wantsToPrep = Keyboard.current.leftShiftKey.isPressed;
+                    bool wantsToSynergy = !wantsToPrep && Keyboard.current.leftCtrlKey.isPressed;
+                    if (wantsToPrep)
+                    {
+                        pc.StartPrep(new Ability[] {ability});
+                        ClearCommandMenu();
+                        Destroy(activeSubMenu);
+                        BattleManager.instance.NextTurn();
+                        return;
+                    }
+
+                    if (wantsToSynergy)
+                    {
+                        CharBattle partner;
+                        TwoMemberSynergyAbility synergy = BattleUIManager.instance.GetSynergyForAbility(pc, ability, out partner);
+
+                        if (synergy != null)
+                        {
+                            pc.StorePreppedAbility(ability);
+                            TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] {pc, partner}, synergy);
+                            ClearCommandMenu();
+                            Destroy(activeSubMenu);
+                            return;
+                        }
+                        else
+                        {
+                            Debug.Log("No valid synergy found for " + ability.Name);
+                        }
+                    }
                     TargetSelectionManager.instance.BeginTargetSelection(users, ability);
                     Destroy(activeSubMenu);
                 });
@@ -118,43 +159,36 @@ public class BattleUIManager : MonoBehaviour
             }
         });
 
-        Button teamUpBtn = cm.transform.Find("TeamUps").GetComponent<Button>(); 
-        teamUpBtn.onClick.AddListener(() =>
+        Button synergyBtn = cm.transform.Find("Synergize").GetComponent<Button>();
+        synergyBtn.onClick.AddListener(() =>
         {
             ClearSubMenu();
             activeSubMenu = Instantiate(commandSubMenuPrefab, commandMenuUIContainer);
             Vector3 screenPos = cm.GetComponent<RectTransform>().position;
             screenPos.x += 165;
             activeSubMenu.GetComponent<RectTransform>().position = screenPos;
-
-            List<PlayerCharBattle> party = BattleManager.instance.playerChars;
-
-            foreach (TwoMemberSynergyAbility synergy in masterSynergyList)
-            {
-                if (synergy.IsPossible(pc, party))
+            foreach (var player in BattleManager.instance.playerChars.Where(p => p.GetIfAlive() && p != pc)){
+                PlayerCharBattle potentialPartner = player;
+                GameObject btnObj = Instantiate(commandMenuButtonPrefab, activeSubMenu.transform);
+                btnObj.GetComponentInChildren<TextMeshProUGUI>().text = player.CharName;
+                btnObj.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    GameObject synergyBtnObj = Instantiate(commandMenuButtonPrefab, activeSubMenu.transform);
-                    synergyBtnObj.GetComponentInChildren<TextMeshProUGUI>().text = synergy.Name;
-
-                    synergyBtnObj.GetComponent<Button>().onClick.AddListener(() =>
-                    {
-                        PlayerCharBattle prepper = party.Find(p => p.isPreppingSynergy && p.currentSynergy == synergy);
-
-                        if (prepper != null)
-                        {
-                            // EXECUTE: This character is the Activator!
-                            TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] {prepper, pc}, synergy);
-                            prepper.ResetSynergy();
-                        }
-                        else
-                        {
-                            // PREP: This character is the first one to start it
-                            synergy.Prep(pc);
-                        }
-                    });
-                }
+                    Debug.Log($"{pc.CharName} is synergizing with {potentialPartner.CharName}!");
+                    SynergyStanceManager.instance.CreateSynergyStance(new CharBattle[] { pc, potentialPartner });
+                });
             }
         });
+    }
+
+    public void ShowSynergyCommandMenu(SynergyStance stance)
+    {
+        CharBattle[] users = stance.users;
+        GameObject cm = Instantiate(commandMenuPrefab, commandMenuUIContainer);
+        cm.transform.Find("Synergize").gameObject.SetActive(false);
+
+        Button defendBtn = cm.transform.Find("Defend").GetComponent<Button>();
+        defendBtn.onClick.AddListener(() =>
+            TargetSelectionManager.instance.BeginTargetSelection(users, new SynergyDefend(stance.users)));
     }
 
     public void ClearCommandMenu()
@@ -168,5 +202,47 @@ public class BattleUIManager : MonoBehaviour
     public void ClearSubMenu()
     {
         Destroy(activeSubMenu);
+    }
+
+    private TwoMemberSynergyAbility GetSynergyForAbility(CharBattle currentActor, Ability currentAbility, out CharBattle partner)
+    {
+        partner = null;
+
+        foreach (var potentialPartner in BattleManager.instance.playerChars)
+        {
+            Ability prepped = potentialPartner.GetPreppedAbility();
+            
+            // Don't combo with yourself!
+            if (prepped != null && potentialPartner != currentActor)
+            {
+                foreach (var synergy in masterSynergyList)
+                {
+                    // Look through every recipe defined in this specific Synergy Asset
+                    foreach (var recipe in synergy.synergyTagSets)
+                    {
+                        // Because both abilities have Lists of tags, we check if they satisfy the recipe
+                        if (CheckMatch(currentAbility, prepped, recipe))
+                        {
+                            partner = potentialPartner;
+                            return synergy;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    // Helper to check if two abilities satisfy a specific TagSet recipe
+    private bool CheckMatch(Ability a, Ability b, SynergyTagSet recipe)
+    {
+        bool aMatches1 = a.SynergyTags.Contains(recipe.tag1);
+        bool aMatches2 = a.SynergyTags.Contains(recipe.tag2);
+        bool bMatches1 = b.SynergyTags.Contains(recipe.tag1);
+        bool bMatches2 = b.SynergyTags.Contains(recipe.tag2);
+
+        // Case 1: Ability A has Tag1 and Ability B has Tag2
+        // Case 2: Ability A has Tag2 and Ability B has Tag1
+        return (aMatches1 && bMatches2) || (aMatches2 && bMatches1);
     }
 }

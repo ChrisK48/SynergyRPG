@@ -10,18 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 066e3bdd5fd6efb4a90825376c054e54, type: 3}
-  m_Name: New Two Person Synergy Ability
+  m_Name: Flamin Ka Konk
   m_EditorClassIdentifier: Assembly-CSharp::TwoMemberSynergyAbility
-  abilityName: 
-  description: 
-  mpCost: 0
-  hpCost: 0
-  uniqueResourceCost:
-    rid: -2
+  synergyName: Flamin Ka Konk
+  description: Deal 2 hits of fire damage to an enemy
   targetType: 0
-  abilityEffects: []
+  synergyTagSets:
+  - tag1: 19
+    tag2: 1
+  abilityEffects:
+  - rid: 9008616039178567758
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 9008616039178567758
+      type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        effectIsMissable: 0
+        effectHitChance: 0
+        numHits: 2
+        elementTypes: 00000000
+        atkType: 0
+        ignoreDef: 0

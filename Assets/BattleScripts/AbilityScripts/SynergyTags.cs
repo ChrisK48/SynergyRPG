@@ -1,0 +1,23 @@
+public enum SynergyTag
+{
+    None,
+    FireI,
+    FireII,
+    FireIII,
+    WaterI,
+    WaterII,
+    WaterIII,
+    EarthI,
+    EarthII,
+    EarthIII,
+    IceI,
+    IceII,
+    IceIII,
+    WindI,
+    WindII,
+    WindIII,
+    PoisonI,
+    PoisonII,
+    PoisonIII,
+    KaKonk,
+}

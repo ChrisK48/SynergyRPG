@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
-  m_Name: Fire
+  m_Name: ShieldBash
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  AbilityName: Fire I
-  Description: 
-  ScalingStat: 1
+  AbilityName: Ka konk
+  Description: Hit the opponent twice
+  ScalingStat: 0
   ScalingMultiplier: 1
-  MpCost: 5
+  MpCost: 10
   HpCost: 0
   UniqueResourceCost:
     rid: -2
   TargetType: 0
   AbilityEffects:
-  - rid: 9008616039178567749
-  SynergyTags: 01000000
+  - rid: 9008616039178567757
+  SynergyTags: 13000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 9008616039178567749
+    - rid: 9008616039178567757
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
         effectIsMissable: 0
         effectHitChance: 0
-        numHits: 1
-        elementTypes: 00000000
-        atkType: 1
+        numHits: 2
+        elementTypes: 
+        atkType: 0
         ignoreDef: 0

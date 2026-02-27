@@ -104,11 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e73115d82d08db48b11cd26d8ac4d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VoidCharBattle
-  charName: Eldric
-  maxHp: 500
-  maxMp: 100
-  Hp: 500
-  Mp: 100
+  CharName: Eldric
+  MaxHp: 200
+  MaxMp: 100
   Atk: 20
   Mag: 20
   Def: 5
@@ -117,12 +115,9 @@ MonoBehaviour:
   Acc: 0
   Eva: 0
   Luck: 15
-  isAlive: 1
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
-  - {fileID: 11400000, guid: 70b7692e3c3aa9940b112c05335541f2, type: 2}
-  - {fileID: 11400000, guid: bf5a8dfdaa839734b9e7648d807a14ca, type: 2}
   - {fileID: 11400000, guid: 23d23238c1dcaa046912d78d8c88f0f3, type: 2}
   activeBuffs: []
   uniqueUIPrefab: {fileID: 135941075479709308, guid: 2eec79b1c6888fe40bfae70fde8a48e4, type: 3}

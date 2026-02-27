@@ -12,25 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
   m_Name: Heal I
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  abilityName: Heal I
-  description: Basic healing ability. Scales with matk
-  mpCost: 0
-  hpCost: 0
-  uniqueResourceCost:
+  AbilityName: Heal I
+  Description: 
+  ScalingStat: 1
+  ScalingMultiplier: 0
+  MpCost: 0
+  HpCost: 0
+  UniqueResourceCost:
     rid: -2
-  targetType: 5
-  abilityEffects:
-  - rid: 9008615993518587976
+  TargetType: 5
+  AbilityEffects:
+  - rid: 9008616039178567750
+  SynergyTags: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 9008615993518587976
+    - rid: 9008616039178567750
       type: {class: HealAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        scalingStat: 1
-        scalingMultiplier: 1
         effectIsMissable: 0
         effectHitChance: 0
-        numHits: 1
+        numHits: 0

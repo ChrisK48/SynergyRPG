@@ -12,25 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
   m_Name: Ice
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  abilityName: Ice
-  description: Does basic ice damage to a single target
-  mpCost: 5
-  hpCost: 0
-  uniqueResourceCost:
+  AbilityName: Ice I
+  Description: 
+  ScalingStat: 0
+  ScalingMultiplier: 0
+  MpCost: 5
+  HpCost: 0
+  UniqueResourceCost:
     rid: -2
-  targetType: 0
-  abilityEffects:
-  - rid: 9008616018334974020
+  TargetType: 0
+  AbilityEffects:
+  - rid: 9008616039178567751
+  SynergyTags: 0a000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 9008616018334974020
+    - rid: 9008616039178567751
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        scalingStat: 1
-        scalingMultiplier: 1
         effectIsMissable: 0
         effectHitChance: 0
         numHits: 1

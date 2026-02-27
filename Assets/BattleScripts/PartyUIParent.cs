@@ -12,13 +12,13 @@ public class PartyUIParent : MonoBehaviour
 
     public virtual void SetUpUI(PlayerCharBattle pc)
     {
-        nameText.text = pc.charName;
-        hpSlider.maxValue = pc.maxHp;
-        hpSlider.value = pc.Hp;
-        hpText.text = $"{pc.Hp}/{pc.maxHp} HP";
-        mpSlider.maxValue = pc.maxMp;
-        mpSlider.value = pc.Mp;
-        mpText.text = $"{pc.Mp}/{pc.maxMp} MP";
+        nameText.text = pc.CharName;
+        hpSlider.maxValue = pc.MaxHp;
+        hpSlider.value = pc.getHp();
+        hpText.text = $"{pc.getHp()}/{pc.MaxHp} HP";
+        mpSlider.maxValue = pc.MaxMp;
+        mpSlider.value = pc.getMp();
+        mpText.text = $"{pc.getMp()}/{pc.MaxMp} MP";
 
         this.targetPC = pc;
         pc.OnStatsChanged += UpdateVisuals;
@@ -27,12 +27,12 @@ public class PartyUIParent : MonoBehaviour
     
     protected virtual void UpdateVisuals()
     {
-        nameText.text = targetPC.charName;
-        hpSlider.maxValue = targetPC.maxHp;
-        hpSlider.value = targetPC.Hp;
-        hpText.text = $"{targetPC.Hp}/{targetPC.maxHp} HP";
-        mpSlider.maxValue = targetPC.maxMp;
-        mpSlider.value = targetPC.Mp;
-        mpText.text = $"{targetPC.Mp}/{targetPC.maxMp} MP";
+        nameText.text = targetPC.CharName;
+        hpSlider.maxValue = targetPC.MaxHp;
+        hpSlider.value = targetPC.getHp();
+        hpText.text = $"{targetPC.getHp()}/{targetPC.MaxHp} HP";
+        mpSlider.maxValue = targetPC.MaxMp;
+        mpSlider.value = targetPC.getMp();
+        mpText.text = $"{targetPC.getMp()}/{targetPC.MaxMp} MP";
     }
 }

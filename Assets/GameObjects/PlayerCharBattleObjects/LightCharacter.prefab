@@ -104,11 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6097105fc810b2d4b83f664af40aa06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightCharBattle
-  charName: Mira
-  maxHp: 0
-  maxMp: 0
-  Hp: 0
-  Mp: 0
+  CharName: Mira
+  MaxHp: 0
+  MaxMp: 0
   Atk: 0
   Mag: 0
   Def: 0
@@ -117,7 +115,6 @@ MonoBehaviour:
   Acc: 0
   Eva: 0
   Luck: 0
-  isAlive: 1
   abilities: []
   activeBuffs: []
   uniqueUIPrefab: {fileID: 4003600137503552053, guid: b2e91756373579a48b298d7894f9e8ea, type: 3}

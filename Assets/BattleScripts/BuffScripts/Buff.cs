@@ -13,7 +13,7 @@ public class Buff : ScriptableObject
     public virtual void StartBuff(CharBattle target, ActiveBuff buffWrapper)
     {
         buffEffect.StartBuff(target, buffWrapper);
-        Debug.Log(target.charName + " has started " + buffName + " buff.");
+        Debug.Log(target.CharName + " has started " + buffName + " buff.");
     }
     public virtual void TickBuff(CharBattle target, ActiveBuff buffWrapper)
     {
@@ -22,7 +22,7 @@ public class Buff : ScriptableObject
     public virtual void EndBuff(CharBattle target, ActiveBuff buffWrapper)
     {
         buffEffect.EndBuff(target, buffWrapper);
-        Debug.Log(target.charName + "'s " + buffName + " buff has ended.");
+        Debug.Log(target.CharName + "'s " + buffName + " buff has ended.");
     }
 }
 
@@ -43,7 +43,7 @@ public class ActiveBuff
     {
         remainingDuration--;
         buff.TickBuff(target, this); 
-        Debug.Log(target.charName + "'s " + buff.buffName + " buff has " + remainingDuration + " turns remaining.");
+        Debug.Log(target.CharName + "'s " + buff.buffName + " buff has " + remainingDuration + " turns remaining.");
         
         if (remainingDuration <= 0)
         {

@@ -22,27 +22,27 @@ public class TargetSelectionManager : MonoBehaviour
         switch (targetType)
         {
             case TargetType.SingleEnemy:
-                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive()));
                 break;
             case TargetType.AllEnemies:
-                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive()));
                 break;
             case TargetType.SingleAlly:
-                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive()));
                 break;
             case TargetType.AllAllies:
-                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive()));
                 break;
             case TargetType.Self:
                 targets.AddRange(users);
                 break;
             case TargetType.AnyChar:
-                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
-                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive()));
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive()));
                 break;
             case TargetType.AllChars:
-                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.isAlive));
-                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.isAlive));
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive()));
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive()));
                 break;
         }
 
@@ -71,7 +71,7 @@ public class TargetSelectionManager : MonoBehaviour
 
     void OnTargetSelected(CharBattle[] users, ITargetableAction action, CharBattle target)
     {
-        Debug.Log("Target selected: " + target.charName);
+        Debug.Log("Target selected: " + target.CharName);
         List<CharBattle> targets = new List<CharBattle>();
 
         switch (action.Targets)
@@ -100,7 +100,7 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
         }
 
-        Debug.Log("Users: " + string.Join(", ", users.Select(u => u.charName)));
+        Debug.Log("Users: " + string.Join(", ", users.Select(u => u.CharName)));
         action.PerformAction(users, targets);
         ClearPopups();
         BattleUIManager.instance.commandMenuUIContainer.gameObject.SetActive(true);

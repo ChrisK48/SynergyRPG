@@ -3,25 +3,35 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Accessibility;
 
-public abstract class CharBattle : MonoBehaviour
+public abstract class CharBattle : MonoBehaviour, ITurnEntity
 {
     BattleUIManager battleUIManager;
-    public string charName;
-    public int maxHp, maxMp, Hp, Mp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
-    public bool isAlive = true;
+    public string CharName;
+    public string entityName => CharName;
+    public int MaxHp, MaxMp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
+    protected int hp, mp;
+    public int spd => Spd;
+    private bool isAlive = true;
     public List<Ability> abilities;
     public List<ActiveBuff> activeBuffs;
-    public bool isPreppingSynergy;
-    public TwoMemberSynergyAbility currentSynergy;
+    protected bool isPreppingSynergy = false;
+    protected bool inSynergyStance = false;
+    public bool entityIsPreppingSynergy => isPreppingSynergy;
+    protected Ability preppedAbility;
 
     void Awake()
     {
         battleUIManager = BattleUIManager.instance;
+        hp = MaxHp;
+        mp = MaxMp;
     }
 
+    public int getHp() => hp;
+    public int getMp() => mp;
+
     public virtual void Heal(int amt) {
-        Debug.Log(charName + " heals for " + amt + " HP.");
-        Hp = Mathf.Clamp(Hp + amt, 0, maxHp);
+        Debug.Log(CharName + " heals for " + amt + " HP.");
+        hp = Mathf.Clamp(hp + amt, 0, MaxHp);
     }
 
     public virtual void TakeDamage(int amt, AtkType atkType, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
@@ -37,26 +47,27 @@ public abstract class CharBattle : MonoBehaviour
         else
             damage = amt;
 
-        int finalDamage = Mathf.Min(damage, Hp);
-        Debug.Log(charName + " takes " + finalDamage + " damage.");
+        int finalDamage = Mathf.Min(damage, hp);
+        Debug.Log(CharName + " takes " + finalDamage + " damage.");
 
-        Hp = Mathf.Clamp(Hp - finalDamage, 0, maxHp);
-            if (Hp == 0)
+        hp = Mathf.Clamp(hp - finalDamage, 0, MaxHp);
+            if (hp == 0)
                 Die();
 
         onDamageDealt?.Invoke(finalDamage);
 
     }
 
+    public bool GetIfAlive() => isAlive;
+
     public virtual void Die()
     {
-        Debug.Log(charName + " has died.");
+        Debug.Log(CharName + " has died.");
         isAlive = false;
     }
 
     public void ReceiveBuff(Buff buff, int duration)
     {
-
         ActiveBuff existing = activeBuffs.Find(b => b.buff == buff);
         if (existing != null)
         {
@@ -86,9 +97,30 @@ public abstract class CharBattle : MonoBehaviour
         }
     }
 
-    public void ResetSynergy()
+    // Used on prep to store the prepped ability so that resource costs can be deducted on the next turn when the synergy is executed
+    public void StartPrep(Ability[] abilities)
+    {
+        isPreppingSynergy = true;
+        preppedAbility = abilities[0]; // This will need to be changed if we have abilities that can prep multiple synergies, but for now we only have one synergy prep ability so this is fine
+    }
+
+    public bool IsPreppingSynergy() => isPreppingSynergy;
+    public bool GetIfInSynergyStance() => inSynergyStance;
+    public Ability GetPreppedAbility() => preppedAbility;
+
+    public void StorePreppedAbility(Ability ability)
+    {
+        preppedAbility = ability;
+    }
+
+    public void EndPrep()
     {
         isPreppingSynergy = false;
-        currentSynergy = null;
+        preppedAbility = null;
+    }
+
+    public void EnterSynergyStance()
+    {
+        inSynergyStance = true;
     }
 }

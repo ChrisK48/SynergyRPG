@@ -15,8 +15,9 @@ MonoBehaviour:
   synergyName: FreezeFlame
   description: Hits a single target for frost and freeze damage
   targetType: 0
-  requiredAbility1: {fileID: 11400000, guid: 23d23238c1dcaa046912d78d8c88f0f3, type: 2}
-  requiredAbility2: {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
+  synergyTagSets:
+  - tag1: 1
+    tag2: 10
   abilityEffects:
   - rid: 9008616018334974019
   references:

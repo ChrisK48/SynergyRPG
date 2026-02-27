@@ -20,10 +20,9 @@ MonoBehaviour:
   uniqueResourceCost:
     rid: -2
   targetType: 0
-  isMissable: 0
-  hitChance: 0
   abilityEffects:
   - rid: 9008615993518587982
+  synergyTags: 10000000
   references:
     version: 2
     RefIds:
@@ -36,9 +35,9 @@ MonoBehaviour:
         scalingMultiplier: 1
         effectIsMissable: 1
         effectHitChance: 50
+        numHits: 2
         elementTypes: 
         atkType: 0
-        numHits: 2
         ignoreDef: 0
         buff: {fileID: 11400000, guid: e292f777103779e439e2ca4aabe31afa, type: 2}
         duration: 2

@@ -12,28 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
   m_Name: Defend
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  abilityName: Defend
-  description: The basic defend ability that occurs when the defend button is clicked
-  mpCost: 0
-  hpCost: 0
-  uniqueResourceCost:
+  AbilityName: Defend
+  Description: 
+  ScalingStat: 0
+  ScalingMultiplier: 0
+  MpCost: 0
+  HpCost: 0
+  UniqueResourceCost:
     rid: -2
-  targetType: 2
-  abilityEffects:
-  - rid: 9008615993518587975
+  TargetType: 2
+  AbilityEffects:
+  - rid: 9008616039178567748
+  SynergyTags: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 9008615993518587975
+    - rid: 9008616039178567748
       type: {class: BuffAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        scalingStat: 0
-        scalingMultiplier: 0
         effectIsMissable: 0
         effectHitChance: 0
-        numHits: 1
+        numHits: 0
         buffsToApply:
         - {fileID: 11400000, guid: bda9ee9b5f6103048af432bba614f174, type: 2}
         buffDuration: 1
