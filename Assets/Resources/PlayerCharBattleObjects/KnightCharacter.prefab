@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6519251819137544688}
   - component: {fileID: 6906181670227740107}
-  - component: {fileID: 7643124037856912594}
+  - component: {fileID: -1566451580324075284}
   m_Layer: 0
-  m_Name: VoidCharacter
+  m_Name: KnightCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.21348633, g: 0.064613745, b: 0.41509432, a: 1}
+  m_Color: {r: 0.41823888, g: 0.85714734, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &7643124037856912594
+--- !u!114 &-1566451580324075284
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,25 +101,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1111310288733244526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e73115d82d08db48b11cd26d8ac4d91, type: 3}
+  m_Script: {fileID: 11500000, guid: d394214671c5fcf409f127c91645df7a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VoidCharBattle
-  CharName: Eldric
-  MaxHp: 200
-  MaxMp: 100
-  Atk: 20
-  Mag: 20
-  Def: 5
+  m_EditorClassIdentifier: Assembly-CSharp::KnightCharBattle
+  CharName: Rain
+  MaxHp: 150
+  MaxMp: 25
+  Atk: 25
+  Mag: 10
+  Def: 10
   Mdef: 10
-  Spd: 10
+  Spd: 12
   Acc: 0
   Eva: 0
-  Luck: 15
+  Luck: 10
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
-  - {fileID: 11400000, guid: 23d23238c1dcaa046912d78d8c88f0f3, type: 2}
+  - {fileID: 11400000, guid: d2e92735597dbdf4a8edb51707bd9b0b, type: 2}
   activeBuffs: []
-  uniqueUIPrefab: {fileID: 135941075479709308, guid: 2eec79b1c6888fe40bfae70fde8a48e4, type: 3}
-  maxVoidPoints: 100
-  voidPoints: 0
+  uniqueUIPrefab: {fileID: 4003600137503552053, guid: b2e91756373579a48b298d7894f9e8ea, type: 3}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.Rendering;
 
 public class TurnManager
@@ -16,8 +17,8 @@ public class TurnManager
     {
         turnOrder = new List<ITurnEntity>();
         List<ITurnEntity> allChars = new List<ITurnEntity>();
-        allChars.AddRange(BattleManager.instance.playerChars);
-        allChars.AddRange(BattleManager.instance.npcChars);
+        allChars.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive()));
+        allChars.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive()));
         if (BattleManager.instance.GetSynergyStances() != null)
             allChars.AddRange(BattleManager.instance.GetSynergyStances());
 
@@ -59,12 +60,20 @@ public class TurnManager
         return currentTurn;
     }
 
+    public void RemoveFromTurnOrder(ITurnEntity entity)
+    {
+        turnOrder.Remove(entity);
+        if (currentTurn >= turnOrder.Count)
+        {
+            currentTurn = 0;
+        }
+        BattleUIManager.instance.UpdateTurnOrderUI(turnOrder, getCurrentChar(), currentTurn);
+    }
+
     public void InsertSynergy(ITurnEntity synergyEntity)
     {
         if (synergyEntity is SynergyStance stance)
         {
-            // 1. Remove the characters FIRST
-            // They are no longer individual actors, so they leave the list entirely.
             foreach (var user in stance.users)
             {
                 turnOrder.RemoveAll(entity => 
@@ -72,8 +81,11 @@ public class TurnManager
             }
         }
 
-        // 2. Insert the synergy stance at the current turn index NOW.
-        // Since the users are gone, this stance is guaranteed to be the next active turn.
+        if (currentTurn > turnOrder.Count)
+        {
+            currentTurn = turnOrder.Count;
+        }
+
         turnOrder.Insert(currentTurn, synergyEntity);
         BattleUIManager.instance.UpdateTurnOrderUI(turnOrder, getCurrentChar(), currentTurn);
     }

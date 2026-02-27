@@ -11,7 +11,6 @@ public class SynergyStance : ITurnEntity
     private int amalgamatedSpd;
     public int spd => amalgamatedSpd;
     private bool isPreppingSynergy = false;
-    private Ability[] preppedAbilities;
     public bool entityIsPreppingSynergy => isPreppingSynergy;
 
     public SynergyStance(CharBattle[] users)
@@ -37,18 +36,18 @@ public class SynergyStance : ITurnEntity
         }
     }
 
-    public bool isPrepingSynergy() => isPreppingSynergy;
-    public Ability[] getPreppedAbilities() => preppedAbilities;
+    public bool GetIfPreppingSynergy() => isPreppingSynergy;
 
     public void StartPrep(Ability[] abilities)
     {
+        users[0].StorePreppedAbility(abilities[0]);
+        users[1].StorePreppedAbility(abilities[1]);
+        Debug.Log($"Synergy Stance prep started with abilities: {users[0].CharName} using {abilities[0].Name} and {users[1].CharName} using {abilities[1].Name}");
         isPreppingSynergy = true;
-        preppedAbilities = abilities;
     }
 
     public void EndPrep()
     {
         isPreppingSynergy = false;
-        preppedAbilities = null;
     }
 }

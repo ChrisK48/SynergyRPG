@@ -18,7 +18,6 @@ public class TargetSelectionManager : MonoBehaviour
     {
         List<CharBattle> targets = new List<CharBattle>();
         TargetType targetType = action.Targets;
-
         switch (targetType)
         {
             case TargetType.SingleEnemy:
@@ -43,6 +42,12 @@ public class TargetSelectionManager : MonoBehaviour
             case TargetType.AllChars:
                 targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive()));
                 targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive()));
+                break;
+            case TargetType.DeadAlly:
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => !pc.GetIfAlive()));
+                break;
+            case TargetType.DeadAllies:
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => !pc.GetIfAlive()));
                 break;
         }
 
@@ -91,12 +96,21 @@ public class TargetSelectionManager : MonoBehaviour
             case TargetType.Self:
                 targets.AddRange(users);
                 break;
-            case TargetType.AnyChar:
-                targets.Add(target);
+            case TargetType.AnyChar: // Not sure if this is the best way to do this. But it works for now with synergy item uses.
+                if (users.Contains(target) && action is Item)
+                    targets.AddRange(users);
+                else
+                    targets.Add(target);
                 break;
             case TargetType.AllChars:
                 targets.AddRange(BattleManager.instance.playerChars);
                 targets.AddRange(BattleManager.instance.npcChars);
+                break;
+            case TargetType.DeadAlly:
+                targets.Add(target);
+                break;
+            case TargetType.DeadAllies:
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => !pc.GetIfAlive()));
                 break;
         }
 

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cedc66cc2119ce4b8669d2139e12f3d, type: 3}
+  m_Name: SUPERKAKONK
+  m_EditorClassIdentifier: Assembly-CSharp::TriSynergyAbility
+  synergyName: Super Ka Konk
+  description: its bigger its better
+  synergyPowerMultiplier: 3
+  targetType: 1
+  abilityEffects:
+  - rid: 9008616056108613700
+  SynergyTagTrios:
+  - tag1: 1
+    tag2: 19
+    tag3: 4
+  references:
+    version: 2
+    RefIds:
+    - rid: 9008616056108613700
+      type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        effectIsMissable: 1
+        effectHitChance: 100
+        numHits: 2
+        elementTypes: 
+        atkType: 0
+        ignoreDef: 0

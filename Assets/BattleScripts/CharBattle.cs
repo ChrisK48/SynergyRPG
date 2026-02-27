@@ -11,7 +11,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public int MaxHp, MaxMp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
     protected int hp, mp;
     public int spd => Spd;
-    private bool isAlive = true;
+    protected bool isAlive = true;
     public List<Ability> abilities;
     public List<ActiveBuff> activeBuffs;
     protected bool isPreppingSynergy = false;
@@ -30,6 +30,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public int getMp() => mp;
 
     public virtual void Heal(int amt) {
+        if (hp == 0) return;
         Debug.Log(CharName + " heals for " + amt + " HP.");
         hp = Mathf.Clamp(hp + amt, 0, MaxHp);
     }
@@ -64,6 +65,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     {
         Debug.Log(CharName + " has died.");
         isAlive = false;
+        BattleManager.instance.GetTurnManager().RemoveFromTurnOrder(this);
     }
 
     public void ReceiveBuff(Buff buff, int duration)
@@ -101,7 +103,8 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public void StartPrep(Ability[] abilities)
     {
         isPreppingSynergy = true;
-        preppedAbility = abilities[0]; // This will need to be changed if we have abilities that can prep multiple synergies, but for now we only have one synergy prep ability so this is fine
+        preppedAbility = abilities[0];
+        Debug.Log(CharName + " has started prepping " + preppedAbility.Name);
     }
 
     public bool IsPreppingSynergy() => isPreppingSynergy;

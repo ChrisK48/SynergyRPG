@@ -85,7 +85,7 @@ public class BattleManager : MonoBehaviour
 
     private void CheckIfNotFollowedUp(ITurnEntity currentChar)
     {
-        if (currentChar.entityIsPreppingSynergy && currentChar is PlayerCharBattle player)
+        if (currentChar.entityIsPreppingSynergy && currentChar is PlayerCharBattle player || (currentChar is SynergyStance stance && stance.GetIfPreppingSynergy()))
         {
             Debug.Log(currentChar.entityName + " did not follow up on their synergy prep! Synergy failed.");
             FlowManager.instance.ConsumeFlow(20); // Arbitrary flow penalty for not following up on synergy

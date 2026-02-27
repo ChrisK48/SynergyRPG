@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6519251819137544688}
   - component: {fileID: 6906181670227740107}
-  - component: {fileID: -6576123505942400488}
+  - component: {fileID: 7643124037856912594}
   m_Layer: 0
-  m_Name: LightCharacter
+  m_Name: VoidCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.45597476, g: 1, b: 0.48304784, a: 1}
+  m_Color: {r: 0.21348633, g: 0.064613745, b: 0.41509432, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &-6576123505942400488
+--- !u!114 &7643124037856912594
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,20 +101,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1111310288733244526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6097105fc810b2d4b83f664af40aa06e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e73115d82d08db48b11cd26d8ac4d91, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LightCharBattle
-  CharName: Mira
-  MaxHp: 0
-  MaxMp: 0
-  Atk: 0
-  Mag: 0
-  Def: 0
-  Mdef: 0
-  Spd: 0
+  m_EditorClassIdentifier: Assembly-CSharp::VoidCharBattle
+  CharName: Eldric
+  MaxHp: 200
+  MaxMp: 100
+  Atk: 20
+  Mag: 20
+  Def: 5
+  Mdef: 10
+  Spd: 10
   Acc: 0
   Eva: 0
-  Luck: 0
-  abilities: []
+  Luck: 15
+  abilities:
+  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
+  - {fileID: 11400000, guid: 23d23238c1dcaa046912d78d8c88f0f3, type: 2}
+  - {fileID: 11400000, guid: 6fe1cb8ca1fd2c042be145f18b8f3bdc, type: 2}
   activeBuffs: []
-  uniqueUIPrefab: {fileID: 4003600137503552053, guid: b2e91756373579a48b298d7894f9e8ea, type: 3}
+  uniqueUIPrefab: {fileID: 135941075479709308, guid: 2eec79b1c6888fe40bfae70fde8a48e4, type: 3}
+  maxVoidPoints: 100
+  voidPoints: 0

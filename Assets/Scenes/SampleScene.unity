@@ -1097,7 +1097,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1354882064
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1580,6 +1580,8 @@ MonoBehaviour:
   startingInventory:
   - item: {fileID: 11400000, guid: c3517d11300e1d049acd26d2ea709c91, type: 2}
     count: 3
+  - item: {fileID: 11400000, guid: fef8da9f878199947886f7233f88476b, type: 2}
+    count: 1
 --- !u!114 &1745198397
 MonoBehaviour:
   m_ObjectHideFlags: 0

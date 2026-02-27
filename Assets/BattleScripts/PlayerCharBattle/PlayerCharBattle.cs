@@ -72,4 +72,17 @@ public abstract class PlayerCharBattle : CharBattle
     {
         base.Die();
     }
+
+    public void Revive()
+    {
+        if (hp > 0)
+        {
+            Debug.Log(CharName + " is not dead and cannot be revived.");
+            return;
+        }
+        hp = 1;
+        isAlive = true;
+        Debug.Log(CharName + " has been revived!");
+        TriggerStatsUpdate();
+    }
 }
