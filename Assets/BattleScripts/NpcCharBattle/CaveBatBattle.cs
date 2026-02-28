@@ -18,11 +18,11 @@ public class CaveBatBattle : NpcBattle
         }
     }  
 
-    public override CharBattle NpcTargetingLogic(Ability ability)
+    public override ITurnEntity NpcTargetingLogic(Ability ability)
     {
-        List<PlayerCharBattle> alivePlayers = BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive()).ToList();
+        List<ITurnEntity> alivePlayers = GetPotentialTargets();
         int randomIndex = Random.Range(0, alivePlayers.Count());
-        CharBattle target = alivePlayers[randomIndex];
+        ITurnEntity target = alivePlayers[randomIndex];
         return target;
     }
 }

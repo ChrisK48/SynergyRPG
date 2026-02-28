@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public abstract class NpcBattle : CharBattle
 {
@@ -10,25 +11,30 @@ public abstract class NpcBattle : CharBattle
 
     public virtual void PerformAITurn()
     {
-        List<CharBattle> targets = new List<CharBattle>();
+        List<ITurnEntity> targets = new List<ITurnEntity>();
         Ability selectedAbility = NpcAbilitySelectionLogic();
         targets.Add(NpcTargetingLogic(selectedAbility));
-       // PerformAbility(selectedAbility, targets);
+        PerformAbility(selectedAbility, targets);
         BattleManager.instance.NextTurn();   
     }
 
-    public abstract CharBattle NpcTargetingLogic(Ability ability);
+    public abstract ITurnEntity NpcTargetingLogic(Ability ability);
 
     public abstract Ability NpcAbilitySelectionLogic();
 
 
 
-    public void PerformAbility(Ability ability, List<CharBattle> targets)
+    public void PerformAbility(Ability ability, List<ITurnEntity> targets)
     {
-        foreach (CharBattle target in targets)
+        foreach (ITurnEntity target in targets)
         {
             ability.PerformAction(new CharBattle[] {this}, new List<ITurnEntity> {target});
         }
+    }
+
+    protected List<ITurnEntity> GetPotentialTargets()
+    {
+        return BattleManager.instance.playerEntities.Where(pc => (pc is PlayerCharBattle player && player.GetIfAlive()) || (pc is SynergyStance synergyStance)).ToList();
     }
 
     public override void Die()

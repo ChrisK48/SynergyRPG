@@ -8,6 +8,8 @@ public class BattleManager : MonoBehaviour
     public static BattleManager instance;
     public List<PlayerCharBattle> playerChars;
     public List<NpcBattle> npcChars;
+    public List<ITurnEntity> playerEntities = new List<ITurnEntity>();
+    public List<ITurnEntity> npcEntities = new List<ITurnEntity>();
     private List<SynergyStance> synergyStances = new List<SynergyStance>();
     public List<Transform> playerSpawnPoints;
 
@@ -31,6 +33,7 @@ public class BattleManager : MonoBehaviour
             Transform spawnPoint = playerSpawnPoints[i];
             PlayerCharBattle clone = Instantiate(playerChars[i], spawnPoint.position, spawnPoint.rotation);
             spawnedPlayers.Add(clone);
+            playerEntities.Add(clone);
             Debug.Log("Spawned player character: " + clone.CharName + " with HP: " + clone.getHp() + " and MP: " + clone.getMp());
         }
 
@@ -42,6 +45,7 @@ public class BattleManager : MonoBehaviour
             Transform spawnPoint = npcSpawnPoints[i];
             NpcBattle ncpClone = Instantiate(npcChars[i], spawnPoint.position, spawnPoint.rotation);
             spawnedNpcs.Add(ncpClone);
+            npcEntities.Add(ncpClone);
         }
 
         playerChars = spawnedPlayers;
@@ -115,6 +119,8 @@ public class BattleManager : MonoBehaviour
 
     public void InsertSynergyStance(SynergyStance stance)
     {
+        playerEntities.Add(stance);
+        playerEntities.RemoveAll(entity => stance.users.Contains(entity));
         synergyStances.Add(stance);
         turnManager.InsertSynergy(stance);
     }
