@@ -6,8 +6,9 @@ public class BuffAbilityEffect : AbilityEffect
 {
     public List<Buff> buffsToApply;
     public int buffDuration;
+    public bool SharedInStance;
 
-    public override void ApplyEffect(CharBattle[] users, CharBattle target, int calculatedPower)
+    public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         foreach (Buff buffToApply in buffsToApply)
             target.ReceiveBuff(buffToApply, buffDuration);   

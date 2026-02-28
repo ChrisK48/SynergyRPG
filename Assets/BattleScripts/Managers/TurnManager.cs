@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Rendering;
-
+using UnityEngine;
 public class TurnManager
 {
     BattleManager battleManager;
@@ -76,8 +75,18 @@ public class TurnManager
         {
             foreach (var user in stance.users)
             {
-                turnOrder.RemoveAll(entity => 
+                int index = turnOrder.FindIndex(entity =>
                     entity is CharBattle character && (object)character == (object)user);
+
+                if (index >= 0)
+                {
+                    if (index < currentTurn)
+                    {
+                        currentTurn--; // Adjust index shift
+                    }
+
+                    turnOrder.RemoveAt(index);
+                }
             }
         }
 
@@ -87,6 +96,7 @@ public class TurnManager
         }
 
         turnOrder.Insert(currentTurn, synergyEntity);
+
         BattleUIManager.instance.UpdateTurnOrderUI(turnOrder, getCurrentChar(), currentTurn);
     }
 }

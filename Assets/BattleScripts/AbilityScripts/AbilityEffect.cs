@@ -8,7 +8,7 @@ public abstract class AbilityEffect
     public int effectHitChance;
     public int numHits;
 
-    public void ExecuteEffect(CharBattle[] users, CharBattle target, int calculatedPower)
+    public void ExecuteEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         for (int i = 0; i < numHits; i++)
         {
@@ -22,9 +22,9 @@ public abstract class AbilityEffect
             ApplyEffect(users, target, calculatedPower);
         }
     }
-    public abstract void ApplyEffect(CharBattle[] users, CharBattle target, int calculatedPower);
+    public abstract void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower);
 
-    protected bool CheckIfHit(CharBattle[] users, CharBattle target)
+    protected bool CheckIfHit(CharBattle[] users, ITurnEntity target)
     {
 
         // temp hit calculation. Need to account for target's evasion later.
@@ -34,7 +34,7 @@ public abstract class AbilityEffect
         }
 
         string userName = users.Length > 1 ? "The party" : users[0].CharName;
-        Debug.Log($"{userName} missed {target.CharName}!");
+        Debug.Log($"{userName} missed {target.EntityName}!");
         return false;
     }
 }

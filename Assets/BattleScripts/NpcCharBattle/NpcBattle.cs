@@ -13,7 +13,7 @@ public abstract class NpcBattle : CharBattle
         List<CharBattle> targets = new List<CharBattle>();
         Ability selectedAbility = NpcAbilitySelectionLogic();
         targets.Add(NpcTargetingLogic(selectedAbility));
-        PerformAbility(selectedAbility, targets);
+       // PerformAbility(selectedAbility, targets);
         BattleManager.instance.NextTurn();   
     }
 
@@ -27,7 +27,7 @@ public abstract class NpcBattle : CharBattle
     {
         foreach (CharBattle target in targets)
         {
-            ability.PerformAction(new CharBattle[] {this}, new List<CharBattle> {target});
+            ability.PerformAction(new CharBattle[] {this}, new List<ITurnEntity> {target});
         }
     }
 

@@ -20,7 +20,7 @@ public abstract class PlayerCharBattle : CharBattle
         
     }
 
-    public bool CanPerformAbility(Ability ability, List<CharBattle> targets)
+    public bool CanPerformAbility(Ability ability)
     {
         bool hasUniqueCost = ability.UniqueResourceCost != null;
 

@@ -8,7 +8,7 @@ public class AtkAbilityEffect : AbilityEffect
     public AtkType atkType;
     public bool ignoreDef;
 
-    public override void ApplyEffect(CharBattle[] users, CharBattle target, int calculatedPower)
+    public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         int damage = calculateDamage(users, target, calculatedPower);
         target.TakeDamage(damage, atkType, ignoreDef);   
@@ -35,7 +35,7 @@ public class AtkAbilityEffect : AbilityEffect
         return damage;
     }
 
-    public int calculateDamage(CharBattle[] users, CharBattle target, int calculatedPower)
+    public int calculateDamage(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         float damage = calculatedPower;
 

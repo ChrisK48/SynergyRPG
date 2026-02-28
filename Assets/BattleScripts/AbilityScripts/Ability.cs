@@ -22,9 +22,8 @@ public class Ability : ScriptableObject, ITargetableAction
     [SerializeReference]
     public List<AbilityEffect> AbilityEffects = new List<AbilityEffect>();
     public List<SynergyTag> SynergyTags = new List<SynergyTag>();
-    private int calculatedPower;
 
-    public virtual void ExecuteAbility(CharBattle user, CharBattle target)
+    public virtual void ExecuteAbility(CharBattle user, ITurnEntity target)
     {
         int calculatedPower = CalculatePower(user);
         foreach (AbilityEffect effect in AbilityEffects)
@@ -33,14 +32,14 @@ public class Ability : ScriptableObject, ITargetableAction
         }
     }
 
-    public void PerformAction(CharBattle[] user, List<CharBattle> targets)
+    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
     {
         if (user[0] is PlayerCharBattle player)
         {
-            if (!player.CanPerformAbility(this, targets)) return;
+            if (!player.CanPerformAbility(this)) return;
         }
         
-        foreach (CharBattle target in targets)
+        foreach (ITurnEntity target in targets)
         {
             ExecuteAbility(user[0], target);
         }
@@ -48,6 +47,7 @@ public class Ability : ScriptableObject, ITargetableAction
 
     private int CalculatePower(CharBattle user)
     {
+        int calculatedPower = 0;
         if (ScalingStat == ScalingStat.Atk)
             calculatedPower = ScalingMultiplier * user.Atk;
         else if (ScalingStat == ScalingStat.Mag)

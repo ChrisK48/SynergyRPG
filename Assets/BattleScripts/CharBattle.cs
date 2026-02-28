@@ -7,7 +7,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
 {
     BattleUIManager battleUIManager;
     public string CharName;
-    public string entityName => CharName;
+    public string EntityName => CharName;
     public int MaxHp, MaxMp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
     protected int hp, mp;
     public int spd => Spd;

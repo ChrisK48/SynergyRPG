@@ -11,13 +11,11 @@ public class SynergyDefend : ITargetableAction
         this.users = users;
     }
 
-    public void PerformAction(CharBattle[] user, List<CharBattle> targets)
+    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
     {
         foreach (var member in users)
         {
-            Debug.Log($"{member.CharName} defense before: {member.Def}");
             member.abilities[1].ExecuteAbility(member, member);
-            Debug.Log($"{member.CharName} defense after: {member.Def}");
         }
     }
 }

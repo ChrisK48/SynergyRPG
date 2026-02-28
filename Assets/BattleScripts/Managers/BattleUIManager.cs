@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -54,7 +52,7 @@ public class BattleUIManager : MonoBehaviour
         for(int i = currentTurnIndex; i < turnOrder.Count; i++)
         {
             GameObject turnOrderElemOther = Instantiate(turnOrderIconPrefab, TurnOrderUIContainer);
-            turnOrderElemOther.GetComponentInChildren<TextMeshProUGUI>().text = turnOrder[i].entityName;
+            turnOrderElemOther.GetComponentInChildren<TextMeshProUGUI>().text = turnOrder[i].EntityName;
         }
     }
 
@@ -206,6 +204,8 @@ public class BattleUIManager : MonoBehaviour
                 {
                     Debug.Log($"{pc.CharName} is synergizing with {potentialPartner.CharName}!");
                     SynergyStanceManager.instance.CreateSynergyStance(new CharBattle[] { pc, potentialPartner });
+                    potentialPartner.transform.position = pc.transform.position + new Vector3(-1, 0, 0);
+                    pc.transform.position = pc.transform.position + new Vector3(0.5f, 0, 0);
                 });
             }
         });

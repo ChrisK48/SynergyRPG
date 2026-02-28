@@ -5,7 +5,7 @@ public class DrainAtkAbilityEffect : AtkAbilityEffect
 {
     public float drainPercentage;
 
-    public override void ApplyEffect(CharBattle[] users, CharBattle target, int calculatedPower)
+    public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         int power = calculateDamage(users, target, calculatedPower);        
         target.TakeDamage(power, atkType, ignoreDef, (finalAmount) => {

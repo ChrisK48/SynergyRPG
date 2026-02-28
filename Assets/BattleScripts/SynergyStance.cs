@@ -7,7 +7,7 @@ public class SynergyStance : ITurnEntity
 {
     public CharBattle[] users;
     private string synergyName;
-    public string entityName => synergyName;
+    public string EntityName => synergyName;
     private int amalgamatedSpd;
     public int spd => amalgamatedSpd;
     private bool isPreppingSynergy = false;
@@ -18,6 +18,14 @@ public class SynergyStance : ITurnEntity
         this.users = users;
         synergyName = string.Join(" & ", users.Select(u => u.CharName)) + " Synergy Stance";
         amalgamatedSpd = (int)users.Average(u => u.Spd);
+    }
+
+    public void ReceiveBuff(Buff buff, int duration)
+    {
+        foreach (var user in users)
+        {
+            user.ReceiveBuff(buff, duration);
+        }
     }
 
     public void ProcessTurnBuffs()
@@ -33,6 +41,14 @@ public class SynergyStance : ITurnEntity
         foreach (var user in users)
         {
             user.TakeDamage(amt, atkType, ignoreDef, onDamageDealt);
+        }
+    }
+
+    public void Heal(int amt)
+    {
+        foreach (var user in users)
+        {
+            user.Heal(amt);
         }
     }
 

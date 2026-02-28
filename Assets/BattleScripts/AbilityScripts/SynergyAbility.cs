@@ -13,7 +13,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
     [SerializeReference]
     public List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
 
-    public void PerformAction(CharBattle[] users, List<CharBattle> targets)
+    public void PerformAction(CharBattle[] users, List<ITurnEntity> targets)
     {
         foreach (CharBattle user in users)
         {

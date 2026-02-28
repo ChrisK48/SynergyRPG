@@ -12,7 +12,7 @@ public class SynergyAttack : ITargetableAction
         this.users = users;
     }
 
-    public void PerformAction(CharBattle[] user, List<CharBattle> targets)
+    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
     {
         foreach (var member in users)
         {

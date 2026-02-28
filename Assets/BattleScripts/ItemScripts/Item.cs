@@ -17,19 +17,29 @@ public class Item : ScriptableObject, ITargetableAction
 
     public void UseItem(CharBattle user, CharBattle target)
     {
-        Debug.Log(user.CharName + " uses " + Name + "!");
         foreach (ItemEffect effect in itemEffects)
         {
             effect.Apply(user, target);
         }
     }
 
-    public void PerformAction(CharBattle[] user, List<CharBattle> targets)
+    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
     {
         InventoryManager.instance.RemoveItem(this);
-        foreach (CharBattle target in targets)
+        foreach (ITurnEntity target in targets)
         {
-            UseItem(user[0], target);
+            if (target is CharBattle charTarget)
+            {
+                UseItem(user[0], charTarget);
+            }
+
+            if (target is SynergyStance synergyStance)
+            {
+                foreach (var stanceUser in synergyStance.users)
+                {
+                    UseItem(user[0], stanceUser);
+                }
+            }
         }
     }
 }
