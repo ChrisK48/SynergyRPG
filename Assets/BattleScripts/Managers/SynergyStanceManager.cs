@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class SynergyStanceManager : MonoBehaviour
 {
@@ -15,12 +16,26 @@ public class SynergyStanceManager : MonoBehaviour
 
     public void CreateSynergyStance(CharBattle[] users)
     {
+        SynergyStance newStance = new SynergyStance(users);
         foreach (CharBattle user in users)
         {
-            user.EnterSynergyStance();
+            user.EnterSynergyStance(newStance);
         }
-        BattleManager.instance.InsertSynergyStance(new SynergyStance(users));
+        BattleManager.instance.InsertSynergyStance(newStance);
         BattleManager.instance.NextTurn();
+    }
+
+    public void BreakSynergyStance(SynergyStance stance)
+    {
+        foreach (CharBattle user in stance.users)
+        {
+            user.ExitSynergyStance();
+        }
+        BattleManager.instance.playerEntities.AddRange(stance.users);
+        BattleManager.instance.playerEntities.Remove(stance);
+        BattleManager.instance.GetSynergyStances().Remove(stance);
+        BattleUIManager.instance.UpdateTurnOrderUI(BattleManager.instance.GetTurnManager().GetTurnOrder(), BattleManager.instance.GetTurnManager().getCurrentChar(), BattleManager.instance.GetTurnManager().GetCurrentTurnIndex());
+        if (stance.users[0] is PlayerCharBattle)FlowManager.instance.LoseFlow(30); // For now lose 30 flow on synergy break. Will probably adjust later.
     }
 
     //TEMP FOR NOW PROBABLY NEEDS TO BE REWORKED LATER

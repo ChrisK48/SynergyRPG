@@ -22,4 +22,11 @@ public class FlowManager : MonoBehaviour
         Debug.Log("Consumed " + amount + " SP. Current SP: " + currentFlow);
         OnFlowChanged?.Invoke(currentFlow, maxFlow);
     }
+
+    public void LoseFlow(float amount)
+    {
+        currentFlow = Mathf.Clamp(currentFlow - amount, 0, maxFlow);
+        Debug.Log("Lost " + amount + " SP. Current SP: " + currentFlow);
+        OnFlowChanged?.Invoke(currentFlow, maxFlow);
+    }
 }

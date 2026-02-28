@@ -12,19 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
   m_Name: ArcaneBoost
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  AbilityName: 
+  AbilityName: Arcane Boost
   Description: 
   ScalingStat: 0
   ScalingMultiplier: 0
-  MpCost: 0
+  MpCost: 10
   HpCost: 0
   UniqueResourceCost:
     rid: -2
-  TargetType: 0
-  AbilityEffects: []
+  TargetType: 3
+  AbilityEffects:
+  - rid: 9008616056108613706
   SynergyTags: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 9008616056108613706
+      type: {class: BuffAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        effectIsMissable: 0
+        effectHitChance: 0
+        numHits: 1
+        buffsToApply:
+        - {fileID: 11400000, guid: 787958d02702f864388986ef8b546964, type: 2}
+        buffDuration: 3
+        SharedInStance: 0

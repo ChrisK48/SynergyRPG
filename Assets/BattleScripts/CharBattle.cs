@@ -16,6 +16,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public List<ActiveBuff> activeBuffs;
     protected bool isPreppingSynergy = false;
     protected bool inSynergyStance = false;
+    protected SynergyStance currentSynergyStance;
     public bool entityIsPreppingSynergy => isPreppingSynergy;
     protected Ability preppedAbility;
 
@@ -65,6 +66,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     {
         Debug.Log(CharName + " has died.");
         isAlive = false;
+        if (inSynergyStance) SynergyStanceManager.instance.BreakSynergyStance(currentSynergyStance);
         BattleManager.instance.GetTurnManager().RemoveFromTurnOrder(this);
     }
 
@@ -122,8 +124,15 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         preppedAbility = null;
     }
 
-    public void EnterSynergyStance()
+    public void EnterSynergyStance(SynergyStance stance)
     {
         inSynergyStance = true;
+        currentSynergyStance = stance;
+    }
+
+    public void ExitSynergyStance()
+    {
+        inSynergyStance = false;
+        currentSynergyStance = null;
     }
 }

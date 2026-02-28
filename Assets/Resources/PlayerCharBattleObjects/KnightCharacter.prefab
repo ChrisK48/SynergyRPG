@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnightCharBattle
   CharName: Rain
-  MaxHp: 150
+  MaxHp: 1
   MaxMp: 25
   Atk: 25
   Mag: 10
