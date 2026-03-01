@@ -10,7 +10,6 @@ public class BattleManager : MonoBehaviour
     public List<NpcBattle> npcChars;
     public List<ITurnEntity> playerEntities = new List<ITurnEntity>();
     public List<ITurnEntity> npcEntities = new List<ITurnEntity>();
-    private List<SynergyStance> synergyStances = new List<SynergyStance>();
     public List<Transform> playerSpawnPoints;
 
     public List<Transform> npcSpawnPoints;
@@ -57,7 +56,6 @@ public class BattleManager : MonoBehaviour
 
     public void NextTurn()
     {
-        BattleUIManager.instance.ClearCommandMenu();
         ITurnEntity currentEntity = turnManager.getCurrentChar();
         if (currentEntity is CharBattle currentChar)
         {
@@ -121,12 +119,11 @@ public class BattleManager : MonoBehaviour
     {
         playerEntities.Add(stance);
         playerEntities.RemoveAll(entity => stance.users.Contains(entity));
-        synergyStances.Add(stance);
         turnManager.InsertSynergy(stance);
     }
 
     public List<SynergyStance> GetSynergyStances()
     {
-        return synergyStances;
+        return playerEntities.OfType<SynergyStance>().ToList();
     }
 }

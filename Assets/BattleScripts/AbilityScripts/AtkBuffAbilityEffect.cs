@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class AtkBuffAbilityEffect : AtkAbilityEffect
 {
-    public Buff buff;
+    public List<Buff> buffsToApply;
     public int duration;
+    public bool buffIsMissable;
     public int buffHitChance;
+    public bool AppliedToUser;
 
     public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
@@ -16,11 +19,23 @@ public class AtkBuffAbilityEffect : AtkAbilityEffect
 
     public void OnHit(CharBattle[] users, ITurnEntity target)
     {
-        if (Random.value <= (buffHitChance / 100f))
+        if (!buffIsMissable || Random.value <= (buffHitChance / 100f))
         {
-            target.ReceiveBuff(buff, duration);
-            string userName = users.Length > 1 ? "The party" : users[0].CharName;
-            Debug.Log($"{userName} gave {target.EntityName} the {buff.buffName} buff for {duration} turns!");
+            if (AppliedToUser)
+            {
+                foreach (CharBattle user in users)
+                {
+                    foreach (Buff buffToApply in buffsToApply)
+                    {
+                        user.ReceiveBuff(buffToApply, duration);
+                    }
+                }
+                return;
+            }
+            foreach (Buff buff in buffsToApply)
+            {
+                target.ReceiveBuff(buff, duration);
+            }
         }
     }
 }

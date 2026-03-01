@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066e3bdd5fd6efb4a90825376c054e54, type: 3}
+  m_Name: IceFlow
+  m_EditorClassIdentifier: Assembly-CSharp::DualSynergyAbility
+  synergyName: Ice Flow
+  description: Hits the target for ice damage and applies slow
+  synergyPowerMultiplier: 1.5
+  targetType: 0
+  abilityEffects:
+  - rid: 1609082513517445190
+  synergyTagSets:
+  - tag1: 10
+    tag2: 4
+  references:
+    version: 2
+    RefIds:
+    - rid: 1609082513517445190
+      type: {class: AtkBuffAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        effectIsMissable: 0
+        effectHitChance: 0
+        numHits: 1
+        elementTypes: 01000000
+        atkType: 1
+        ignoreDef: 0
+        buffsToApply:
+        - {fileID: 11400000, guid: c2900fb088e3c3e49b9051bdc00de024, type: 2}
+        duration: 3
+        buffIsMissable: 0
+        buffHitChance: 100
+        AppliedToUser: 0

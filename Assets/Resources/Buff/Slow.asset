@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0f8f3b7b813bf4d84731f8c0d83e2a, type: 3}
+  m_Name: Slow
+  m_EditorClassIdentifier: Assembly-CSharp::Buff
+  buffName: Slow
+  description: The target is slowed 20%
+  buffEffect:
+    rid: 1609082513517445188
+  references:
+    version: 2
+    RefIds:
+    - rid: 1609082513517445188
+      type: {class: StatBuff, ns: , asm: Assembly-CSharp}
+      data:
+        AtkPercentChange: 0
+        MatkPercentChange: 0
+        DefPercentChange: 0
+        MdefPercentChange: 0
+        SpdPercentChange: 20
+        LuckPercentChange: 0
+        AccPercentChange: 0
+        EvaPercentChange: 0
