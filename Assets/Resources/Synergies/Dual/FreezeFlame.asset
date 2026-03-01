@@ -16,20 +16,21 @@ MonoBehaviour:
   description: Hits a single target for frost and freeze damage
   synergyPowerMultiplier: 1.5
   targetType: 0
+  abilityEffects:
+  - rid: 9008616018334974019
   synergyTagSets:
   - tag1: 1
     tag2: 10
-  abilityEffects:
-  - rid: 9008616018334974019
   references:
     version: 2
     RefIds:
     - rid: 9008616018334974019
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        effectIsMissable: 0
-        effectHitChance: 0
-        numHits: 1
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 2
         elementTypes: 0000000001000000
         atkType: 1
         ignoreDef: 0

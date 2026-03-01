@@ -16,20 +16,21 @@ MonoBehaviour:
   description: Deal 2 hits of fire damage to an enemy
   synergyPowerMultiplier: 1.5
   targetType: 0
+  abilityEffects:
+  - rid: 9008616039178567758
   synergyTagSets:
   - tag1: 19
     tag2: 1
-  abilityEffects:
-  - rid: 9008616039178567758
   references:
     version: 2
     RefIds:
     - rid: 9008616039178567758
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        effectIsMissable: 1
-        effectHitChance: 100
-        numHits: 2
+        EffectIsMissable: 1
+        EffectHitChance: 100
+        NumHits: 2
+        ShieldsToRemove: 2
         elementTypes: 00000000
         atkType: 0
         ignoreDef: 0

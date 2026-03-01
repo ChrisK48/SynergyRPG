@@ -8,7 +8,7 @@ public class DrainAtkAbilityEffect : AtkAbilityEffect
     public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         int power = calculateDamage(users, target, calculatedPower);        
-        target.TakeDamage(power, atkType, ignoreDef, (finalAmount) => {
+        target.TakeDamage(power, atkType, elementTypes, ShieldsToRemove, ignoreDef, (finalAmount) => {
             int heal = Mathf.RoundToInt((finalAmount * (drainPercentage / 100f)) / users.Length);
             foreach (CharBattle u in users)
             {

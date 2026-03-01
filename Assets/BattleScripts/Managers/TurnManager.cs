@@ -69,6 +69,11 @@ public class TurnManager
         BattleUIManager.instance.UpdateTurnOrderUI(turnOrder, getCurrentChar(), currentTurn);
     }
 
+    public void OnNpcShieldBroken(NpcBattle npc)
+    {
+        RemoveFromTurnOrder(npc);
+    }
+
     public void InsertSynergy(ITurnEntity synergyEntity)
     {
         if (synergyEntity is SynergyStance stance)

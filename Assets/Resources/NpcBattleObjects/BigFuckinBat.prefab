@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5516113884842175122}
   - component: {fileID: 2610517544235656324}
   m_Layer: 0
-  m_Name: CaveBat
+  m_Name: BigFuckinBat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 3619375062033591887}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.47, y: 0.233, z: 0}
-  m_LocalScale: {x: 2.06, y: 1.8259, z: 1}
+  m_LocalPosition: {x: -3, y: -0.18, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -104,8 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57fa46a78673bf64182273a764170f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaveBatBattle
-  CharName: Cave Bat
-  MaxHp: 50
+  CharName: Big FUCKING Bat
+  MaxHp: 500
   MaxMp: 0
   Atk: 10
   Mag: 0

@@ -13,11 +13,11 @@ public class AtkBuffAbilityEffect : AtkAbilityEffect
     public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         int damage = calculateDamage(users, target, calculatedPower);
-        target.TakeDamage(damage, atkType,ignoreDef);
+        target.TakeDamage(damage, atkType, elementTypes, ShieldsToRemove, ignoreDef);
         OnHit(users, target);
     }
 
-    public void OnHit(CharBattle[] users, ITurnEntity target)
+    public void OnHit(CharBattle[] users, ITurnEntity target)  
     {
         if (!buffIsMissable || Random.value <= (buffHitChance / 100f))
         {

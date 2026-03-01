@@ -4,15 +4,16 @@ using System.Collections.Generic;
 [System.Serializable]
 public abstract class AbilityEffect
 {
-    public bool effectIsMissable;
-    public int effectHitChance;
-    public int numHits;
+    public bool EffectIsMissable;
+    public int EffectHitChance;
+    public int NumHits;
+    public int ShieldsToRemove;
 
     public void ExecuteEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
-        for (int i = 0; i < numHits; i++)
+        for (int i = 0; i < NumHits; i++)
         {
-            if (effectIsMissable)
+            if (EffectIsMissable)
             {
                 if (!CheckIfHit(users, target)) 
                 {
@@ -28,7 +29,7 @@ public abstract class AbilityEffect
     {
 
         // temp hit calculation. Need to account for target's evasion later.
-        if (Random.value <= (effectHitChance / 100f))
+        if (Random.value <= (EffectHitChance / 100f))
         {
             return true;
         }

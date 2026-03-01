@@ -32,9 +32,10 @@ MonoBehaviour:
     - rid: 9008616056108613704
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        effectIsMissable: 0
-        effectHitChance: 0
-        numHits: 1
+        EffectIsMissable: 1
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 0
         elementTypes: 
         atkType: 0
         ignoreDef: 0

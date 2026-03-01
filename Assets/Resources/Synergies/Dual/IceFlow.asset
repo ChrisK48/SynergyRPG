@@ -27,9 +27,10 @@ MonoBehaviour:
     - rid: 1609082513517445190
       type: {class: AtkBuffAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        effectIsMissable: 0
-        effectHitChance: 0
-        numHits: 1
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 2
         elementTypes: 01000000
         atkType: 1
         ignoreDef: 0

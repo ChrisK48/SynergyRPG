@@ -34,9 +34,10 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         if (hp == 0) return;
         Debug.Log(CharName + " heals for " + amt + " HP.");
         hp = Mathf.Clamp(hp + amt, 0, MaxHp);
+        BattleUIManager.instance.Popup(amt, transform.position, PopupType.Heal);
     }
 
-    public virtual void TakeDamage(int amt, AtkType atkType, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
+    public virtual void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes = null, int shieldsToRemove = 0, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {
         // temp damage calculation
         int damage = 0;
@@ -57,12 +58,12 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
                 Die();
 
         onDamageDealt?.Invoke(finalDamage);
-
+        BattleUIManager.instance.Popup(finalDamage, transform.position, PopupType.Damage);
     }
 
     public bool GetIfAlive() => isAlive;
 
-    public virtual void Die()
+    protected virtual void Die()
     {
         Debug.Log(CharName + " has died.");
         isAlive = false;

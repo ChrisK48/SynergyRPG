@@ -32,10 +32,12 @@ MonoBehaviour:
     - rid: 9008616056108613706
       type: {class: BuffAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        effectIsMissable: 0
-        effectHitChance: 0
-        numHits: 1
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 0
         buffsToApply:
         - {fileID: 11400000, guid: 787958d02702f864388986ef8b546964, type: 2}
         buffDuration: 3
+        AppliedtoUser: 0
         SharedInStance: 0

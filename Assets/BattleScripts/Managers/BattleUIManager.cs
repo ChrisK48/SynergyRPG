@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.Events;
 using Unity.VisualScripting;
+using System;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class BattleUIManager : MonoBehaviour
     public GameObject CommandMenu;
     public GameObject Submenu;
     public GameObject MenuButtonPrefab;
+    public GameObject PopupPrefab;
     public GameObject turnOrderIconPrefab;
     private SynergySearchLogic synergySearchLogic;
 
@@ -339,5 +341,10 @@ public class BattleUIManager : MonoBehaviour
         ClearSubmenuButtons();
     }
 
-    
+    public void Popup(int damage, Vector3 position, PopupType type)
+    {
+        GameObject popup = Instantiate(PopupPrefab, position + new Vector3(0, 1.5f, 0), Quaternion.identity);
+        Popup popupScript = popup.GetComponent<Popup>();
+        popupScript.Setup(damage, position, type);
+    }
 }

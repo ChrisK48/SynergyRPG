@@ -15,7 +15,7 @@ MonoBehaviour:
   AbilityName: Heal I
   Description: 
   ScalingStat: 1
-  ScalingMultiplier: 0
+  ScalingMultiplier: 1
   MpCost: 5
   HpCost: 0
   UniqueResourceCost:
@@ -32,6 +32,7 @@ MonoBehaviour:
     - rid: 9008616039178567750
       type: {class: HealAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
-        effectIsMissable: 0
-        effectHitChance: 0
-        numHits: 1
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 1

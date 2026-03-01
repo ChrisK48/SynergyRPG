@@ -4,14 +4,14 @@ using Unity.VisualScripting;
 [System.Serializable]
 public class AtkAbilityEffect : AbilityEffect
 {
-    public List<ElementType> elementTypes;
+    public List<DamageType> elementTypes;
     public AtkType atkType;
     public bool ignoreDef;
 
     public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         int damage = calculateDamage(users, target, calculatedPower);
-        target.TakeDamage(damage, atkType, ignoreDef);   
+        target.TakeDamage(damage, atkType, elementTypes, ShieldsToRemove, ignoreDef);   
     }
 
     public float CheckIfCrit(CharBattle[] users, float damage)
@@ -47,15 +47,15 @@ public class AtkAbilityEffect : AbilityEffect
         // Temp weakness/resistance calculation. Currently doubles or halves damage based on a single matching element.
         if (target is NpcBattle npcTarget)
         {
-            foreach (ElementType element in elementTypes)
+            foreach (DamageType element in elementTypes)
             {
-                if (npcTarget.elementalWeaknesses.Contains(element))
+                if (npcTarget.DamageWeaknesses.Exists(tag => tag.element == element))
                 {
                     damage *= 2;
                     Debug.Log("It's super effective!");
                     return (int)damage;
                 }
-                else if (npcTarget.elementalResistances.Contains(element))
+                else if (npcTarget.DamageResistances.Contains(element))
                 {
                     damage /= 2;
                     Debug.Log("It's not very effective...");

@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class SynergyStance : ITurnEntity
 {
@@ -36,11 +37,11 @@ public class SynergyStance : ITurnEntity
         }
     }
 
-    public void TakeDamage(int amt, AtkType atkType, bool ignoreDef = false, Action<int> onDamageDealt = null)
+    public void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes, int shieldsToRemove = 0, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {
         foreach (var user in users)
         {
-            user.TakeDamage(amt, atkType, ignoreDef, onDamageDealt);
+            user.TakeDamage(amt, atkType, elementTypes, 0 ,ignoreDef, onDamageDealt);
         }
     }
 

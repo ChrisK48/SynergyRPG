@@ -7,6 +7,6 @@ public class Poisoned : BuffEffect
     public override void TickBuff(CharBattle target, ActiveBuff buffWrapper)
     {
         base.TickBuff(target, buffWrapper);
-        target.TakeDamage(poisonDamage, AtkType.Physical, true);
+        target.TakeDamage(poisonDamage, AtkType.Physical, null, 0, true);
     }
 }

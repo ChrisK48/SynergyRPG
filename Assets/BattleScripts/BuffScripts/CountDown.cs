@@ -6,7 +6,7 @@ public class CountDown : BuffEffect
     public override void EndBuff(CharBattle target, ActiveBuff buffWrapper)
     {
         Debug.Log(target.CharName + "'s CountDown buff has ended." + target.CharName + " is instantly killed!");
-        target.TakeDamage(999999, AtkType.Magical, true);
+        target.TakeDamage(999999, AtkType.Magical, null, 0, true);
         base.EndBuff(target, buffWrapper);
     }
 }

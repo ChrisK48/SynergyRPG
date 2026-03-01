@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum AtkType { Physical, Magical }
 public enum ScalingStat { Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck }
-public enum ElementType { Fire, Ice, Lightning, Water, Wind, Earth, Light, Void, None }
 public enum TargetType { SingleEnemy, AllEnemies, Self, SingleAlly, AllAllies, AnyChar, AllChars, DeadAlly, DeadAllies }
 
 [CreateAssetMenu(fileName = "New Ability", menuName = "Ability")]

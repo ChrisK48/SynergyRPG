@@ -39,9 +39,9 @@ public abstract class PlayerCharBattle : CharBattle
         }
     }
 
-    public override void TakeDamage(int amt, AtkType atkType, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
+    public override void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes, int shieldsToRemove = 0, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {
-        base.TakeDamage(amt, atkType, ignoreDef, onDamageDealt);
+        base.TakeDamage(amt, atkType, elementTypes, 0, ignoreDef, onDamageDealt);
         TriggerStatsUpdate();
     }
 
@@ -68,7 +68,7 @@ public abstract class PlayerCharBattle : CharBattle
 
     protected void TriggerStatsUpdate() => OnStatsChanged?.Invoke();
 
-    public override void Die()
+    protected override void Die()
     {
         base.Die();
     }
