@@ -32,6 +32,6 @@ MonoBehaviour:
         EffectHitChance: 100
         NumHits: 2
         ShieldsToRemove: 3
-        elementTypes: 
+        elementTypes: 0000000003000000
         atkType: 0
         ignoreDef: 0

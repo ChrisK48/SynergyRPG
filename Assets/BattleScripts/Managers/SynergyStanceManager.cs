@@ -7,6 +7,7 @@ public class SynergyStanceManager : MonoBehaviour
 {
     public static SynergyStanceManager instance;
     private DualSynergyAbility[] masterSynergyList;
+    private bool stanceExists;
 
     public void Awake()
     {
@@ -21,6 +22,7 @@ public class SynergyStanceManager : MonoBehaviour
         {
             user.EnterSynergyStance(newStance);
         }
+        stanceExists = true;
         BattleManager.instance.InsertSynergyStance(newStance);
         BattleManager.instance.NextTurn();
     }
@@ -31,12 +33,15 @@ public class SynergyStanceManager : MonoBehaviour
         {
             user.ExitSynergyStance();
         }
+        stanceExists = false;
         BattleManager.instance.playerEntities.AddRange(stance.users);
         BattleManager.instance.playerEntities.Remove(stance);
         BattleManager.instance.GetSynergyStances().Remove(stance);
         BattleUIManager.instance.UpdateTurnOrderUI(BattleManager.instance.GetTurnManager().GetTurnOrder(), BattleManager.instance.GetTurnManager().getCurrentChar(), BattleManager.instance.GetTurnManager().GetCurrentTurnIndex());
         if (stance.users[0] is PlayerCharBattle)FlowManager.instance.LoseFlow(30); // For now lose 30 flow on synergy break. Will probably adjust later.
     }
+
+    public bool GetIfStanceExists() { return stanceExists; }
 
     //TEMP FOR NOW PROBABLY NEEDS TO BE REWORKED LATER
 

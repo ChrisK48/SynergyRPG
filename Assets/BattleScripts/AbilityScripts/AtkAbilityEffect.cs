@@ -43,26 +43,6 @@ public class AtkAbilityEffect : AbilityEffect
         {
             damage = CheckIfCrit(users, damage);
         }
-
-        // Temp weakness/resistance calculation. Currently doubles or halves damage based on a single matching element.
-        if (target is NpcBattle npcTarget)
-        {
-            foreach (DamageType element in elementTypes)
-            {
-                if (npcTarget.DamageWeaknesses.Exists(tag => tag.element == element))
-                {
-                    damage *= 2;
-                    Debug.Log("It's super effective!");
-                    return (int)damage;
-                }
-                else if (npcTarget.DamageResistances.Contains(element))
-                {
-                    damage /= 2;
-                    Debug.Log("It's not very effective...");
-                    return (int)damage;
-                }
-            }
-        }
         return (int)damage;
     }
 }

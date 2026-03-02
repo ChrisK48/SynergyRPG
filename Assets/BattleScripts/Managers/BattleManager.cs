@@ -14,6 +14,7 @@ public class BattleManager : MonoBehaviour
 
     public List<Transform> npcSpawnPoints;
     private TurnManager turnManager;
+    private int earnedXp = 0;
 
      void Awake()
     {
@@ -83,6 +84,7 @@ public class BattleManager : MonoBehaviour
             npc.PerformAITurn();
         }
         
+        if (SynergyStanceManager.instance.GetIfStanceExists() && turnManager.getCurrentChar() is SynergyStance) FlowManager.instance.ConsumeFlow(10);
         CheckBattleEnd();
     }
 
@@ -101,13 +103,18 @@ public class BattleManager : MonoBehaviour
         if (playerChars.All(pc => !pc.GetIfAlive()))
         {
             Debug.Log("All players defeated! Game Over.");
-            // Handle game over logic here
+            Debug.Log("Total XP Earned: " + earnedXp);
         }
         else if (npcChars.All(npc => !npc.GetIfAlive()))
         {
             Debug.Log("All enemies defeated! Victory!");
             // Handle victory logic here
         }
+    }
+
+    public void AddEarnedXp(int xp)
+    {
+        earnedXp += xp;
     }
 
     public TurnManager GetTurnManager()

@@ -17,7 +17,6 @@ public class SynergySearchLogic
 
         foreach (var potentialPartner in BattleManager.instance.playerChars)
         {
-            if (potentialPartner.GetIfInSynergyStance()) continue;
             Ability prepped = potentialPartner.GetPreppedAbility();
             
             if (prepped != null && potentialPartner != currentActor)

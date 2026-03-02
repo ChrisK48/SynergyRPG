@@ -8,6 +8,7 @@ public abstract class NpcBattle : CharBattle
     public int exp;
     public List<DamageType> DamageResistances;
     public List<ShieldTag> DamageWeaknesses;
+    public int xpValue;
     private bool shieldBroken = false;
 
     public virtual void PerformAITurn()
@@ -43,14 +44,49 @@ public abstract class NpcBattle : CharBattle
         base.Die();
         BattleManager.instance.npcChars.Remove(this);
 
+        BattleManager.instance.AddEarnedXp(xpValue);
         // By default, NPCs will be removed from the battle when they die.
         Destroy(this.gameObject);
     }
 
-    public override void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes, int shieldsToRemove = 0, bool ignoreDef = false, Action<int> onDamageDealt = null)
+    public override void TakeDamage(int amt, AtkType atkType, List<DamageType> damageTypes, int shieldsToRemove = 0, bool ignoreDef = false, Action<int> onDamageDealt = null)
     {
-        base.TakeDamage(amt, atkType, elementTypes, shieldsToRemove, ignoreDef, onDamageDealt);
-        DecrementShieldTags(elementTypes, shieldsToRemove);
+        Debug.Log("Damage Dealt prior to resistances/weaknesses: " + amt);
+        float damage = HandleWeaknesses(amt, damageTypes);
+        Debug.Log("Damage after weaknesses: " + damage);
+        damage = HandleResistances(damage, damageTypes);
+        Debug.Log("Damage after resistances: " + damage);
+        amt = (int)damage;
+        base.TakeDamage(amt, atkType, damageTypes, shieldsToRemove, ignoreDef, onDamageDealt);
+        DecrementShieldTags(damageTypes, shieldsToRemove);
+    }
+
+    private float HandleWeaknesses(float amt, List<DamageType> damageTypes)
+    {
+        float damage = (float)amt;
+        foreach (var weakness in DamageWeaknesses)
+        {
+            if (damageTypes.Contains(weakness.element))
+            {
+                damage *= 1.5f;
+                return damage;
+            }
+        }
+        return damage;
+    }
+
+    private float HandleResistances(float amt, List<DamageType> damageTypes)
+    {
+        float damage = (float)amt;
+        foreach (var resistance in DamageResistances)
+        {
+            if (damageTypes.Contains(resistance))
+            {
+                damage *= 0.5f;
+                return damage;
+            }
+        }
+        return damage;
     }
 
     private void DecrementShieldTags(List<DamageType> elementTypes, int shieldsToRemove)

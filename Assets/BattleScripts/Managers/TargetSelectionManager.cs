@@ -68,7 +68,6 @@ public class TargetSelectionManager : MonoBehaviour
     {
         foreach (ITurnEntity target in targets)
         {
-            BattleUIManager.instance.commandMenuUIContainer.gameObject.SetActive(false);
             Button btn = Instantiate(TargetPopupPrefab, TargetPopupContainer);
             
             // Find the physical position. If it's a stance, you might need to 
@@ -137,7 +136,6 @@ public class TargetSelectionManager : MonoBehaviour
         Debug.Log("Users: " + string.Join(", ", users.Select(u => u.EntityName)));
         action.PerformAction(users, targets);
         ClearPopups();
-        BattleUIManager.instance.commandMenuUIContainer.gameObject.SetActive(true);
         BattleManager.instance.NextTurn();
     }
 }

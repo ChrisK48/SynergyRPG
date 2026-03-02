@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.61, y: 0.18, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -82,12 +82,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.6059704, g: 0.39005575, b: 0.7169812, a: 1}
+  m_Sprite: {fileID: 1651994065856431728, guid: 2873267ee41fd9f40bac94841a4f48f9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.7, y: 0.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -104,20 +104,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f151bf6730f0a548a914cf78e34bdf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JesterCharBattle
-  charName: Jethro
-  maxHp: 0
-  maxMp: 0
-  Hp: 0
-  Mp: 0
-  Atk: 0
-  Mag: 0
-  Def: 0
-  Mdef: 0
-  Spd: 0
+  CharName: Jethro
+  MaxHp: 150
+  MaxMp: 50
+  Atk: 5
+  Mag: 35
+  Def: 5
+  Mdef: 15
+  Spd: 3
   Acc: 0
   Eva: 0
-  Luck: 0
-  isAlive: 1
+  Luck: 10
   abilities: []
   activeBuffs: []
-  uniqueUIPrefab: {fileID: 0}
+  uniqueUIPrefab: {fileID: 4003600137503552053, guid: b2e91756373579a48b298d7894f9e8ea, type: 3}

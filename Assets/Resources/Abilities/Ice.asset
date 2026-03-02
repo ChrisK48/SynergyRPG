@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ability
   AbilityName: Ice I
   Description: 
-  ScalingStat: 0
-  ScalingMultiplier: 0
+  ScalingStat: 1
+  ScalingMultiplier: 1
   MpCost: 5
   HpCost: 0
   UniqueResourceCost:
