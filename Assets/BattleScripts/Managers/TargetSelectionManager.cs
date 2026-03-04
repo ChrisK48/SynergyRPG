@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.UI;
 public class TargetSelectionManager : MonoBehaviour
@@ -8,6 +7,8 @@ public class TargetSelectionManager : MonoBehaviour
     public static TargetSelectionManager instance;
     public Button TargetPopupPrefab;
     public Transform TargetPopupContainer;
+    public GameObject PlayerTargetIndicatorPrefab;
+    public GameObject EnemyTargetIndicatorPrefab;
 
     public void Awake()
     {
@@ -68,19 +69,24 @@ public class TargetSelectionManager : MonoBehaviour
     {
         foreach (ITurnEntity target in targets)
         {
-            Button btn = Instantiate(TargetPopupPrefab, TargetPopupContainer);
-            
-            // Find the physical position. If it's a stance, you might need to 
-            // decide if the button appears between the characters or on one of them.
             Vector3 worldPos = GetTargetPosition(target);
             Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos + Vector3.up);
+            if (target is PlayerCharBattle || target is SynergyStance stance && stance.users[0] is PlayerCharBattle)
+            {
+                GameObject PlayerTargetIndicatorPrefabInstance = Instantiate(PlayerTargetIndicatorPrefab, TargetPopupContainer);
+                PlayerTargetIndicatorPrefabInstance.GetComponent<Button>().onClick.AddListener(() => OnTargetSelected(users, action, target));
+                PlayerTargetIndicatorPrefabInstance.transform.position = screenPos;
+               
+            } else if (target is NpcBattle)
+            {
+                GameObject EnemyTargetIndicatorPrefabInstance = Instantiate(EnemyTargetIndicatorPrefab, TargetPopupContainer);
+                EnemyTargetIndicatorPrefabInstance.GetComponent<Button>().onClick.AddListener(() => OnTargetSelected(users, action, target));
+                EnemyTargetIndicatorPrefabInstance.transform.position = screenPos;
+            }
             
-            btn.GetComponent<RectTransform>().position = screenPos;
-            btn.onClick.AddListener(() => OnTargetSelected(users, action, target));
         }
     }
 
-    // Helper to handle positioning for both single chars and stances
     Vector3 GetTargetPosition(ITurnEntity entity)
     {
         if (entity is MonoBehaviour mb) return mb.transform.position;
@@ -96,7 +102,7 @@ public class TargetSelectionManager : MonoBehaviour
         }
     }
 
-    void OnTargetSelected(CharBattle[] users, ITargetableAction action, ITurnEntity target)
+    public void OnTargetSelected(CharBattle[] users, ITargetableAction action, ITurnEntity target)
     {
         Debug.Log("Target selected: " + target.EntityName);
         List<ITurnEntity> targets = new List<ITurnEntity>();
@@ -136,6 +142,7 @@ public class TargetSelectionManager : MonoBehaviour
         Debug.Log("Users: " + string.Join(", ", users.Select(u => u.EntityName)));
         action.PerformAction(users, targets);
         ClearPopups();
+        if (users[0].GetIfInSynergyStance()) FlowManager.instance.ConsumeFlow(10);
         BattleManager.instance.NextTurn();
     }
 }

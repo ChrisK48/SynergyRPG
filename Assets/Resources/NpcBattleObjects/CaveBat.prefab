@@ -109,7 +109,7 @@ MonoBehaviour:
   MaxMp: 0
   Atk: 10
   Mag: 0
-  Def: 0
+  Def: 5
   Mdef: 0
   Spd: 1
   Acc: 0
@@ -123,5 +123,7 @@ MonoBehaviour:
   DamageResistances: 
   DamageWeaknesses:
   - element: 0
-    shieldAmount: 3
+    MaxShieldAmount: 3
+    shieldAmount: 2
   xpValue: 0
+  shieldsToRegain: 1

@@ -25,6 +25,16 @@ public class TurnManager
 
         foreach (ITurnEntity entity in allChars)
         {
+            if (entity is NpcBattle npc)
+            {
+                if (npc.IsShieldBroken())
+                {
+                    npc.ResetShields();
+                } else
+                {
+                    npc.RegainShields();
+                }
+            }
             if (entity is CharBattle character && character.GetIfAlive() && !character.GetIfInSynergyStance())
                 turnOrder.Add(entity);
             else if (entity is SynergyStance synergy)
@@ -67,11 +77,6 @@ public class TurnManager
             currentTurn = 0;
         }
         BattleUIManager.instance.UpdateTurnOrderUI(turnOrder, getCurrentChar(), currentTurn);
-    }
-
-    public void OnNpcShieldBroken(NpcBattle npc)
-    {
-        RemoveFromTurnOrder(npc);
     }
 
     public void InsertSynergy(ITurnEntity synergyEntity)

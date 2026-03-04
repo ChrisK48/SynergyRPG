@@ -18,7 +18,7 @@ public class FlowManager : MonoBehaviour
 
     public void ConsumeFlow(float amount)
     {
-        currentFlow = Mathf.Clamp(currentFlow - amount, 0, maxFlow);
+        currentFlow = Mathf.Max(currentFlow - amount, 0);
         Debug.Log("Consumed " + amount + " SP. Current SP: " + currentFlow);
         OnFlowChanged?.Invoke(currentFlow, maxFlow);
     }

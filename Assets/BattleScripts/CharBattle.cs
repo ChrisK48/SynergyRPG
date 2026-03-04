@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -44,9 +45,9 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
 
         if (!ignoreDef)
             if (atkType == AtkType.Physical)
-                damage = Mathf.Max(amt - Def, 1);
+                damage = Mathf.Max(amt*amt/(amt+Def), 1);
             else
-                damage = Mathf.Max(amt - Mdef, 1);
+                damage = Mathf.Max(amt*amt/(amt+Mdef), 1);
         else
             damage = amt;
 

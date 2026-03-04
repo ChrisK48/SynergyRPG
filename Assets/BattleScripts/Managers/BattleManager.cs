@@ -57,6 +57,7 @@ public class BattleManager : MonoBehaviour
 
     public void NextTurn()
     {
+        CheckBattleEnd();
         ITurnEntity currentEntity = turnManager.getCurrentChar();
         if (currentEntity is CharBattle currentChar)
         {
@@ -68,11 +69,12 @@ public class BattleManager : MonoBehaviour
             }   
         }
 
+
         BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentEntity, turnManager.GetCurrentTurnIndex());
 
         currentEntity.ProcessTurnBuffs();
         CheckIfNotFollowedUp(currentEntity);
-
+        
         turnManager.AdvanceTurn(); 
 
         if (currentEntity is PlayerCharBattle || currentEntity is SynergyStance)
@@ -83,9 +85,6 @@ public class BattleManager : MonoBehaviour
         {
             npc.PerformAITurn();
         }
-        
-        if (SynergyStanceManager.instance.GetIfStanceExists() && turnManager.getCurrentChar() is SynergyStance) FlowManager.instance.ConsumeFlow(10);
-        CheckBattleEnd();
     }
 
     private void CheckIfNotFollowedUp(ITurnEntity currentChar)

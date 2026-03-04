@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.Mathematics;
 
 public abstract class NpcBattle : CharBattle
 {
@@ -9,7 +10,13 @@ public abstract class NpcBattle : CharBattle
     public List<DamageType> DamageResistances;
     public List<ShieldTag> DamageWeaknesses;
     public int xpValue;
+    public int shieldsToRegain;
     private bool shieldBroken = false;
+
+    public void Start()
+    {
+        ResetShields();
+    } 
 
     public virtual void PerformAITurn()
     {
@@ -89,6 +96,16 @@ public abstract class NpcBattle : CharBattle
         return damage;
     }
 
+    public void RegainShields()
+    {
+        for (int i = 0; i < shieldsToRegain; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, DamageWeaknesses.Count);
+            DamageWeaknesses[randomIndex].shieldAmount = Math.Min(DamageWeaknesses[randomIndex].shieldAmount + 1, DamageWeaknesses[randomIndex].MaxShieldAmount);
+            Debug.Log(CharName + " regains 1 " + DamageWeaknesses[randomIndex].element + " shield. Total: " + DamageWeaknesses[randomIndex].shieldAmount);
+        }
+    }
+
     private void DecrementShieldTags(List<DamageType> elementTypes, int shieldsToRemove)
     {
         if (elementTypes == null) return;
@@ -120,8 +137,18 @@ public abstract class NpcBattle : CharBattle
     protected virtual void TriggerShieldBreak()
     {
         shieldBroken = true;
-        BattleManager.instance.GetTurnManager().OnNpcShieldBroken(this);
+        BattleManager.instance.GetTurnManager().RemoveFromTurnOrder(this);
     }
 
     public bool IsShieldBroken() => shieldBroken;
+
+    public void ResetShields()
+    {
+        foreach (var shield in DamageWeaknesses)
+        {
+            shield.ResetShieldAmount();
+        }
+        shieldBroken = false;
+        Debug.Log(CharName + "'s shields have been reset.");
+    }
 }

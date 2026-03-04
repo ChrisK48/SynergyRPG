@@ -50,6 +50,7 @@ public class BattleUIManager : MonoBehaviour
             turnOrderElemOther.GetComponentInChildren<TextMeshProUGUI>().text = turnOrder[i].EntityName;
         }
     }
+    
 
     public void ShowCommandMenu(ITurnEntity entity)
     {

@@ -28,7 +28,7 @@ public class AtkAbilityEffect : AbilityEffect
         if (Random.value > 0.95f - (totalLuck / 1000f))
         {
             damage *= 1.5f;
-            if (users[0] is PlayerCharBattle) FlowManager.instance.GainFlow(10); // Temp 10 SP gain on crit, can be adjusted or removed later.
+            if (users[0] is PlayerCharBattle) FlowManager.instance.GainFlow(2); // Temp 2 SP gain on crit, can be adjusted or removed later.
             Debug.Log("Critical hit dealt by " + users[0].CharName + "!");
         }      
 

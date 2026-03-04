@@ -33,7 +33,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
             user.EndPrep();
         }
 
-        FlowManager.instance.GainFlow(20f); // This is also temporary until we have a better system for handling synergy resource costs and flow gain
+        if (!users[0].GetIfInSynergyStance()) FlowManager.instance.GainFlow(10); // This is also temporary until we have a better system for handling synergy resource costs and flow gain
     }
 
     public void ExecuteSynergy(CharBattle[] users, CharBattle target)
