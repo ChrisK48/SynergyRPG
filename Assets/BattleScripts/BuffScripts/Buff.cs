@@ -6,6 +6,7 @@ public class Buff : ScriptableObject
 {
     public string buffName;
     public string description;
+    public Sprite Icon;
 
     [SerializeReference]
     public BuffEffect buffEffect;

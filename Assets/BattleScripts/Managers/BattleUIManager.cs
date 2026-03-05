@@ -17,9 +17,13 @@ public class BattleUIManager : MonoBehaviour
     public GameObject CommandMenu;
     public GameObject Submenu;
     public GameObject MenuButtonPrefab;
+    public GameObject FastTrackButton;
+    public RectTransform ButtonContainer;
+    public RectTransform FastTrackButtonContainer;
     public GameObject PopupPrefab;
     public GameObject turnOrderIconPrefab;
     private SynergySearchLogic synergySearchLogic;
+    private bool fastTrack = false;
 
     void Awake()
     {
@@ -89,7 +93,7 @@ public class BattleUIManager : MonoBehaviour
 
     private void PositionSubMenu()
     {
-        Submenu.GetComponent<RectTransform>().position = new Vector3(CommandMenu.GetComponent<RectTransform>().position.x + 165, CommandMenu.GetComponent<RectTransform>().position.y, 0);
+        Submenu.GetComponent<RectTransform>().position = new Vector3(CommandMenu.GetComponent<RectTransform>().position.x + 300, CommandMenu.GetComponent<RectTransform>().position.y, 0);
     }
 
     private void BindStaticButton(string buttonName, UnityAction action)
@@ -99,38 +103,80 @@ public class BattleUIManager : MonoBehaviour
         btn.onClick.AddListener(action);
     }
 
-    private void CreateDynamicButton(string abilityName, UnityAction action)
+    private void CreateDynamicButton(string abilityName, UnityAction action, Transform parent)
     {
-        GameObject btnObj = Instantiate(MenuButtonPrefab, Submenu.transform);
+        GameObject btnObj = Instantiate(MenuButtonPrefab, parent);
         btnObj.GetComponentInChildren<TextMeshProUGUI>().text = abilityName;
         btnObj.GetComponent<Button>().onClick.AddListener(action);
     }
 
     private void ClearSubmenuButtons()
     {
-        foreach (Transform child in Submenu.transform)
+        FastTrackButton.SetActive(false);
+        foreach (Transform child in ButtonContainer)
         {
             Destroy(child.gameObject);
         }
+        foreach (Transform child in FastTrackButtonContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        ButtonContainer.gameObject.SetActive(true);
+        FastTrackButtonContainer.gameObject.SetActive(false);
     }
 
     private void CreateAbilityList(PlayerCharBattle pc)
     {
         HideSubMenu();
         Submenu.SetActive(true);
-        PositionSubMenu();
+        FastTrackButton.SetActive(true);
+        
         for (int i = 2; i < pc.abilities.Count; i++)
         {
             Ability ability = pc.abilities[i];
-            CreateDynamicButton(ability.Name, () => HandleAbility(pc, ability));
+            CreateDynamicButton(ability.Name, () => HandleAbility(pc, ability), ButtonContainer);
+        }
+        CreateButtonsForSynergies(pc);
+
+
+        Button btn = FastTrackButton.GetComponent<Button>();
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() => {
+            fastTrack = !fastTrack;
+            
+            ButtonContainer.gameObject.SetActive(!fastTrack);
+            FastTrackButtonContainer.gameObject.SetActive(fastTrack);
+            if (fastTrack && FastTrackButtonContainer.childCount == 0) CreateFastTrackList(pc);
+            btn.GetComponentInChildren<TextMeshProUGUI>().text = fastTrack ? "Standard" : "FastTrack";
+        });
+
+        PositionSubMenu();
+    }
+
+    private void CreateFastTrackList(PlayerCharBattle pc)
+    {
+        foreach (var ability in pc.abilities)
+        {
+            List<Tuple<DualSynergyAbility, CharBattle>> synergies = synergySearchLogic.GetPotentialPairings(pc, ability);
+            foreach (var synergy in synergies)
+            {
+                CreateDynamicButton($"{synergy.Item1.Name} with {synergy.Item2.CharName}", () =>
+                {
+                    if (FlowManager.instance.currentFlow < 10) return;
+                    FlowManager.instance.ConsumeFlow(10);
+                    pc.StorePreppedAbility(ability);
+                    TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc }, synergy.Item1);
+                    HideCommandMenu();
+                    HideSubMenu();
+                    FlowManager.instance.ConsumeFlow(10);
+                }, FastTrackButtonContainer);
+            }
         }
     }
 
     private void HandleAbility(PlayerCharBattle pc, Ability ability)
     {
         bool prepping = Keyboard.current.leftShiftKey.isPressed;
-        bool seekingDualSynergy = Keyboard.current.leftCtrlKey.isPressed;
-        bool seekingTriSynergy = Keyboard.current.leftAltKey.isPressed;
 
         if (prepping)
         {
@@ -141,54 +187,6 @@ public class BattleUIManager : MonoBehaviour
             return;
         }
 
-        if (seekingDualSynergy)
-        {
-            CharBattle partner;
-            SynergyAbility synergy = synergySearchLogic.GetDoubleSynergy(pc, ability, out partner);
-
-            if (synergy != null)
-            {
-                pc.StorePreppedAbility(ability);
-                TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc, partner }, synergy);
-                HideCommandMenu();
-                HideSubMenu();
-                return;
-            }
-            else
-            {
-                Debug.Log("No valid synergy found for " + ability.Name);
-            }
-        }
-
-        if (seekingTriSynergy)
-        {
-            CharBattle[] users = new CharBattle[] { pc };
-            List<SynergyStance> potentialStance = BattleManager.instance.GetSynergyStances();
-                foreach (var stance in potentialStance)
-                {
-                    if (stance != null)
-                    {
-                        Ability preppedAbilityA = stance.users[0].GetPreppedAbility();
-                        Ability preppedAbilityB = stance.users[1].GetPreppedAbility();
-
-                        TriSynergyAbility triSynergy = synergySearchLogic.GetTripleSynergy(ability, preppedAbilityA, preppedAbilityB);
-                        if (triSynergy != null)
-                        {
-                            Debug.Log($"{pc.CharName} is performing a triple synergy with {stance.users[0].CharName} and {stance.users[1].CharName}! Synergy: {triSynergy.Name}");
-                            pc.StorePreppedAbility(ability);
-                            TargetSelectionManager.instance.BeginTargetSelection(users, triSynergy);
-                            HideCommandMenu();
-                            HideSubMenu();
-                            Submenu.SetActive(false);
-                            return;
-                        }
-                        else
-                        {
-                            Debug.Log("No valid triple synergy found for " + ability.Name);
-                        }
-                    }
-                }
-            }
         HideCommandMenu();
         HideSubMenu();
         TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc }, ability);
@@ -204,14 +202,14 @@ public class BattleUIManager : MonoBehaviour
             for (int i = 2; i < user.abilities.Count; i++)
             {
                 Ability ability = user.abilities[i];
-                CreateDynamicButton($"{user.CharName}: {ability.Name}", () => HandleAbility(user, ability));
+                CreateDynamicButton($"{user.CharName}: {ability.Name}", () => HandleAbility(user, ability), ButtonContainer);
             }
         }
 
         List<DualSynergyAbility> availableSynergies = SynergyStanceManager.instance.GetAvailableSynergiesForStance(stance);
         foreach (var synergy in availableSynergies)
         {
-            foreach (var recipe in synergy.synergyTagSets)
+            foreach (var recipe in synergy.SynergyTagSets)
             {
                 GenerateButtonsForMatch(stance, recipe, synergy);
             }
@@ -235,7 +233,7 @@ public class BattleUIManager : MonoBehaviour
                     return;
                 }
                 TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { entity as CharBattle }, item);
-            });
+            }, ButtonContainer);
         }
     }
 
@@ -252,7 +250,7 @@ public class BattleUIManager : MonoBehaviour
                 SynergyStanceManager.instance.CreateSynergyStance(new CharBattle[] { pc, potentialPartner });
                 potentialPartner.transform.position = pc.transform.position + new Vector3(-1, 0, 0);
                 pc.transform.position = pc.transform.position + new Vector3(0.5f, 0, 0);
-            });
+            }, ButtonContainer);
         }
     }
 
@@ -274,6 +272,44 @@ public class BattleUIManager : MonoBehaviour
             var m0_T2 = u0.abilities.Where(a => a.SynergyTags.Contains(recipe.tag2));
             var m1_T1 = u1.abilities.Where(a => a.SynergyTags.Contains(recipe.tag1));
             CreateCombinationButtons(u0, u1, m0_T2, m1_T1, stance, synergy);
+        }
+    }
+
+    private void CreateButtonsForSynergies(CharBattle user)
+    {
+        foreach (Ability ability in user.abilities)
+        {
+            List<Tuple<DualSynergyAbility, CharBattle>> synergies = synergySearchLogic.GetDoubleSynergy(user, ability);
+            if (synergies.Count > 0)
+            {
+                foreach (var synergy in synergies)
+                {
+                    CharBattle finalPartner1 = synergy.Item2;
+                    SynergyAbility finalAbility = synergy.Item1;
+                    CreateDynamicButton($"{synergy.Item1.Name} with {synergy.Item2.CharName}", () =>
+                    {
+                        user.StorePreppedAbility(ability);
+                        TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1 }, finalAbility);
+                        HideCommandMenu();
+                        HideSubMenu();
+                    }, ButtonContainer);
+                }
+            }
+
+            List<Tuple<TriSynergyAbility, CharBattle[]>> triSynergies = synergySearchLogic.GetTripleSynergy(user, ability);
+            if (triSynergies.Count > 0)            
+            {
+                CharBattle finalPartner1 = triSynergies[0].Item2[0];
+                CharBattle finalPartner2 = triSynergies[0].Item2[1];
+                SynergyAbility finalTriSynergy = triSynergies[0].Item1;
+                CreateDynamicButton($"{triSynergies[0].Item1.Name} with {triSynergies[0].Item2[0].CharName} and {triSynergies[0].Item2[1].CharName}", () =>
+                {
+                    user.StorePreppedAbility(ability);
+                    TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1, finalPartner2 }, finalTriSynergy);
+                    HideCommandMenu();
+                    HideSubMenu();
+                }, ButtonContainer);
+            }
         }
     }
 
@@ -299,29 +335,6 @@ public class BattleUIManager : MonoBehaviour
                         BattleManager.instance.NextTurn();
                         return;
                     }
-
-                    if (Keyboard.current.leftCtrlKey.isPressed)
-                    {
-                        foreach (var thirdMember in BattleManager.instance.playerChars.Where(p => 
-                                p.GetIfAlive() && !stance.users.Contains(p) && p.GetPreppedAbility() != null))
-                        {
-                            TriSynergyAbility triple = synergySearchLogic.GetTripleSynergy(finalA, finalB, thirdMember.GetPreppedAbility());
-                            if (triple != null)
-                            {
-                                
-                                stance.users[0].StorePreppedAbility(finalA);
-                                stance.users[1].StorePreppedAbility(finalB);
-                                thirdMember.StorePreppedAbility(thirdMember.GetPreppedAbility());
-
-                                TargetSelectionManager.instance.BeginTargetSelection(
-                                    new CharBattle[] { stance.users[0], stance.users[1], thirdMember }, triple);
-                                
-                                HideCommandMenu();
-                                HideSubMenu();
-                                return;
-                            }
-                        }
-                    } 
 
                     // Standard Instant Execution
                     userA.StorePreppedAbility(finalA);
@@ -350,4 +363,6 @@ public class BattleUIManager : MonoBehaviour
         Popup popupScript = popup.GetComponent<Popup>();
         popupScript.Setup(damage, position, type);
     }
+
+    public bool GetIfFastTracked() => fastTrack;
 }

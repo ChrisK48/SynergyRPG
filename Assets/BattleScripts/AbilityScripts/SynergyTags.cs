@@ -20,4 +20,5 @@ public enum SynergyTag
     PoisonII,
     PoisonIII,
     KaKonk,
+    DoubleSlash,
 }

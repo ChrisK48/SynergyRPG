@@ -7,5 +7,5 @@ using UnityEngine.Rendering;
 [CreateAssetMenu(fileName = "New DualSynergy", menuName = "Synergies/DualSynergyAbility")]
 public class DualSynergyAbility : SynergyAbility, ITargetableAction
 {
-    public List<SynergyTagSet> synergyTagSets = new List<SynergyTagSet>();
+    public List<SynergyTagSet> SynergyTagSets = new List<SynergyTagSet>();
 }

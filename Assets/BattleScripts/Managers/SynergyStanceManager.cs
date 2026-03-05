@@ -41,6 +41,11 @@ public class SynergyStanceManager : MonoBehaviour
         if (stance.users[0] is PlayerCharBattle)FlowManager.instance.LoseFlow(30); // For now lose 30 flow on synergy break. Will probably adjust later.
     }
 
+    public void EndSynergyStance(SynergyStance stance)
+    {
+        stance.EndPrep();
+    }
+
     public bool GetIfStanceExists() { return stanceExists; }
 
     //TEMP FOR NOW PROBABLY NEEDS TO BE REWORKED LATER
@@ -54,7 +59,7 @@ public class SynergyStanceManager : MonoBehaviour
 
         foreach (var synergy in masterSynergyList)
         {
-            foreach (var recipe in synergy.synergyTagSets)
+            foreach (var recipe in synergy.SynergyTagSets)
             {
                 if (CanCharactersPerformRecipe(charA, charB, recipe))
                 {

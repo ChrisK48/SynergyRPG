@@ -8,5 +8,6 @@ public enum DamageType
     Earth,
     Light,
     Void,
+    Strike,
     None
 }

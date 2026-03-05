@@ -30,9 +30,6 @@ public class TurnManager
                 if (npc.IsShieldBroken())
                 {
                     npc.ResetShields();
-                } else
-                {
-                    npc.RegainShields();
                 }
             }
             if (entity is CharBattle character && character.GetIfAlive() && !character.GetIfInSynergyStance())

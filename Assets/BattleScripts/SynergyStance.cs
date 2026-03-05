@@ -17,6 +17,7 @@ public class SynergyStance : ITurnEntity
     public SynergyStance(CharBattle[] users)
     {
         this.users = users;
+        foreach (var user in users) user.EnterSynergyStance(this);
         synergyName = string.Join(" & ", users.Select(u => u.CharName)) + " Synergy Stance";
         amalgamatedSpd = (int)users.Average(u => u.Spd);
     }
@@ -61,6 +62,7 @@ public class SynergyStance : ITurnEntity
         users[1].StorePreppedAbility(abilities[1]);
         Debug.Log($"Synergy Stance prep started with abilities: {users[0].CharName} using {abilities[0].Name} and {users[1].CharName} using {abilities[1].Name}");
         isPreppingSynergy = true;
+        FlowManager.instance.ConsumeFlow(10);
     }
 
     public void EndPrep()

@@ -18,7 +18,7 @@ MonoBehaviour:
   targetType: 0
   abilityEffects:
   - rid: 1609082513517445190
-  synergyTagSets:
+  SynergyTagSets:
   - tag1: 10
     tag2: 4
   references:

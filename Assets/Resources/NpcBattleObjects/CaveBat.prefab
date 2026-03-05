@@ -123,7 +123,10 @@ MonoBehaviour:
   DamageResistances: 
   DamageWeaknesses:
   - element: 0
-    MaxShieldAmount: 3
+    MaxShieldAmount: 1
+    shieldAmount: 2
+  - element: 0
+    MaxShieldAmount: 2
     shieldAmount: 2
   xpValue: 0
   shieldsToRegain: 1

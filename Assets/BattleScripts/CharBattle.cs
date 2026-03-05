@@ -59,7 +59,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
                 Die();
 
         onDamageDealt?.Invoke(finalDamage);
-        BattleUIManager.instance.Popup(finalDamage, transform.position, PopupType.Damage);
+        BattleUIManager.instance.Popup(damage, transform.position, PopupType.Damage);
     }
 
     public bool GetIfAlive() => isAlive;
@@ -113,6 +113,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
 
     public bool IsPreppingSynergy() => isPreppingSynergy;
     public bool GetIfInSynergyStance() => inSynergyStance;
+    public SynergyStance GetCurrentSynergyStance() => currentSynergyStance;
     public Ability GetPreppedAbility() => preppedAbility;
 
     public void StorePreppedAbility(Ability ability)

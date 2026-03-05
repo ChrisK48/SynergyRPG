@@ -12,9 +12,13 @@ public abstract class NpcBattle : CharBattle
     public int xpValue;
     public int shieldsToRegain;
     private bool shieldBroken = false;
+    private int DefNotBroken;
+    private int MdefNotBroken;
 
     public void Start()
     {
+        DefNotBroken = Def;
+        MdefNotBroken = Mdef;
         ResetShields();
     } 
 
@@ -96,16 +100,6 @@ public abstract class NpcBattle : CharBattle
         return damage;
     }
 
-    public void RegainShields()
-    {
-        for (int i = 0; i < shieldsToRegain; i++)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, DamageWeaknesses.Count);
-            DamageWeaknesses[randomIndex].shieldAmount = Math.Min(DamageWeaknesses[randomIndex].shieldAmount + 1, DamageWeaknesses[randomIndex].MaxShieldAmount);
-            Debug.Log(CharName + " regains 1 " + DamageWeaknesses[randomIndex].element + " shield. Total: " + DamageWeaknesses[randomIndex].shieldAmount);
-        }
-    }
-
     private void DecrementShieldTags(List<DamageType> elementTypes, int shieldsToRemove)
     {
         if (elementTypes == null) return;
@@ -129,13 +123,15 @@ public abstract class NpcBattle : CharBattle
         bool isStillShielded = DamageWeaknesses.Any(tag => tag.shieldAmount > 0);
         if (!isStillShielded)
         {
-            Debug.Log(CharName + " has lost all shields and is now vulnerable to elemental weaknesses!");
             TriggerShieldBreak();
         }
     }
 
     protected virtual void TriggerShieldBreak()
     {
+        Debug.Log(CharName + " has lost all shields and is now vulnerable!");
+        Def = (int)(DefNotBroken * 0.8f); // currently reduces defense by 20% when all shields are broken, can adjust as needed
+        Mdef = (int)(Mdef * 0.8f); // also reduces magic defense by 20%
         shieldBroken = true;
         BattleManager.instance.GetTurnManager().RemoveFromTurnOrder(this);
     }
@@ -149,6 +145,8 @@ public abstract class NpcBattle : CharBattle
             shield.ResetShieldAmount();
         }
         shieldBroken = false;
+        Def = DefNotBroken;
+        Mdef = MdefNotBroken;
         Debug.Log(CharName + "'s shields have been reset.");
     }
 }

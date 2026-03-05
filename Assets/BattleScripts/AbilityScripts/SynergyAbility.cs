@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public abstract class SynergyAbility : ScriptableObject, ITargetableAction
 {
@@ -31,9 +32,14 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
         foreach (CharBattle user in users)
         {
             user.EndPrep();
+            if (user.GetIfInSynergyStance())
+            {
+                SynergyStance stance = user.GetCurrentSynergyStance();
+                stance.EndPrep();
+            }
         }
 
-        if (!users[0].GetIfInSynergyStance()) FlowManager.instance.GainFlow(10); // This is also temporary until we have a better system for handling synergy resource costs and flow gain
+        if (!users.Any(u => u.GetIfInSynergyStance()) && !BattleUIManager.instance.GetIfFastTracked()) FlowManager.instance.GainFlow(10); // This is also temporary until we have a better system for handling synergy resource costs and flow gain
     }
 
     public void ExecuteSynergy(CharBattle[] users, CharBattle target)
