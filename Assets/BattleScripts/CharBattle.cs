@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Accessibility;
@@ -20,12 +21,17 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     protected SynergyStance currentSynergyStance;
     public bool entityIsPreppingSynergy => isPreppingSynergy;
     protected Ability preppedAbility;
+    protected int startDef;
+    protected int startMdef;
+    protected bool isDefending = false;
 
     void Awake()
     {
         battleUIManager = BattleUIManager.instance;
         hp = MaxHp;
         mp = MaxMp;
+        startDef = Def;
+        startMdef = Mdef;
     }
 
     public int getHp() => hp;
@@ -37,6 +43,25 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         hp = Mathf.Clamp(hp + amt, 0, MaxHp);
         BattleUIManager.instance.Popup(amt, transform.position, PopupType.Heal);
     }
+
+    public virtual void Defend()
+    {
+        isDefending = !isDefending;
+        if (isDefending)
+        {
+            Def = Mathf.RoundToInt(startDef * 1.25f);
+            Mdef = Mathf.RoundToInt(startMdef * 1.25f);
+            Debug.Log(CharName + " is defending! Def and Mdef increased.");
+        }
+        else
+        {
+            Def = startDef;
+            Mdef = startMdef;
+            Debug.Log(CharName + " stopped defending. Def and Mdef returned to normal.");
+        }
+    }
+
+    public bool GetIfDefending() => isDefending;
 
     public virtual void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes = null, int shieldsToRemove = 0, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {

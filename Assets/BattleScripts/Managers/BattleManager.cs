@@ -77,6 +77,8 @@ public class BattleManager : MonoBehaviour
         
         turnManager.AdvanceTurn(); 
 
+        if (currentEntity.GetIfDefending()) currentEntity.Defend();
+        
         if (currentEntity is PlayerCharBattle || currentEntity is SynergyStance)
         {
             BattleUIManager.instance.ShowCommandMenu(currentEntity);

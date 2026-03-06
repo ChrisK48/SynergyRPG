@@ -68,7 +68,7 @@ public class BattleUIManager : MonoBehaviour
         if (entity is PlayerCharBattle pc)
         {
             BindStaticButton("Attack", () => { TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc }, pc.abilities[0]); HideCommandMenu(); HideSubMenu(); });
-            BindStaticButton("Defend", () => { TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc }, pc.abilities[1]); HideCommandMenu(); HideSubMenu(); });
+            BindStaticButton("Defend", () => { pc.Defend(); HideCommandMenu(); HideSubMenu(); BattleManager.instance.NextTurn(); });
             BindStaticButton("Ability", () => CreateAbilityList(pc));
             BindStaticButton("Item", () => CreateItemList(pc));
             BindStaticButton("Synergize", () => CreateDuoList(pc));
@@ -76,7 +76,7 @@ public class BattleUIManager : MonoBehaviour
         else if (entity is SynergyStance stance)
         {
             BindStaticButton("Attack", () => { TargetSelectionManager.instance.BeginTargetSelection(stance.users, new SynergyAttack(stance.users)); HideCommandMenu(); });
-            BindStaticButton("Defend", () => { TargetSelectionManager.instance.BeginTargetSelection(stance.users, new SynergyDefend(stance.users)); HideCommandMenu(); });
+            BindStaticButton("Defend", () => { stance.Defend(); HideCommandMenu(); HideSubMenu(); BattleManager.instance.NextTurn(); });
             BindStaticButton("Ability", () => CreateSynergyAbilityList(stance));
             BindStaticButton("Item", () => CreateItemList(stance));
         }

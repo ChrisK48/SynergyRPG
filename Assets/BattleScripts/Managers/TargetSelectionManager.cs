@@ -37,11 +37,6 @@ public class TargetSelectionManager : MonoBehaviour
                 targets.AddRange(BattleManager.instance.GetSynergyStances());
                 break;
             case TargetType.Self:
-                if (users.Length > 1)
-                {
-                    targets.AddRange(BattleManager.instance.GetSynergyStances().Where(stance => stance.users.SequenceEqual(users)));
-                    break;
-                }
                 targets.AddRange(users);
                 break;
             case TargetType.AnyChar:

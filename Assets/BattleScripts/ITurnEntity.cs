@@ -9,6 +9,8 @@ public interface ITurnEntity
     public bool entityIsPreppingSynergy { get; }
     public void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes, int shieldsToRemove, bool ignoreDef = false, System.Action<int> onDamageDealt = null);
     public void Heal(int amt);
+    public void Defend();
+    public bool GetIfDefending();
     public void ReceiveBuff(Buff buff, int duration);
     public void ProcessTurnBuffs();
     public void StartPrep(Ability[] abilities);

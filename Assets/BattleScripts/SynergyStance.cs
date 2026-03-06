@@ -13,6 +13,8 @@ public class SynergyStance : ITurnEntity
     public int spd => amalgamatedSpd;
     private bool isPreppingSynergy = false;
     public bool entityIsPreppingSynergy => isPreppingSynergy;
+    private bool isDefending = false;
+    public bool entityDefending => isDefending;
 
     public SynergyStance(CharBattle[] users)
     {
@@ -21,6 +23,19 @@ public class SynergyStance : ITurnEntity
         synergyName = string.Join(" & ", users.Select(u => u.CharName)) + " Synergy Stance";
         amalgamatedSpd = (int)users.Average(u => u.Spd);
     }
+
+    public void Defend()
+    {
+        isDefending = !isDefending;
+        if (isDefending)
+        {
+            foreach (var user in users)
+            {
+                user.Defend();
+            }
+        }
+    }
+    public bool GetIfDefending() => isDefending;
 
     public void ReceiveBuff(Buff buff, int duration)
     {
