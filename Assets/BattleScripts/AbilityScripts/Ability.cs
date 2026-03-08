@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 public enum AtkType { Physical, Magical }
 public enum ScalingStat { Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck }
-public enum TargetType { SingleEnemy, AllEnemies, Self, SingleAlly, AllAllies, AnyChar, AllChars, DeadAlly, DeadAllies }
+public enum TargetType { SingleEnemy, AllEnemies, Self, SingleAlly, AllAllies, AnyChar, AllChars, DeadAlly, DeadAllies, RandomEnemies, RandomAllies }
 
 [CreateAssetMenu(fileName = "New Ability", menuName = "Ability")]
 public class Ability : ScriptableObject, ITargetableAction
@@ -14,10 +15,12 @@ public class Ability : ScriptableObject, ITargetableAction
     public int ScalingMultiplier;
     public int MpCost;
     public int HpCost;
+    public bool SkipTurnAndUseNextTurn;
     [SerializeReference]
     public UniqueResourceCost UniqueResourceCost;
     public TargetType TargetType;
     public TargetType Targets => TargetType;
+    public int TargetsToHitIfRandom;
     [SerializeReference]
     public List<AbilityEffect> AbilityEffects = new List<AbilityEffect>();
     public List<SynergyTag> SynergyTags = new List<SynergyTag>();
@@ -33,14 +36,27 @@ public class Ability : ScriptableObject, ITargetableAction
 
     public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
     {
+        if (SkipTurnAndUseNextTurn)
+        {
+            foreach(var entity in user)
+            {
+                entity.StoreAbilityForNextTurn(this);
+                entity.StoreTargetsForNextTurn(targets);
+                entity.HideChar();
+            }
+            return;
+        }
+
         if (user[0] is PlayerCharBattle player)
         {
             if (!player.CanPerformAbility(this)) return;
         }
         
-        foreach (ITurnEntity target in targets)
+        if (TargetType == TargetType.RandomAllies || TargetType == TargetType.RandomEnemies) targets = GetRandomTargets(targets);
+        Debug.Log($"Performing {AbilityName} on {string.Join(", ", targets.Select(t => t.EntityName))}");
+        for(int i = 0; i < targets.Count; i++)
         {
-            ExecuteAbility(user[0], target);
+            ExecuteAbility(user[0], targets[i]);
         }
     }
 
@@ -65,5 +81,16 @@ public class Ability : ScriptableObject, ITargetableAction
             calculatedPower = ScalingMultiplier * user.Luck;
 
         return calculatedPower;
+    }
+
+    private List<ITurnEntity> GetRandomTargets(List<ITurnEntity> targets)
+    {
+        List<ITurnEntity> randomTargets = new List<ITurnEntity>();
+        for (int i = 0; i < TargetsToHitIfRandom; i++)
+        {
+            int randomIndex = Random.Range(0, targets.Count);
+            randomTargets.Add(targets[randomIndex]);
+        }
+        return randomTargets;
     }
 }

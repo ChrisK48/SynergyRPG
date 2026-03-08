@@ -88,7 +88,7 @@ public class BattleUIManager : MonoBehaviour
         if (entity is CharBattle charEntity) screenPos = Camera.main.WorldToScreenPoint(charEntity.transform.position);
         else if (entity is SynergyStance stance) screenPos = Camera.main.WorldToScreenPoint(stance.users[0].transform.position);
         else screenPos = new Vector3(Screen.width / 2, Screen.height / 2, 0);        
-        CommandMenu.GetComponent<RectTransform>().position = new Vector3(screenPos.x + 120, screenPos.y - 50, 0); 
+        CommandMenu.GetComponent<RectTransform>().position = new Vector3(screenPos.x + 120, screenPos.y + 50, 0); 
     }
 
     private void PositionSubMenu()

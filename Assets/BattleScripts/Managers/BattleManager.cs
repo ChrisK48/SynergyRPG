@@ -11,7 +11,6 @@ public class BattleManager : MonoBehaviour
     public List<ITurnEntity> playerEntities = new List<ITurnEntity>();
     public List<ITurnEntity> npcEntities = new List<ITurnEntity>();
     public List<Transform> playerSpawnPoints;
-
     public List<Transform> npcSpawnPoints;
     private TurnManager turnManager;
     private int earnedXp = 0;
@@ -69,6 +68,18 @@ public class BattleManager : MonoBehaviour
             }   
         }
 
+        if (currentEntity is CharBattle charBattle && charBattle.GetIfHiding()) 
+        {
+            charBattle.RevealChar();
+            foreach (var target in charBattle.GetStoredTargets())
+            {
+                charBattle.GetStoredAbility().ExecuteAbility(charBattle, target);
+                charBattle.ClearStoredAbilityAndTargets();
+            }
+            turnManager.AdvanceTurn();
+            NextTurn();
+            return;
+        }
 
         BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentEntity, turnManager.GetCurrentTurnIndex());
 

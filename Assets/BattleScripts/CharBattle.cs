@@ -21,9 +21,12 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     protected SynergyStance currentSynergyStance;
     public bool entityIsPreppingSynergy => isPreppingSynergy;
     protected Ability preppedAbility;
+    protected Ability storedAbility;
+    protected List<ITurnEntity> storedTargets;
     protected int startDef;
     protected int startMdef;
     protected bool isDefending = false;
+    protected bool isHiding = false;
 
     void Awake()
     {
@@ -140,6 +143,27 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public bool GetIfInSynergyStance() => inSynergyStance;
     public SynergyStance GetCurrentSynergyStance() => currentSynergyStance;
     public Ability GetPreppedAbility() => preppedAbility;
+    public void StoreAbilityForNextTurn(Ability ability) => storedAbility = ability;
+    public List<ITurnEntity> StoreTargetsForNextTurn(List<ITurnEntity> targets) => storedTargets = targets;
+    public List<ITurnEntity> GetStoredTargets() => storedTargets;
+    public void ClearStoredAbilityAndTargets()
+    {
+        storedAbility = null;
+        storedTargets = null;
+    }
+    public Ability GetStoredAbility() => storedAbility;
+    public bool GetIfHiding() => isHiding;
+    public void HideChar()
+    {
+        isHiding = true;
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
+    }
+
+    public void RevealChar()
+    {
+        isHiding = false;
+        GetComponentInChildren<SpriteRenderer>().enabled = true;
+    }
 
     public void StorePreppedAbility(Ability ability)
     {

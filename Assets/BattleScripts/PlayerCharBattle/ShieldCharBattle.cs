@@ -19,6 +19,8 @@ public class ShieldCharBattle : PlayerCharBattle
         TriggerStatsUpdate();
     }
 
+    public int GetShieldPoints() => shieldPoints;
+
     public bool CanPayShieldCost(int cost)
     {
         return shieldPoints >= cost;

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
+  m_Name: Lunge
+  m_EditorClassIdentifier: Assembly-CSharp::Ability
+  AbilityName: Lunge
+  Description: 
+  ScalingStat: 0
+  ScalingMultiplier: 1
+  MpCost: 12
+  HpCost: 0
+  SkipTurnAndUseNextTurn: 1
+  UniqueResourceCost:
+    rid: -2
+  TargetType: 0
+  AbilityEffects:
+  - rid: 1609082675180601413
+  SynergyTags: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1609082675180601413
+      type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectIsMissable: 1
+        EffectHitChance: 100
+        NumHits: 1
+        ShieldsToRemove: 1
+        elementTypes: 08000000
+        atkType: 0
+        ignoreDef: 0

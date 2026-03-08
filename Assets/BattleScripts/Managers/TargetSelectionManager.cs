@@ -55,6 +55,13 @@ public class TargetSelectionManager : MonoBehaviour
             case TargetType.DeadAllies:
                 targets.AddRange(BattleManager.instance.playerChars.Where(pc => !pc.GetIfAlive()));
                 break;
+            case TargetType.RandomEnemies:
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive() && !activeStances.Any(stance => stance.users.Contains(npc))));
+                break;
+            case TargetType.RandomAllies:
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive() && !activeStances.Any(stance => stance.users.Contains(pc))));
+                targets.AddRange(BattleManager.instance.GetSynergyStances());
+                break;
         }
 
         ShowPopups(users, action, targets);
@@ -101,6 +108,7 @@ public class TargetSelectionManager : MonoBehaviour
     {
         Debug.Log("Target selected: " + target.EntityName);
         List<ITurnEntity> targets = new List<ITurnEntity>();
+        var activeStances = BattleManager.instance.GetSynergyStances();
 
         switch (action.Targets)
         {
@@ -131,6 +139,13 @@ public class TargetSelectionManager : MonoBehaviour
                 break;
             case TargetType.DeadAllies:
                 targets.AddRange(BattleManager.instance.playerChars.Where(pc => !pc.GetIfAlive()));
+                break;
+            case TargetType.RandomEnemies:
+                targets.AddRange(BattleManager.instance.npcChars.Where(npc => npc.GetIfAlive() && !activeStances.Any(stance => stance.users.Contains(npc))));
+                break;
+            case TargetType.RandomAllies:
+                targets.AddRange(BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive() && !activeStances.Any(stance => stance.users.Contains(pc))));
+                targets.AddRange(BattleManager.instance.GetSynergyStances());
                 break;
         }
 

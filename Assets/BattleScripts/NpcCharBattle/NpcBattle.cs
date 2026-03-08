@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Unity.Mathematics;
 
 public abstract class NpcBattle : CharBattle
 {
@@ -35,8 +34,6 @@ public abstract class NpcBattle : CharBattle
 
     public abstract Ability NpcAbilitySelectionLogic();
 
-
-
     public void PerformAbility(Ability ability, List<ITurnEntity> targets)
     {
         foreach (ITurnEntity target in targets)
@@ -47,7 +44,7 @@ public abstract class NpcBattle : CharBattle
 
     protected List<ITurnEntity> GetPotentialTargets()
     {
-        return BattleManager.instance.playerEntities.Where(pc => (pc is PlayerCharBattle player && player.GetIfAlive()) || (pc is SynergyStance synergyStance)).ToList();
+        return BattleManager.instance.playerEntities.Where(pc => (pc is PlayerCharBattle player && player.GetIfAlive() && !player.GetIfHiding()) || (pc is SynergyStance synergyStance)).ToList();
     }
 
     protected override void Die()
@@ -62,11 +59,8 @@ public abstract class NpcBattle : CharBattle
 
     public override void TakeDamage(int amt, AtkType atkType, List<DamageType> damageTypes, int shieldsToRemove = 0, bool ignoreDef = false, Action<int> onDamageDealt = null)
     {
-        Debug.Log("Damage Dealt prior to resistances/weaknesses: " + amt);
         float damage = HandleWeaknesses(amt, damageTypes);
-        Debug.Log("Damage after weaknesses: " + damage);
         damage = HandleResistances(damage, damageTypes);
-        Debug.Log("Damage after resistances: " + damage);
         amt = (int)damage;
         base.TakeDamage(amt, atkType, damageTypes, shieldsToRemove, ignoreDef, onDamageDealt);
         DecrementShieldTags(damageTypes, shieldsToRemove);
