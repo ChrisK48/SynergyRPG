@@ -10,40 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
-  m_Name: MudShot
+  m_Name: SpawnMinion
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  AbilityName: Mud Shot
+  AbilityName: Call Cave Bats
   Description: 
   ScalingStat: 0
-  ScalingMultiplier: 1
+  ScalingMultiplier: 0
   MpCost: 0
   HpCost: 0
   SkipTurnAndUseNextTurn: 0
   UniqueResourceCost:
     rid: -2
-  TargetType: 9
-  TargetsToHitIfRandom: 5
-  AbilityEffects:
-  - rid: 1609082675180601418
+  TargetType: 0
+  TargetsToHitIfRandom: 0
+  AbilityEffects: []
   SynergyTags: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1609082675180601418
-      type: {class: AtkBuffAbilityEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectIsMissable: 1
-        EffectHitChance: 50
-        NumHits: 0
-        ShieldsToRemove: 0
-        elementTypes: 
-        atkType: 0
-        ignoreDef: 0
-        buffsToApply:
-        - {fileID: 0}
-        duration: 1
-        buffIsMissable: 0
-        buffHitChance: 0
-        AppliedToUser: 0

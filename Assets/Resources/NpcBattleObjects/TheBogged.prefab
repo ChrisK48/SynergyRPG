@@ -120,6 +120,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7e55227aff376f841a3ef3f76bd8a645, type: 2}
   - {fileID: 11400000, guid: 4d3bb5b7a288e5648b4f0fbabd123f1e, type: 2}
   - {fileID: 11400000, guid: fcd36497b9664b247b45d2861e3ca370, type: 2}
+  - {fileID: 11400000, guid: df64ef3d2b13b3c4f9a07c2d225307a6, type: 2}
   activeBuffs: []
   exp: 0
   DamageResistances: 

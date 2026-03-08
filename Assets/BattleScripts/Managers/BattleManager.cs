@@ -54,6 +54,16 @@ public class BattleManager : MonoBehaviour
         NextTurn();
     }
 
+    public void SpawnNpc(NpcBattle npcPrefab)
+    {
+        int npcIndex = npcChars.Count;
+        Transform spawnPoint = npcSpawnPoints[npcIndex]; 
+        NpcBattle npcClone = Instantiate(npcPrefab, spawnPoint.position, spawnPoint.rotation);
+        npcChars.Add(npcClone);
+        npcEntities.Add(npcClone);
+        turnManager.createTurnOrder(); // Recreate turn order to include the new NPC
+    }
+
     public void NextTurn()
     {
         CheckBattleEnd();
