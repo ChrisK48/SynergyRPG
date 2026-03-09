@@ -53,8 +53,8 @@ public class SynergyStanceManager : MonoBehaviour
     {
         List<DualSynergyAbility> possibleSynergies = new List<DualSynergyAbility>();
 
-        CharBattle charA = stance.users[0];
-        CharBattle charB = stance.users[1];
+        PlayerCharBattle charA = (PlayerCharBattle)stance.users[0];
+        PlayerCharBattle charB = (PlayerCharBattle)stance.users[1];
 
         foreach (var synergy in masterSynergyList)
         {
@@ -72,7 +72,7 @@ public class SynergyStanceManager : MonoBehaviour
         return possibleSynergies;
     }
 
-    private bool CanCharactersPerformRecipe(CharBattle a, CharBattle b, SynergyTagSet recipe)
+    private bool CanCharactersPerformRecipe(PlayerCharBattle a, PlayerCharBattle b, SynergyTagSet recipe)
     {
         bool aHasTag1 = a.abilities.Any(abil => abil.SynergyTags.Contains(recipe.tag1));
         bool aHasTag2 = a.abilities.Any(abil => abil.SynergyTags.Contains(recipe.tag2));

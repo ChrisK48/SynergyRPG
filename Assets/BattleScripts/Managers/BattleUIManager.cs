@@ -257,25 +257,25 @@ public class BattleUIManager : MonoBehaviour
     
     private void GenerateButtonsForMatch(SynergyStance stance, SynergyTagSet recipe, SynergyAbility synergy)
     {
-        CharBattle u0 = stance.users[0];
-        CharBattle u1 = stance.users[1];
-
-        // Case A: User 0 has Tag 1, User 1 has Tag 2
-        var m0_T1 = u0.abilities.Where(a => a.SynergyTags.Contains(recipe.tag1));
-        var m1_T2 = u1.abilities.Where(a => a.SynergyTags.Contains(recipe.tag2));
-        CreateCombinationButtons(u0, u1, m0_T1, m1_T2, stance, synergy);
-
-        // Case B: User 0 has Tag 2, User 1 has Tag 1 
-        // (Only run if Tag1 and Tag2 aren't the same, to avoid duplicates)
-        if (recipe.tag1 != recipe.tag2)
+        if(stance.users[0] is PlayerCharBattle pc0 && stance.users[1] is PlayerCharBattle pc1)
         {
-            var m0_T2 = u0.abilities.Where(a => a.SynergyTags.Contains(recipe.tag2));
-            var m1_T1 = u1.abilities.Where(a => a.SynergyTags.Contains(recipe.tag1));
-            CreateCombinationButtons(u0, u1, m0_T2, m1_T1, stance, synergy);
+            // Case A: User 0 has Tag 1, User 1 has Tag 2
+            var m0_T1 = pc0.abilities.Where(a => a.SynergyTags.Contains(recipe.tag1));
+            var m1_T2 = pc1.abilities.Where(a => a.SynergyTags.Contains(recipe.tag2));
+            CreateCombinationButtons(pc0, pc1, m0_T1, m1_T2, stance, synergy);
+
+            // Case B: User 0 has Tag 2, User 1 has Tag 1 
+            // (Only run if Tag1 and Tag2 aren't the same, to avoid duplicates)
+            if (recipe.tag1 != recipe.tag2)
+            {
+                var m0_T2 = pc0.abilities.Where(a => a.SynergyTags.Contains(recipe.tag2));
+                var m1_T1 = pc1.abilities.Where(a => a.SynergyTags.Contains(recipe.tag1));
+                CreateCombinationButtons(pc0, pc1, m0_T2, m1_T1, stance, synergy);
+            }
         }
     }
 
-    private void CreateButtonsForSynergies(CharBattle user)
+    private void CreateButtonsForSynergies(PlayerCharBattle user)
     {
         foreach (Ability ability in user.abilities)
         {

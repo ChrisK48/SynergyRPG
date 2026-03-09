@@ -13,7 +13,7 @@ public class SynergyDefend : ITargetableAction
 
     public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
     {
-        foreach (var member in users)
+        foreach (PlayerCharBattle member in users)
         {
             member.abilities[1].ExecuteAbility(member, member);
         }

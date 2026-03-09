@@ -14,7 +14,6 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     protected int hp, mp;
     public int spd => Spd;
     protected bool isAlive = true;
-    public List<Ability> abilities;
     public List<ActiveBuff> activeBuffs;
     protected bool isPreppingSynergy = false;
     protected bool inSynergyStance = false;
@@ -96,6 +95,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     {
         Debug.Log(CharName + " has died.");
         isAlive = false;
+
         if (inSynergyStance) SynergyStanceManager.instance.BreakSynergyStance(currentSynergyStance);
         BattleManager.instance.GetTurnManager().RemoveFromTurnOrder(this);
     }

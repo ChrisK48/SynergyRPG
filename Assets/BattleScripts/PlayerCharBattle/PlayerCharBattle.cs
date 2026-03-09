@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 
 public abstract class PlayerCharBattle : CharBattle
 {
+    public List<Ability> abilities;
     public GameObject uniqueUIPrefab;
     public event Action OnStatsChanged;
     

@@ -14,7 +14,7 @@ public class SynergyAttack : ITargetableAction
 
     public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
     {
-        foreach (var member in users)
+        foreach (PlayerCharBattle member in users)
         {
             member.abilities[0].PerformAction(new CharBattle[] { member }, targets);
         }

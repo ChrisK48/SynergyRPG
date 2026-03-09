@@ -115,10 +115,8 @@ MonoBehaviour:
   Acc: 0
   Eva: 0
   Luck: 0
-  abilities:
-  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   activeBuffs: []
+  AbilityWeights: []
   exp: 1000
   DamageResistances: 
   DamageWeaknesses:

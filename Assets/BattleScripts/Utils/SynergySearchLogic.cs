@@ -135,8 +135,8 @@ public class SynergySearchLogic
 
         foreach (var stance in BattleManager.instance.GetSynergyStances())
         {
-                CharBattle potentialPartner1 = stance.users[0];
-                CharBattle potentialPartner2 = stance.users[1];
+                PlayerCharBattle potentialPartner1 = (PlayerCharBattle)stance.users[0];
+                PlayerCharBattle potentialPartner2 = (PlayerCharBattle)stance.users[1];
                 
                 foreach(var ability1 in potentialPartner1.abilities)
                 {

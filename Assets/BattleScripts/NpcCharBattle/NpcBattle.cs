@@ -1,10 +1,11 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public abstract class NpcBattle : CharBattle
 {
+    public List<AbilityWeight> AbilityWeights = new List<AbilityWeight>();
     public int exp;
     public List<DamageType> DamageResistances;
     public List<ShieldTag> DamageWeaknesses;
@@ -24,15 +25,13 @@ public abstract class NpcBattle : CharBattle
     public virtual void PerformAITurn()
     {
         List<ITurnEntity> targets = new List<ITurnEntity>();
-        Ability selectedAbility = NpcAbilitySelectionLogic();
-        targets.Add(NpcTargetingLogic(selectedAbility));
+        Ability selectedAbility = NpcAbilitySelection();
+        targets = NpcTargeting(selectedAbility);
         PerformAbility(selectedAbility, targets);
         BattleManager.instance.NextTurn();   
     }
 
-    public abstract ITurnEntity NpcTargetingLogic(Ability ability);
-
-    public abstract Ability NpcAbilitySelectionLogic();
+    public abstract Ability NpcAbilitySelection();
 
     public void PerformAbility(Ability ability, List<ITurnEntity> targets)
     {
@@ -40,11 +39,6 @@ public abstract class NpcBattle : CharBattle
         {
             ability.PerformAction(new CharBattle[] {this}, new List<ITurnEntity> {target});
         }
-    }
-
-    protected List<ITurnEntity> GetPotentialTargets()
-    {
-        return BattleManager.instance.playerEntities.Where(pc => (pc is PlayerCharBattle player && player.GetIfAlive() && !player.GetIfHiding()) || (pc is SynergyStance synergyStance)).ToList();
     }
 
     protected override void Die()
@@ -64,6 +58,58 @@ public abstract class NpcBattle : CharBattle
         amt = (int)damage;
         base.TakeDamage(amt, atkType, damageTypes, shieldsToRemove, ignoreDef, onDamageDealt);
         DecrementShieldTags(damageTypes, shieldsToRemove);
+    }
+
+    protected List<ITurnEntity> NpcTargeting(Ability ability)
+    {
+        switch (ability.TargetType)
+        {
+            case TargetType.SingleEnemy:
+                int randomAllyIndex = UnityEngine.Random.Range(0, BattleManager.instance.playerEntities.Count);
+                return new List<ITurnEntity> { BattleManager.instance.playerEntities[randomAllyIndex] };
+            case TargetType.AllEnemies:
+                return BattleManager.instance.playerEntities.Where(p => p is PlayerCharBattle player && player.GetIfAlive() || p is SynergyStance).ToList();
+            case TargetType.Self:
+                return new List<ITurnEntity> { this };
+            case TargetType.SingleAlly:
+                int randomEnemyIndex = UnityEngine.Random.Range(0, BattleManager.instance.npcEntities.Count);
+                return new List<ITurnEntity> { BattleManager.instance.npcEntities[randomEnemyIndex] };
+            case TargetType.AllAllies:
+                return BattleManager.instance.npcEntities;
+            case TargetType.AnyChar:
+                List<ITurnEntity> allChars = new List<ITurnEntity>();
+                allChars.AddRange(BattleManager.instance.playerEntities);
+                allChars.AddRange(BattleManager.instance.npcEntities);
+                int randomCharIndex = UnityEngine.Random.Range(0, allChars.Count);
+                return new List<ITurnEntity> { allChars[randomCharIndex] };
+            case TargetType.AllChars:
+                List<ITurnEntity> allCharacters = new List<ITurnEntity>();
+                allCharacters.AddRange(BattleManager.instance.playerEntities);
+                allCharacters.AddRange(BattleManager.instance.npcEntities);
+                return allCharacters;
+            case TargetType.RandomAllies:
+                return BattleManager.instance.npcEntities;
+            case TargetType.RandomEnemies:
+                return BattleManager.instance.playerEntities.Where(p => p is PlayerCharBattle player && player.GetIfAlive() || p is SynergyStance).ToList();
+            default:
+                return new List<ITurnEntity>();
+        }
+    }
+
+    public int GetWeightedRandomIndex(List<int> weights)
+    {
+        int totalWeight = 0;
+        foreach (int w in weights) totalWeight += w;
+
+        int roll = UnityEngine.Random.Range(0, totalWeight);
+        int cursor = 0;
+
+        for (int i = 0; i < weights.Count; i++)
+        {
+            cursor += weights[i];
+            if (roll < cursor) return i;
+        }
+        return 0;
     }
 
     private float HandleWeaknesses(float amt, List<DamageType> damageTypes)
