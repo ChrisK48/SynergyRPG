@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06df4cb620dedbe4f97e12788ebd494e, type: 3}
+  m_Name: Eldric
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCharData
+  CharName: Eldric
+  BaseMaxHp: 150
+  BaseMaxMp: 50
+  BaseAtk: 15
+  BaseMag: 25
+  BaseDef: 17
+  BaseMdef: 25
+  BaseSpd: 8
+  BaseAcc: 15
+  BaseEva: 8
+  BaseLuck: 5
+  currentHp: 150
+  currentMp: 50
+  abilities:
+  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  - {fileID: 11400000, guid: 23d23238c1dcaa046912d78d8c88f0f3, type: 2}
+  - {fileID: 11400000, guid: 6fe1cb8ca1fd2c042be145f18b8f3bdc, type: 2}
+  currentLevel: 0
+  currentExp: 0
+  charBattlePrefab: {fileID: 7643124037856912594, guid: 59c7b5f2637b72e44b949a27167e476a, type: 3}

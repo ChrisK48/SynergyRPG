@@ -1,16 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
+public struct ItemStack
+{
+    public Item item;
+    public int count;
+}
+
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-    [System.Serializable]
-    public struct StartingItem
-    {
-        public Item item;
-        public int count;
-    }
-    public List<StartingItem> startingInventory;
 
     public Dictionary<Item, int> items = new Dictionary<Item, int>();
     private void Awake()
@@ -18,7 +18,7 @@ public class InventoryManager : MonoBehaviour
         instance = this;
 
         // Transfer list to dictionary for fast logic
-        foreach (var entry in startingInventory)
+        foreach (var entry in PartyManager.instance.inventory)
         {
             items.Add(entry.item, entry.count);
         }
@@ -44,5 +44,19 @@ public class InventoryManager : MonoBehaviour
     public int GetItemCount(Item item)
     {
         return items.ContainsKey(item) ? items[item] : 0;
+    }
+
+    public void SyncToPartyManager()
+    {
+        PartyManager.instance.inventory.Clear();
+
+        foreach (var pair in items)
+        {
+            PartyManager.instance.inventory.Add(new ItemStack 
+            { 
+                item = pair.Key, 
+                count = pair.Value 
+            });
+        }
     }
 }

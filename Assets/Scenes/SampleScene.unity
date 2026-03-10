@@ -1928,6 +1928,7 @@ GameObject:
   - component: {fileID: 1745198396}
   - component: {fileID: 1745198397}
   - component: {fileID: 1745198398}
+  - component: {fileID: 1745198399}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -2034,11 +2035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74336068452c44f46ae3eddef307d678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  startingInventory:
-  - item: {fileID: 11400000, guid: c3517d11300e1d049acd26d2ea709c91, type: 2}
-    count: 3
-  - item: {fileID: 11400000, guid: fef8da9f878199947886f7233f88476b, type: 2}
-    count: 1
 --- !u!114 &1745198397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2065,6 +2061,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4839f77a6f2b57f45bf8883169f98e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SynergyStanceManager
+--- !u!114 &1745198399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745198391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1633af8009e99bd4dac73fb816f1fcb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartyManager
+  activePartyMembers:
+  - {fileID: 11400000, guid: 0e20eda2bc374aa41ae932d71efc27f7, type: 2}
+  - {fileID: 11400000, guid: a35e50ff217aaa44bbdd91b454170aa5, type: 2}
+  - {fileID: 11400000, guid: bd4e6a2bfcc3b6f439cd3b4cd05c068a, type: 2}
+  - {fileID: 11400000, guid: 28814408086ebe347be29e8a2f5505a1, type: 2}
+  money: 0
+  inventory: []
 --- !u!1 &1758330593 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7223180892362394505, guid: 8a323dd7be4f18544bcc2023da104e3c, type: 3}

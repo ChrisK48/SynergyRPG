@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 
 public abstract class PlayerCharBattle : CharBattle
 {
+    [HideInInspector]
     public List<Ability> abilities;
     public GameObject uniqueUIPrefab;
     public event Action OnStatsChanged;
@@ -15,10 +16,24 @@ public abstract class PlayerCharBattle : CharBattle
         TriggerStatsUpdate();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void InitializeStatsFromData(PlayerCharData data)
     {
-        
+        CharName = data.CharName;
+        MaxHp = data.BaseMaxHp;
+        MaxMp = data.BaseMaxMp;
+        Atk = data.BaseAtk;
+        Mag = data.BaseMag;
+        Def = data.BaseDef;
+        Mdef = data.BaseMdef;
+        Spd = data.BaseSpd;
+        Acc = data.BaseAcc;
+        Eva = data.BaseEva;
+        Luck = data.BaseLuck;
+
+        hp = data.currentHp;
+        mp = data.currentMp;
+
+        abilities = new List<Ability>(data.abilities);
     }
 
     public bool CanPerformAbility(Ability ability)

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06df4cb620dedbe4f97e12788ebd494e, type: 3}
+  m_Name: Gladus
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCharData
+  CharName: Gladus
+  BaseMaxHp: 250
+  BaseMaxMp: 25
+  BaseAtk: 12
+  BaseMag: 6
+  BaseDef: 25
+  BaseMdef: 20
+  BaseSpd: 8
+  BaseAcc: 10
+  BaseEva: 8
+  BaseLuck: 10
+  currentHp: 250
+  currentMp: 25
+  abilities:
+  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  - {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
+  - {fileID: 11400000, guid: 044b6ce1b03add442900abf0cd9639c9, type: 2}
+  - {fileID: 11400000, guid: e53256605f15fee4fb347c2e86ca90c0, type: 2}
+  currentLevel: 0
+  currentExp: 0
+  charBattlePrefab: {fileID: 3932255046324115680, guid: 04994195d8de16844974f7d4fad7a253, type: 3}

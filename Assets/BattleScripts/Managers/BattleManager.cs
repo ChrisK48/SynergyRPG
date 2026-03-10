@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance;
+    [HideInInspector]
     public List<PlayerCharBattle> playerChars;
     public List<NpcBattle> npcChars;
     public List<ITurnEntity> playerEntities = new List<ITurnEntity>();
@@ -23,7 +24,8 @@ public class BattleManager : MonoBehaviour
 
     void Start()
     {
-
+        List<PlayerCharData> partyMembers = PartyManager.instance.activePartyMembers;
+        playerChars = partyMembers.Select(data => data.charBattlePrefab).ToList();
         List<PlayerCharBattle> spawnedPlayers = new List<PlayerCharBattle>();
 
         for (int i = 0; i < playerChars.Count; i++)
@@ -31,6 +33,7 @@ public class BattleManager : MonoBehaviour
             // Spawn the clone
             Transform spawnPoint = playerSpawnPoints[i];
             PlayerCharBattle clone = Instantiate(playerChars[i], spawnPoint.position, spawnPoint.rotation);
+            clone.InitializeStatsFromData(partyMembers[i]);
             spawnedPlayers.Add(clone);
             playerEntities.Add(clone);
             Debug.Log("Spawned player character: " + clone.CharName + " with HP: " + clone.getHp() + " and MP: " + clone.getMp());

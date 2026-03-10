@@ -131,7 +131,7 @@ public class BattleUIManager : MonoBehaviour
         Submenu.SetActive(true);
         FastTrackButton.SetActive(true);
         
-        for (int i = 2; i < pc.abilities.Count; i++)
+        for (int i = 1; i < pc.abilities.Count; i++)
         {
             Ability ability = pc.abilities[i];
             CreateDynamicButton(ability.Name, () => HandleAbility(pc, ability), ButtonContainer);
