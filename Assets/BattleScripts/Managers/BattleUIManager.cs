@@ -68,7 +68,7 @@ public class BattleUIManager : MonoBehaviour
         if (entity is PlayerCharBattle pc)
         {
             BindStaticButton("Attack", () => { TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc }, pc.abilities[0]); HideCommandMenu(); HideSubMenu(); });
-            BindStaticButton("Defend", () => { pc.Defend(); HideCommandMenu(); HideSubMenu(); BattleManager.instance.NextTurn(); });
+            BindStaticButton("Defend", () => { pc.Defend(); HideCommandMenu(); HideSubMenu(); pc.EndTurn(); });
             BindStaticButton("Ability", () => CreateAbilityList(pc));
             BindStaticButton("Item", () => CreateItemList(pc));
             BindStaticButton("Synergize", () => CreateDuoList(pc));
@@ -76,7 +76,7 @@ public class BattleUIManager : MonoBehaviour
         else if (entity is SynergyStance stance)
         {
             BindStaticButton("Attack", () => { TargetSelectionManager.instance.BeginTargetSelection(stance.users, new SynergyAttack(stance.users)); HideCommandMenu(); });
-            BindStaticButton("Defend", () => { stance.Defend(); HideCommandMenu(); HideSubMenu(); BattleManager.instance.NextTurn(); });
+            BindStaticButton("Defend", () => { stance.Defend(); HideCommandMenu(); HideSubMenu(); stance.EndTurn(); });
             BindStaticButton("Ability", () => CreateSynergyAbilityList(stance));
             BindStaticButton("Item", () => CreateItemList(stance));
         }
@@ -319,7 +319,7 @@ public class BattleUIManager : MonoBehaviour
         {
             foreach (var bMove in movesB)
             {
-                GameObject btnObj = Instantiate(MenuButtonPrefab, Submenu.transform);
+                GameObject btnObj = Instantiate(MenuButtonPrefab, ButtonContainer);
                 btnObj.GetComponentInChildren<TextMeshProUGUI>().text = $"{synergy.Name}\n<size=70%>({aMove.Name} + {bMove.Name})</size>";
 
                 // Capture local references for the listener

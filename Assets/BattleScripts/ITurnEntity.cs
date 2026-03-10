@@ -15,4 +15,5 @@ public interface ITurnEntity
     public void ProcessTurnBuffs();
     public void StartPrep(Ability[] abilities);
     public void EndPrep();
+    public void EndTurn();
 }

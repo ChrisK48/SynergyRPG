@@ -5,27 +5,15 @@ public class TheBoggedAI : NpcBattle
 {
     public override Ability NpcAbilitySelection()
     {
-        int randomIndex = Random.Range(0, 100);
-            if (30 <= randomIndex && randomIndex < 70)
-            {
-                return AbilityWeights[0].Ability; // Quick swing
-            }
-            else if (randomIndex < 80)
-            {
-                return AbilityWeights[1].Ability; // Sink and Strike
-            }
-            else if (randomIndex < 95)
-            {
-                return AbilityWeights[2].Ability; // Thrash
-            }
-            else if (10 <= randomIndex && randomIndex < 30)
-            {
-                return AbilityWeights[3].Ability; // Mudshot
-            }
-            else if (randomIndex < 10)
-            {
-                return AbilityWeights[4].Ability; // Spawn Minions
-            }
-        return AbilityWeights[randomIndex].Ability;
+        Ability chosenAbility = AbilityWeights[GetWeightedRandomIndex(AbilityWeights)].Ability;
+        if (CheckHpGates() && BattleManager.instance.npcChars.Count < 2) return AbilityWeights[4].Ability;
+        if (hp <= MaxHp * 0.5f)
+        {
+            AbilityWeights[0].Weight = 25;
+            AbilityWeights[1].Weight = 25;
+            AbilityWeights[2].Weight = 25;
+            AbilityWeights[3].Weight = 25;
+        }
+        return chosenAbility;
     }
 }

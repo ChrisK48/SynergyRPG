@@ -84,4 +84,10 @@ public class SynergyStance : ITurnEntity
     {
         isPreppingSynergy = false;
     }
+
+    public void EndTurn()
+    {
+        ProcessTurnBuffs();
+        BattleManager.instance.NextTurn();
+    }
 }

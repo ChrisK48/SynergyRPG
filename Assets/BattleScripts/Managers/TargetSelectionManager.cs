@@ -150,9 +150,15 @@ public class TargetSelectionManager : MonoBehaviour
         }
 
         Debug.Log("Users: " + string.Join(", ", users.Select(u => u.EntityName)));
-        action.PerformAction(users, targets);
+        if (users[0].GetIfInSynergyStance())
+        {
+            action.PerformAction(users, targets, users[0].GetCurrentSynergyStance().EndTurn);
+        }
+        else
+        {
+            action.PerformAction(users, targets, users[0].EndTurn);
+        }
         ClearPopups();
         if (users[0].GetIfInSynergyStance()) FlowManager.instance.ConsumeFlow(10);
-        BattleManager.instance.NextTurn();
     }
 }

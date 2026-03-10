@@ -56,12 +56,13 @@ public class BattleManager : MonoBehaviour
 
     public void SpawnNpc(NpcBattle npcPrefab)
     {
+        Debug.Log("Spawning NPC: " + npcPrefab.CharName);
         int npcIndex = npcChars.Count;
         Transform spawnPoint = npcSpawnPoints[npcIndex]; 
         NpcBattle npcClone = Instantiate(npcPrefab, spawnPoint.position, spawnPoint.rotation);
         npcChars.Add(npcClone);
         npcEntities.Add(npcClone);
-        turnManager.createTurnOrder(); // Recreate turn order to include the new NPC
+        BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), turnManager.getCurrentChar(), turnManager.GetCurrentTurnIndex());
     }
 
     public void NextTurn()
@@ -93,7 +94,6 @@ public class BattleManager : MonoBehaviour
 
         BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentEntity, turnManager.GetCurrentTurnIndex());
 
-        currentEntity.ProcessTurnBuffs();
         CheckIfNotFollowedUp(currentEntity);
         
         turnManager.AdvanceTurn(); 

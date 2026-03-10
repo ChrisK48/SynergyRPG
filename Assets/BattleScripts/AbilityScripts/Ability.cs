@@ -34,7 +34,7 @@ public class Ability : ScriptableObject, ITargetableAction
         }
     }
 
-    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
+    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets, System.Action onComplete = null)
     {
         if (SkipTurnAndUseNextTurn)
         {
@@ -51,13 +51,12 @@ public class Ability : ScriptableObject, ITargetableAction
         {
             if (!player.CanPerformAbility(this)) return;
         }
-        
         if (TargetType == TargetType.RandomAllies || TargetType == TargetType.RandomEnemies) targets = GetRandomTargets(targets);
-        Debug.Log($"Performing {AbilityName} on {string.Join(", ", targets.Select(t => t.EntityName))}");
         for(int i = 0; i < targets.Count; i++)
         {
             ExecuteAbility(user[0], targets[i]);
         }
+        onComplete?.Invoke();
     }
 
     private int CalculatePower(CharBattle user)

@@ -36,13 +36,13 @@ MonoBehaviour:
       data:
         EffectIsMissable: 1
         EffectHitChance: 50
-        NumHits: 0
+        NumHits: 1
         ShieldsToRemove: 0
         elementTypes: 
         atkType: 0
         ignoreDef: 0
         buffsToApply:
-        - {fileID: 0}
+        - {fileID: 11400000, guid: f6b5f8b963edb0948a01049374cc332d, type: 2}
         duration: 1
         buffIsMissable: 0
         buffHitChance: 0

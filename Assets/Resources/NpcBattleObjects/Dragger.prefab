@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3619375062033591887
+--- !u!1 &8586570362385999349
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4160059068968518249}
-  - component: {fileID: 5516113884842175122}
-  - component: {fileID: 2610517544235656324}
+  - component: {fileID: 2966231235440851164}
+  - component: {fileID: 8975440958424050710}
+  - component: {fileID: -5604819314779150829}
   m_Layer: 0
-  m_Name: CaveBat
+  m_Name: Dragger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4160059068968518249
+--- !u!4 &2966231235440851164
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3619375062033591887}
+  m_GameObject: {fileID: 8586570362385999349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.47, y: 0.233, z: 0}
+  m_LocalPosition: {x: 677.9075, y: 278.89032, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5516113884842175122
+--- !u!212 &8975440958424050710
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3619375062033591887}
+  m_GameObject: {fileID: 8586570362385999349}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5849056, g: 0.45911652, b: 0.21887973, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,41 +92,40 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &2610517544235656324
+--- !u!114 &-5604819314779150829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3619375062033591887}
+  m_GameObject: {fileID: 8586570362385999349}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57fa46a78673bf64182273a764170f42, type: 3}
+  m_Script: {fileID: 11500000, guid: d76b801ae43009144a53c5682cd0f525, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CaveBatBattle
-  CharName: Cave Bat
-  MaxHp: 50
+  m_EditorClassIdentifier: Assembly-CSharp::GenericEnemy
+  CharName: Dragger
+  MaxHp: 150
   MaxMp: 0
-  Atk: 10
+  Atk: 20
   Mag: 0
-  Def: 5
-  Mdef: 0
-  Spd: 1
+  Def: 15
+  Mdef: 5
+  Spd: 4
   Acc: 0
   Eva: 0
   Luck: 0
   activeBuffs: []
   AbilityWeights:
-  - Ability: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-    Weight: 100
+  - Ability: {fileID: 11400000, guid: b5ed4cb7875426f41a1c48c0c7389588, type: 2}
+    Weight: 80
+  - Ability: {fileID: 11400000, guid: 7e55227aff376f841a3ef3f76bd8a645, type: 2}
+    Weight: 20
   HpGates: []
   DamageResistances: 
   DamageWeaknesses:
   - element: 0
-    MaxShieldAmount: 1
-    shieldAmount: 2
-  - element: 0
     MaxShieldAmount: 2
-    shieldAmount: 2
-  shieldsToRegain: 1
+    shieldAmount: 0
+  shieldsToRegain: 0
   xpValue: 0

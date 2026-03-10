@@ -23,7 +23,7 @@ public class Item : ScriptableObject, ITargetableAction
         }
     }
 
-    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
+    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets, System.Action onComplete = null)
     {
         InventoryManager.instance.RemoveItem(this);
         foreach (ITurnEntity target in targets)
@@ -41,5 +41,6 @@ public class Item : ScriptableObject, ITargetableAction
                 }
             }
         }
+        onComplete?.Invoke();
     }
 }

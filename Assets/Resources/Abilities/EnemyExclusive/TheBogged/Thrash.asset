@@ -21,7 +21,8 @@ MonoBehaviour:
   SkipTurnAndUseNextTurn: 0
   UniqueResourceCost:
     rid: -2
-  TargetType: 4
+  TargetType: 1
+  TargetsToHitIfRandom: 0
   AbilityEffects:
   - rid: 1609082675180601415
   SynergyTags: 

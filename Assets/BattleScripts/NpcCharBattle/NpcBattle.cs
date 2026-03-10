@@ -6,11 +6,11 @@ using System;
 public abstract class NpcBattle : CharBattle
 {
     public List<AbilityWeight> AbilityWeights = new List<AbilityWeight>();
-    public int exp;
+    public List<HpGate> HpGates = new List<HpGate>();
     public List<DamageType> DamageResistances;
     public List<ShieldTag> DamageWeaknesses;
-    public int xpValue;
     public int shieldsToRegain;
+    public int xpValue;
     private bool shieldBroken = false;
     private int DefNotBroken;
     private int MdefNotBroken;
@@ -24,21 +24,21 @@ public abstract class NpcBattle : CharBattle
 
     public virtual void PerformAITurn()
     {
-        List<ITurnEntity> targets = new List<ITurnEntity>();
         Ability selectedAbility = NpcAbilitySelection();
-        targets = NpcTargeting(selectedAbility);
+        List <ITurnEntity> targets = NpcTargeting(selectedAbility);
         PerformAbility(selectedAbility, targets);
         BattleManager.instance.NextTurn();   
     }
 
-    public abstract Ability NpcAbilitySelection();
+    public virtual Ability NpcAbilitySelection()
+    {
+        Ability chosenAbility = AbilityWeights[GetWeightedRandomIndex(AbilityWeights)].Ability;
+        return chosenAbility;
+    }
 
     public void PerformAbility(Ability ability, List<ITurnEntity> targets)
     {
-        foreach (ITurnEntity target in targets)
-        {
-            ability.PerformAction(new CharBattle[] {this}, new List<ITurnEntity> {target});
-        }
+        ability.PerformAction(new CharBattle[] {this}, targets);
     }
 
     protected override void Die()
@@ -96,20 +96,33 @@ public abstract class NpcBattle : CharBattle
         }
     }
 
-    public int GetWeightedRandomIndex(List<int> weights)
+    public int GetWeightedRandomIndex(List<AbilityWeight> weights)
     {
         int totalWeight = 0;
-        foreach (int w in weights) totalWeight += w;
+        foreach (var w in weights) totalWeight += w.Weight;
 
         int roll = UnityEngine.Random.Range(0, totalWeight);
         int cursor = 0;
 
         for (int i = 0; i < weights.Count; i++)
         {
-            cursor += weights[i];
+            cursor += weights[i].Weight;
             if (roll < cursor) return i;
         }
         return 0;
+    }
+
+    public bool CheckHpGates()
+    {
+        foreach (var gate in HpGates)
+        {
+            if (!gate.HasTriggered && hp <= MaxHp * gate.Threshold)
+            {
+                gate.HasTriggered = true;
+                return true;
+            }
+        }
+        return false;
     }
 
     private float HandleWeaknesses(float amt, List<DamageType> damageTypes)

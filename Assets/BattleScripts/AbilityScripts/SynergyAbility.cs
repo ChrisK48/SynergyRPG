@@ -14,7 +14,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
     [SerializeReference]
     public List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
 
-    public void PerformAction(CharBattle[] users, List<ITurnEntity> targets)
+    public void PerformAction(CharBattle[] users, List<ITurnEntity> targets, System.Action onComplete = null)
     {
         foreach (CharBattle user in users)
         {
@@ -40,6 +40,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
         }
 
         if (!users.Any(u => u.GetIfInSynergyStance()) && !BattleUIManager.instance.GetIfFastTracked()) FlowManager.instance.GainFlow(10); // This is also temporary until we have a better system for handling synergy resource costs and flow gain
+        onComplete?.Invoke();
     }
 
     public void ExecuteSynergy(CharBattle[] users, CharBattle target)

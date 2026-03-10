@@ -11,11 +11,12 @@ public class SynergyDefend : ITargetableAction
         this.users = users;
     }
 
-    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets)
+    public void PerformAction(CharBattle[] user, List<ITurnEntity> targets, System.Action onComplete = null)
     {
         foreach (PlayerCharBattle member in users)
         {
             member.abilities[1].ExecuteAbility(member, member);
         }
+        onComplete?.Invoke();
     }
 }

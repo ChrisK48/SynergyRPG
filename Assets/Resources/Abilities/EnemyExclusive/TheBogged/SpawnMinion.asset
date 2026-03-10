@@ -23,10 +23,20 @@ MonoBehaviour:
     rid: -2
   TargetType: 0
   TargetsToHitIfRandom: 0
-  AbilityEffects: []
+  AbilityEffects:
+  - rid: 1609082698890739779
   SynergyTags: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1609082698890739779
+      type: {class: SpawnNpcAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 0
+        NpcToSpawn: {fileID: -5604819314779150829, guid: 1c00621a3dfd4e541815b46dd659fed0, type: 3}
+        NumNpcToSpawn: 2

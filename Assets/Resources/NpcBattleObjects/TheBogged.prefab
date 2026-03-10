@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 152.50244, y: 707.6355, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3584906, g: 0.23365049, b: 0.04622046, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -116,12 +116,28 @@ MonoBehaviour:
   Eva: 0
   Luck: 0
   activeBuffs: []
-  AbilityWeights: []
-  exp: 0
+  AbilityWeights:
+  - Ability: {fileID: 11400000, guid: b5ed4cb7875426f41a1c48c0c7389588, type: 2}
+    Weight: 50
+  - Ability: {fileID: 11400000, guid: fcd36497b9664b247b45d2861e3ca370, type: 2}
+    Weight: 25
+  - Ability: {fileID: 11400000, guid: 7e55227aff376f841a3ef3f76bd8a645, type: 2}
+    Weight: 25
+  - Ability: {fileID: 11400000, guid: 4d3bb5b7a288e5648b4f0fbabd123f1e, type: 2}
+    Weight: 0
+  - Ability: {fileID: 11400000, guid: df64ef3d2b13b3c4f9a07c2d225307a6, type: 2}
+    Weight: 0
+  HpGates:
+  - Threshold: 75
+    HasTriggered: 0
+  - Threshold: 50
+    HasTriggered: 0
+  - Threshold: 25
+    HasTriggered: 0
   DamageResistances: 
   DamageWeaknesses:
   - element: 0
     MaxShieldAmount: 5
     shieldAmount: 0
-  xpValue: 150
   shieldsToRegain: 0
+  xpValue: 150

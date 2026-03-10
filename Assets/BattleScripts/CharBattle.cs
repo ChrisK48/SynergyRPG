@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.Accessibility;
 
 public abstract class CharBattle : MonoBehaviour, ITurnEntity
 {
@@ -112,6 +108,12 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         ActiveBuff newBuff = new ActiveBuff(buff, duration);
         activeBuffs.Add(newBuff);
         buff.StartBuff(this, newBuff);
+    }
+
+    public void EndTurn()
+    {
+        ProcessTurnBuffs();
+        BattleManager.instance.NextTurn();
     }
 
     public void ProcessTurnBuffs()
