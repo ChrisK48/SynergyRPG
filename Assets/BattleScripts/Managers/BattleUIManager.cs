@@ -351,6 +351,7 @@ public class BattleUIManager : MonoBehaviour
                     userB.StorePreppedAbility(finalB);
                     TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { userA, userB }, synergy);
                     HideCommandMenu();
+                    HideSubMenu();
                 });
             }
         }
