@@ -36,21 +36,26 @@ public abstract class PlayerCharBattle : CharBattle
         abilities = new List<Ability>(data.abilities);
     }
 
+    public void DeductResources(Ability ability)
+    {
+        bool hasUniqueCost = ability.UniqueResourceCost != null;
+        ChangeMp(-ability.MpCost);
+        hp -= ability.HpCost;
+        if (hasUniqueCost) ability.UniqueResourceCost.PayCost(this);
+        TriggerStatsUpdate();
+    }
+
     public bool CanPerformAbility(Ability ability)
     {
         bool hasUniqueCost = ability.UniqueResourceCost != null;
 
         if (mp >= ability.MpCost && hp >= ability.HpCost && (!hasUniqueCost || ability.UniqueResourceCost.CanPayCost(this)))
         {
-            mp -= ability.MpCost;
-            hp -= ability.HpCost;
-            if (hasUniqueCost) ability.UniqueResourceCost.PayCost(this);
-            TriggerStatsUpdate();
             return true;
         }
         else
         {
-            Debug.Log(CharName + " does not have enough resources to perform " + ability.Name);
+            Debug.Log($"CharName has {mp} MP and {hp} HP, but does not have {ability.MpCost} enough resources to perform {ability.Name}");
             return false;
         }
     }

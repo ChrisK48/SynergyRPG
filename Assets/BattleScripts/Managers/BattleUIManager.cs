@@ -136,7 +136,9 @@ public class BattleUIManager : MonoBehaviour
         for (int i = 1; i < pc.abilities.Count; i++)
         {
             Ability ability = pc.abilities[i];
-            CreateDynamicButton(ability.Name, () => HandleAbility(pc, ability), ButtonContainer);
+            CreateDynamicButton(ability.Name, () => {
+                if (pc.CanPerformAbility(ability)) HandleAbility(pc, ability);
+            }, ButtonContainer);
         }
         CreateButtonsForSynergies(pc);
 
@@ -286,14 +288,17 @@ public class BattleUIManager : MonoBehaviour
             {
                 foreach (var synergy in synergies)
                 {
-                    CharBattle finalPartner1 = synergy.Item2;
+                    PlayerCharBattle finalPartner1 = (PlayerCharBattle)synergy.Item2;
                     SynergyAbility finalAbility = synergy.Item1;
                     CreateDynamicButton($"{synergy.Item1.Name} with {synergy.Item2.CharName}", () =>
                     {
-                        user.StorePreppedAbility(ability);
-                        TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1 }, finalAbility);
-                        HideCommandMenu();
-                        HideSubMenu();
+                        if (finalPartner1.CanPerformAbility(finalPartner1.GetPreppedAbility()) && user.CanPerformAbility(ability))
+                        {
+                            user.StorePreppedAbility(ability);
+                            TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1 }, finalAbility);
+                            HideCommandMenu();
+                            HideSubMenu();
+                        }
                     }, ButtonContainer);
                 }
             }
@@ -301,15 +306,18 @@ public class BattleUIManager : MonoBehaviour
             List<Tuple<TriSynergyAbility, CharBattle[]>> triSynergies = synergySearchLogic.GetTripleSynergy(user, ability);
             if (triSynergies.Count > 0)            
             {
-                CharBattle finalPartner1 = triSynergies[0].Item2[0];
-                CharBattle finalPartner2 = triSynergies[0].Item2[1];
+                PlayerCharBattle finalPartner1 = (PlayerCharBattle)triSynergies[0].Item2[0];
+                PlayerCharBattle finalPartner2 = (PlayerCharBattle)triSynergies[0].Item2[1];
                 SynergyAbility finalTriSynergy = triSynergies[0].Item1;
                 CreateDynamicButton($"{triSynergies[0].Item1.Name} with {triSynergies[0].Item2[0].CharName} and {triSynergies[0].Item2[1].CharName}", () =>
                 {
-                    user.StorePreppedAbility(ability);
-                    TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1, finalPartner2 }, finalTriSynergy);
-                    HideCommandMenu();
-                    HideSubMenu();
+                    if (finalPartner1.CanPerformAbility(user.GetPreppedAbility()) && finalPartner2.CanPerformAbility(user.GetPreppedAbility()) && user.CanPerformAbility(ability))
+                    {
+                        user.StorePreppedAbility(ability);
+                        TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1, finalPartner2 }, finalTriSynergy);
+                        HideCommandMenu();
+                        HideSubMenu();
+                    }
                 }, ButtonContainer);
             }
         }

@@ -153,10 +153,18 @@ public class TargetSelectionManager : MonoBehaviour
         if (users[0].GetIfInSynergyStance())
         {
             action.PerformAction(users, targets, users[0].GetCurrentSynergyStance().EndTurn);
+            if (action is Ability ability)
+            {
+                foreach (PlayerCharBattle user in users)
+                {
+                    user.DeductResources(ability);
+                }
+            }
         }
         else
         {
             action.PerformAction(users, targets, users[0].EndTurn);
+            if (users[0] is PlayerCharBattle player && action is Ability ability) player.DeductResources(ability);
         }
         ClearPopups();
         if (users[0].GetIfInSynergyStance()) FlowManager.instance.ConsumeFlow(10);

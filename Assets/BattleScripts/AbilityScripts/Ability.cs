@@ -48,10 +48,6 @@ public class Ability : ScriptableObject, ITargetableAction
             return;
         }
 
-        if (user[0] is PlayerCharBattle player)
-        {
-            if (!player.CanPerformAbility(this)) return;
-        }
         if (TargetType == TargetType.RandomAllies || TargetType == TargetType.RandomEnemies) targets = GetRandomTargets(targets);
         for(int i = 0; i < targets.Count; i++)
         {
