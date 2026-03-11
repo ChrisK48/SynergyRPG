@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.Events;
-using Unity.VisualScripting;
 using System;
 
 public class BattleUIManager : MonoBehaviour
@@ -14,6 +13,9 @@ public class BattleUIManager : MonoBehaviour
     public Transform partyUIContainer;
     public Transform commandMenuUIContainer;
     public Transform TurnOrderUIContainer;
+    public Transform BattleEndContainer;
+    public Transform FlowUIContainer;
+    public GameObject ExpUIPrefab;
     public GameObject CommandMenu;
     public GameObject Submenu;
     public GameObject MenuButtonPrefab;
@@ -365,4 +367,20 @@ public class BattleUIManager : MonoBehaviour
     }
 
     public bool GetIfFastTracked() => fastTrack;
+
+    public void ShowVictoryScreen(int earnedXp)
+    {
+        foreach (PlayerCharData pc in PartyManager.instance.activePartyMembers)
+        {
+            int oldExp = pc.currentExp;
+            pc.GainExp(earnedXp);
+            GameObject obj = Instantiate(ExpUIPrefab, BattleEndContainer);
+            ExpUI charExp = obj.GetComponent<ExpUI>();
+            Debug.Log($"Earned Exp: {earnedXp}, Current Exp: {pc.currentExp}, Old Exp: {oldExp}");
+            charExp.SetupUI(pc, oldExp, BattleManager.instance.GetEarnedXp());
+        }
+        partyUIContainer.gameObject.SetActive(false);
+        TurnOrderUIContainer.gameObject.SetActive(false);
+        FlowUIContainer.gameObject.SetActive(false);
+    }
 }

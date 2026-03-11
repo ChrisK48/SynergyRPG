@@ -44,6 +44,7 @@ public class Ability : ScriptableObject, ITargetableAction
                 entity.StoreTargetsForNextTurn(targets);
                 entity.HideChar();
             }
+            onComplete?.Invoke();
             return;
         }
 

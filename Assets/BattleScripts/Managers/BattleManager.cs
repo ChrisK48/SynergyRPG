@@ -70,7 +70,11 @@ public class BattleManager : MonoBehaviour
 
     public void NextTurn()
     {
-        CheckBattleEnd();
+        if (CheckBattleEnd())
+        {
+            HandleBattleEnd();
+            return;
+        }
         ITurnEntity currentEntity = turnManager.getCurrentChar();
         if (currentEntity is CharBattle currentChar)
         {
@@ -123,7 +127,15 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void CheckBattleEnd()
+    private bool CheckBattleEnd()
+    {
+        if (playerChars.All(pc => !pc.GetIfAlive()) || npcChars.All(npc => !npc.GetIfAlive()))
+        {
+            return true;
+        }
+        return false;
+    }
+    private void HandleBattleEnd()
     {
         if (playerChars.All(pc => !pc.GetIfAlive()))
         {
@@ -133,14 +145,17 @@ public class BattleManager : MonoBehaviour
         else if (npcChars.All(npc => !npc.GetIfAlive()))
         {
             Debug.Log("All enemies defeated! Victory!");
-            // Handle victory logic here
+            BattleUIManager.instance.ShowVictoryScreen(earnedXp);
         }
     }
 
     public void AddEarnedXp(int xp)
     {
+        Debug.Log("Adding earned XP: " + xp);
         earnedXp += xp;
     }
+
+    public int GetEarnedXp() => earnedXp;
 
     public TurnManager GetTurnManager()
     {

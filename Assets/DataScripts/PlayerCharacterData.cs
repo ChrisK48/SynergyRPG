@@ -11,4 +11,37 @@ public class PlayerCharData : ScriptableObject
     public int currentLevel;
     public int currentExp;
     public PlayerCharBattle charBattlePrefab;
+
+    public int GetExpToNextLevel(int level)
+    {
+        if (level <= 1) return 0;
+        return Mathf.FloorToInt(100 * Mathf.Pow(level - 1, 1.5f)); // May change exp curve later (probably)
+    }
+
+    public float GainExp(int expAmount)
+    {
+        currentExp += expAmount;
+        while (currentExp >= GetExpToNextLevel(currentLevel+1))
+        {
+            LevelUp();
+        }
+        return 0;
+    }
+
+    public int GetLevelForXP(int xp)
+    {
+        int level = 1;
+        while (xp >= GetExpToNextLevel(level + 1))
+        {
+            level++;
+        }
+        return level;
+    }
+
+    void LevelUp()
+    {
+        currentLevel++;
+        Debug.Log(CharName + " leveled up to level " + currentLevel + "!");
+        // Will add stat curve stuff here
+    }
 }

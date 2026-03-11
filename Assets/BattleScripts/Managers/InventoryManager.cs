@@ -13,11 +13,13 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager instance;
 
     public Dictionary<Item, int> items = new Dictionary<Item, int>();
-    private void Awake()
+    void Awake()
     {
         instance = this;
+    }
 
-        // Transfer list to dictionary for fast logic
+    void Start()
+    {
         foreach (var entry in PartyManager.instance.inventory)
         {
             items.Add(entry.item, entry.count);

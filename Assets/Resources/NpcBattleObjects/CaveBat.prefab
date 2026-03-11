@@ -129,4 +129,4 @@ MonoBehaviour:
     MaxShieldAmount: 2
     shieldAmount: 2
   shieldsToRegain: 1
-  xpValue: 0
+  xpValue: 50

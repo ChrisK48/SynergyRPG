@@ -14,6 +14,7 @@ public abstract class NpcBattle : CharBattle
     private bool shieldBroken = false;
     private int DefNotBroken;
     private int MdefNotBroken;
+    private bool isDead = false;
 
     public void Start()
     {
@@ -46,7 +47,8 @@ public abstract class NpcBattle : CharBattle
         base.Die();
         BattleManager.instance.npcChars.Remove(this);
 
-        BattleManager.instance.AddEarnedXp(xpValue);
+        if (!isDead) BattleManager.instance.AddEarnedXp(xpValue);
+        isDead = true;
         // By default, NPCs will be removed from the battle when they die.
         Destroy(this.gameObject);
     }

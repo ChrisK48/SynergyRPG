@@ -994,6 +994,108 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &657055173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 657055174}
+  - component: {fileID: 657055177}
+  - component: {fileID: 657055176}
+  - component: {fileID: 657055175}
+  m_Layer: 5
+  m_Name: BattleEndOverlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &657055174
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657055173}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1382139931}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 478.16, y: -55.115833}
+  m_SizeDelta: {x: -956.33, y: -110.2317}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &657055175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657055173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &657055176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657055173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &657055177
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657055173}
+  m_CullTransparentMesh: 1
 --- !u!1 &667758542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,6 +1635,7 @@ RectTransform:
   - {fileID: 2101003504}
   - {fileID: 2105288037}
   - {fileID: 1758330594}
+  - {fileID: 657055174}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1949,8 +2052,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleUIManager
   partyUIContainer: {fileID: 1354882064}
-  commandMenuUIContainer: {fileID: 0}
+  commandMenuUIContainer: {fileID: 2101003504}
   TurnOrderUIContainer: {fileID: 1863272251}
+  BattleEndContainer: {fileID: 657055174}
+  FlowUIContainer: {fileID: 2101003504}
+  ExpUIPrefab: {fileID: 7422738671629981561, guid: 4b2c576e62c4d34458ee68cdfc948cc3, type: 3}
   CommandMenu: {fileID: 2105288036}
   Submenu: {fileID: 1758330593}
   MenuButtonPrefab: {fileID: 8824185341487032075, guid: a4c82902910a7cc4fbe004c173f6f8fe, type: 3}
@@ -1977,7 +2083,7 @@ MonoBehaviour:
   - {fileID: 7643124037856912594, guid: 59c7b5f2637b72e44b949a27167e476a, type: 3}
   - {fileID: -6576123505942400488, guid: e635e93752cd4e342a25c02d9adc663a, type: 3}
   npcChars:
-  - {fileID: 3429810215835097252, guid: f37e3bd294fce734b886112681ba34ca, type: 3}
+  - {fileID: 2610517544235656324, guid: b01416a4ebe966446b234af1287ee6dc, type: 3}
   playerSpawnPoints:
   - {fileID: 1991358447}
   - {fileID: 420734366}
@@ -2079,7 +2185,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bd4e6a2bfcc3b6f439cd3b4cd05c068a, type: 2}
   - {fileID: 11400000, guid: 28814408086ebe347be29e8a2f5505a1, type: 2}
   money: 0
-  inventory: []
+  inventory:
+  - item: {fileID: 11400000, guid: c3517d11300e1d049acd26d2ea709c91, type: 2}
+    count: 3
+  - item: {fileID: 11400000, guid: fef8da9f878199947886f7233f88476b, type: 2}
+    count: 1
 --- !u!1 &1758330593 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7223180892362394505, guid: 8a323dd7be4f18544bcc2023da104e3c, type: 3}
