@@ -29,6 +29,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   - {fileID: 11400000, guid: aa74fbc574af7ec4591ec150d4254c5c, type: 2}
   - {fileID: 11400000, guid: d2e92735597dbdf4a8edb51707bd9b0b, type: 2}
-  currentLevel: 2
-  currentExp: 300
+  currentLevel: 1
+  currentExp: 0
   charBattlePrefab: {fileID: -1566451580324075284, guid: 3629c995faccb6d4ea91647f3cfebee4, type: 3}

@@ -227,7 +227,7 @@ public class BattleUIManager : MonoBehaviour
         PositionSubMenu();
         foreach (var pair in InventoryManager.instance.items)
         {
-            Item item = pair.Key;
+            ConsumableItem item = pair.Key;
             int count = pair.Value;
 
             CreateDynamicButton($"{item.Name} (x{count})", () =>

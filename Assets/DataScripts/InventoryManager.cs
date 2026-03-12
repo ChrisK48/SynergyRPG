@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public struct ItemStack
 {
-    public Item item;
+    public ConsumableItem item;
     public int count;
 }
 
@@ -12,7 +12,8 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
 
-    public Dictionary<Item, int> items = new Dictionary<Item, int>();
+    public Dictionary<ConsumableItem, int> items = new Dictionary<ConsumableItem, int>();
+
     void Awake()
     {
         instance = this;
@@ -22,11 +23,11 @@ public class InventoryManager : MonoBehaviour
     {
         foreach (var entry in PartyManager.instance.inventory)
         {
-            items.Add(entry.item, entry.count);
+            if (entry.count > 0) items.Add(entry.item, entry.count);
         }
     }
 
-    public void AddItem(Item item, int count)
+    public void AddItem(ConsumableItem item, int count)
     {
         if (items.ContainsKey(item))
             items[item] += count;
@@ -34,7 +35,7 @@ public class InventoryManager : MonoBehaviour
             items.Add(item, count);
     }
 
-    public void RemoveItem(Item item)
+    public void RemoveItem(ConsumableItem item)
     {
         if (items.ContainsKey(item))
         {
@@ -43,7 +44,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public int GetItemCount(Item item)
+    public int GetItemCount(ConsumableItem item)
     {
         return items.ContainsKey(item) ? items[item] : 0;
     }

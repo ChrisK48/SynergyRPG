@@ -14,7 +14,7 @@ public class PlayerCharData : ScriptableObject
 
     public int GetExpToNextLevel(int level)
     {
-        if (level <= 1) return 0;
+        if (level <= 1) return 100;
         return Mathf.FloorToInt(100 * Mathf.Pow(level - 1, 1.5f)); // May change exp curve later (probably)
     }
 

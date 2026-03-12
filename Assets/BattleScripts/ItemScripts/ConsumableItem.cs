@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item")]
-public class Item : ScriptableObject, ITargetableAction
+public class ConsumableItem : ScriptableObject, ITargetableAction, IItem
 {
     public string itemName;
+    public string ConsumableDescription;
     public String Name => itemName;
-    public String itemDescription;
+    public String Description => ConsumableDescription;
 
     public TargetType targetType;
     public TargetType Targets => targetType;

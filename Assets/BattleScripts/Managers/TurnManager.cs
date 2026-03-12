@@ -41,15 +41,15 @@ public class TurnManager
     }
 
     public ITurnEntity getCurrentChar()
-{
-    // If we finished the list, reset and re-sort
-    if (currentTurn >= turnOrder.Count)
     {
-        currentTurn = 0;
-        createTurnOrder(); 
+        // If we finished the list, reset and re-sort
+        if (currentTurn >= turnOrder.Count)
+        {
+            currentTurn = 0;
+            createTurnOrder(); 
+        }
+        return turnOrder[currentTurn];
     }
-    return turnOrder[currentTurn];
-}
 
     public void AdvanceTurn()
     {

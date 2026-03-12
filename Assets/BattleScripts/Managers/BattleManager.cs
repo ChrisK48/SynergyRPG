@@ -102,8 +102,6 @@ public class BattleManager : MonoBehaviour
         BattleUIManager.instance.UpdateTurnOrderUI(turnManager.GetTurnOrder(), currentEntity, turnManager.GetCurrentTurnIndex());
 
         CheckIfNotFollowedUp(currentEntity);
-        
-        turnManager.AdvanceTurn(); 
 
         if (currentEntity.GetIfDefending()) currentEntity.Defend();
         

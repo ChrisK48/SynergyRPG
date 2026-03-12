@@ -32,6 +32,7 @@ public class ActiveBuff
 {
     public Buff buff;
     public int remainingDuration;
+    public bool justApplied = false;
     public Dictionary<string, int> statChanges = new Dictionary<string, int>();
 
     public ActiveBuff(Buff template, int duration)
@@ -42,6 +43,12 @@ public class ActiveBuff
 
     public void Tick(CharBattle target)
     {
+        if (justApplied)
+        {
+            justApplied = false;
+            return;
+        }
+
         remainingDuration--;
         buff.TickBuff(target, this); 
         Debug.Log(target.CharName + "'s " + buff.buffName + " buff has " + remainingDuration + " turns remaining.");

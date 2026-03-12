@@ -106,6 +106,10 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         }
 
         ActiveBuff newBuff = new ActiveBuff(buff, duration);
+        if (BattleManager.instance.GetTurnManager().getCurrentChar() == (object)this)
+        {
+            newBuff.justApplied = true;
+        } else newBuff.justApplied = false;
         activeBuffs.Add(newBuff);
         buff.StartBuff(this, newBuff);
     }
@@ -113,6 +117,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public void EndTurn()
     {
         ProcessTurnBuffs();
+        BattleManager.instance.GetTurnManager().AdvanceTurn();
         BattleManager.instance.NextTurn();
     }
 
@@ -123,8 +128,6 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
             ActiveBuff active = activeBuffs[i];
             
             active.Tick(this);
-            
-            active.remainingDuration--;
 
             if (active.remainingDuration <= 0)
             {
