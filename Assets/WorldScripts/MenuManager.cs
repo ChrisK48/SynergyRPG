@@ -4,6 +4,7 @@ public class MenuManager : MonoBehaviour
 {
     public static MenuManager instance;
     public GameObject MenuPanel;
+    public GameObject PartyMemberCardContainer;
     public GameObject PartyMemberCardPrefab;
     private bool menuOpen = false;
 
@@ -29,7 +30,7 @@ public class MenuManager : MonoBehaviour
     {
         foreach (var member in PartyManager.instance.activePartyMembers)
         {
-            GameObject card = Instantiate(PartyMemberCardPrefab, MenuPanel.transform);
+            GameObject card = Instantiate(PartyMemberCardPrefab, PartyMemberCardContainer.transform);
             card.GetComponent<PartyMemberCard>().Initialize(member);
         }
     }
