@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f4152b2a72570e43b554ec8dc2c526c, type: 3}
   m_Name: Healing Potion
   m_EditorClassIdentifier: Assembly-CSharp::ItemScript
-  itemName: Healing Potion
-  itemDescription: Heals the user for 100 HP
+  ItemName: Healing Potion
+  ItemDescription: Heals the target for 100Hp
   targetType: 5
   itemEffects:
   - rid: 9008615971002253389

@@ -18,17 +18,18 @@ public abstract class PlayerCharBattle : CharBattle
 
     public void InitializeStatsFromData(PlayerCharData data)
     {
+        data.RefreshAllStats();
         CharName = data.CharName;
-        MaxHp = data.BaseMaxHp;
-        MaxMp = data.BaseMaxMp;
-        Atk = data.BaseAtk;
-        Mag = data.BaseMag;
-        Def = data.BaseDef;
-        Mdef = data.BaseMdef;
-        Spd = data.BaseSpd;
-        Acc = data.BaseAcc;
-        Eva = data.BaseEva;
-        Luck = data.BaseLuck;
+        MaxHp = data.MaxHp;
+        MaxMp = data.MaxMp;
+        Atk = data.Atk;
+        Mag = data.Mag;
+        Def = data.Def;
+        Mdef = data.Mdef;
+        Spd = data.Spd;
+        Acc = data.Acc;
+        Eva = data.Eva;
+        Luck = data.Luck;
 
         hp = data.currentHp;
         mp = data.currentMp;

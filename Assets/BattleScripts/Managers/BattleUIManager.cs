@@ -187,7 +187,7 @@ public class BattleUIManager : MonoBehaviour
             pc.StartPrep(new Ability[] { ability });
             HideCommandMenu();
             HideSubMenu();
-            BattleManager.instance.NextTurn();
+            pc.EndTurn();
             return;
         }
 

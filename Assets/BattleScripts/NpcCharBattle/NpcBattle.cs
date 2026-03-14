@@ -28,7 +28,7 @@ public abstract class NpcBattle : CharBattle
         Ability selectedAbility = NpcAbilitySelection();
         List <ITurnEntity> targets = NpcTargeting(selectedAbility);
         PerformAbility(selectedAbility, targets);
-        BattleManager.instance.NextTurn();   
+        EndTurn();
     }
 
     public virtual Ability NpcAbilitySelection()

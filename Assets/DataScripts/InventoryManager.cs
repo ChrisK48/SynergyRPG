@@ -1,12 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
-[System.Serializable]
-public struct ItemStack
-{
-    public ConsumableItem item;
-    public int count;
-}
+using System;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -21,9 +15,12 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
-        foreach (var entry in PartyManager.instance.inventory)
+        foreach (ItemStack entry in PartyManager.instance.inventory)
         {
-            if (entry.count > 0) items.Add(entry.item, entry.count);
+            if (entry.item is ConsumableItem consumable && entry.count > 0)
+            {
+                items.Add(consumable, entry.count);
+            }
         }
     }
 

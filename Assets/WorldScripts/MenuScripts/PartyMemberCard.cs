@@ -14,7 +14,7 @@ public class PartyMemberCard : MonoBehaviour
         nameText.text = member.name;
         levelText.text = $"Level: {member.currentLevel}";
         expText.text = $"EXP: {member.currentExp}/{member.GetExpToNextLevel(member.currentLevel)}";
-        hpText.text = $"HP: {member.currentHp}/{member.BaseMaxHp}";
-        mpText.text = $"MP: {member.currentMp}/{member.BaseMaxMp}";
+        hpText.text = $"HP: {member.currentHp}/{member.MaxHp}";
+        mpText.text = $"MP: {member.currentMp}/{member.MaxMp}";
     }
 }

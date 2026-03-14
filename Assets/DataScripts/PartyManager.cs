@@ -1,6 +1,13 @@
+using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
+
+[Serializable]
+public struct ItemStack
+{
+    public Item item;
+    public int count;
+}
 
 public class PartyManager : MonoBehaviour
 {
@@ -20,6 +27,22 @@ public class PartyManager : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+    }
+
+    public void GainItem(Item item)
+    {
+        int index = inventory.FindIndex(stack => stack.item == item);
+
+        if (index == -1)
+        {
+            inventory.Add(new ItemStack { item = item, count = 1 });
+        }
+        else
+        {
+            ItemStack stack = inventory[index];
+            stack.count += 1;
+            inventory[index] = stack; 
         }
     }
 

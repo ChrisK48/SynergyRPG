@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99991052a0559d647aacf2ad22c2b968, type: 3}
+  m_Name: LifeRing
+  m_EditorClassIdentifier: Assembly-CSharp::Equippable
+  ItemName: Life Ring
+  ItemDescription: Increases the wearers max health points by 200
+  MaxHpBonus: 200
+  MaxMpBonus: 0
+  AtkBonus: 0
+  MagBonus: 0
+  DefBonus: 0
+  MdefBonus: 0
+  SpdBonus: 0
+  AccBonus: 0
+  EvaBonus: 0
+  LuckBonus: 0
+  equipSlot: 3

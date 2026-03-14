@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f4152b2a72570e43b554ec8dc2c526c, type: 3}
   m_Name: LifeBranch
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  itemName: Life Branch
-  itemDescription: Revives and heals a dead ally for 100HP
+  ItemName: Life Branch
+  ItemDescription: Revives a dead target
   targetType: 7
   itemEffects:
   - rid: 9008616056108613703

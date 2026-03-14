@@ -88,6 +88,7 @@ public class SynergyStance : ITurnEntity
     public void EndTurn()
     {
         ProcessTurnBuffs();
+        BattleManager.instance.GetTurnManager().AdvanceTurn();
         BattleManager.instance.NextTurn();
     }
 }
