@@ -37,7 +37,7 @@ public abstract class NpcBattle : CharBattle
         return chosenAbility;
     }
 
-    public void PerformAbility(Ability ability, List<ITurnEntity> targets)
+    protected void PerformAbility(Ability ability, List<ITurnEntity> targets)
     {
         ability.PerformAction(new CharBattle[] {this}, targets);
     }

@@ -24,6 +24,9 @@ public class BattleUIManager : MonoBehaviour
     public RectTransform FastTrackButtonContainer;
     public GameObject PopupPrefab;
     public GameObject turnOrderIconPrefab;
+
+    public Button EndBattleButton;
+
     private SynergySearchLogic synergySearchLogic;
     private bool fastTrack = false;
 
@@ -391,5 +394,11 @@ public class BattleUIManager : MonoBehaviour
         partyUIContainer.gameObject.SetActive(false);
         TurnOrderUIContainer.gameObject.SetActive(false);
         FlowUIContainer.gameObject.SetActive(false);
+
+        EndBattleButton.onClick.RemoveAllListeners();
+        EndBattleButton.onClick.AddListener(() => {
+            BattleTransitionManager.instance.ExitBattle();
+        });
+        EndBattleButton.gameObject.SetActive(true);
     }
 }

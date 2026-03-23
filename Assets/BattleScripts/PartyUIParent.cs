@@ -30,7 +30,7 @@ public class PartyUIParent : MonoBehaviour
     private void HandleStatsChanged()
     {
         StopAllCoroutines();
-        StartCoroutine(AnimateBar());
+        if (gameObject.activeInHierarchy)StartCoroutine(AnimateBar());
     }
 
     protected virtual IEnumerator AnimateBar()

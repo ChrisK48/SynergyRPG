@@ -3,13 +3,19 @@ using UnityEditor;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject player;
     public Transform InteractionPoint;
     private float MoveSpeed = 7f;
     private float SprintMultiplier = 1.8f;
     private Vector2 moveInput;
+    void Start()
+    {
+        if (BattleTransitionManager.instance.getPlayerWorldPosition() != Vector3.zero) player.transform.position = BattleTransitionManager.instance.getPlayerWorldPosition();
+    }
     void Update()
     {
         if (Keyboard.current.mKey.wasPressedThisFrame)

@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
@@ -17,7 +19,6 @@ public class MenuManager : MonoBehaviour
 
     [Header("Inventory Menu")]
     public GameObject InventoryContainer;
-    public GameObject InventoryCardContainer;
     public GameObject ItemCardPrefab;
 
     [Header("Equipment Menu")]
@@ -29,18 +30,40 @@ public class MenuManager : MonoBehaviour
     public Button Accessory1SelectButton;
     public Button Accessory2SelectButton;
     public Button PlayerNameButtonPrefab;
+    public GameObject EquipmentSelectionPanel;
+    public Button EquipmentButtonPrefab;
     private bool menuOpen = false;
     private bool inventoryOpen = false;
+    private bool statsDisplayed = false;
 
     void Awake()
     {
         instance = this;
     }
 
+    void Update()
+    {
+        if (menuOpen && Keyboard.current.leftShiftKey.isPressed)
+        {
+            if (!statsDisplayed)
+            {
+                BuildMemberStatCards();
+                statsDisplayed = true;
+            }
+        }
+        else
+        {
+            statsDisplayed = false;
+            if (menuOpen)
+            {
+                BuildActiveMemberCards();
+            }
+        }
+    }
+
     void Start()
     {
         BuildActiveMemberCards();
-        StatsButton.onClick.AddListener(BuildMemberStatCards);
         InventoryButton.onClick.AddListener(BuildInventoryMenu);
         EquipmentButton.onClick.AddListener(BuildEquipmentMenu);
     }
@@ -84,7 +107,7 @@ public class MenuManager : MonoBehaviour
 
     private void BuildInventoryMenu()
     {
-        foreach (Transform child in InventoryCardContainer.transform)
+        foreach (Transform child in InventoryContainer.transform)
         {
             Destroy(child.gameObject);
         }
@@ -93,7 +116,7 @@ public class MenuManager : MonoBehaviour
         inventoryOpen = true;
         foreach(ItemStack item in PartyManager.instance.inventory)
         {
-            GameObject itemCard = Instantiate(ItemCardPrefab, InventoryCardContainer.transform);
+            GameObject itemCard = Instantiate(ItemCardPrefab, InventoryContainer.transform);
             itemCard.GetComponent<ItemCard>().Initialize(item);
         }
     }
@@ -107,18 +130,75 @@ public class MenuManager : MonoBehaviour
             btn.GetComponentInChildren<TextMeshProUGUI>().text = member.CharName;
             btn.GetComponent<Button>().onClick.AddListener(() => {
                 PlayerCharData selectedMember = member;
-                GetEquipmentSelectionForChar(selectedMember);
+                SetupEquipmentSelectionButtons(selectedMember);
             });
         }
     }
 
-    private void GetEquipmentSelectionForChar(PlayerCharData member)
+    private void SetupEquipmentSelectionButtons(PlayerCharData member)
     {
         WeaponSelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.weapon?.ItemName ?? "None";
         HelmetSelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.head?.ItemName ?? "None";
         BodySelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.body?.ItemName ?? "None";
         Accessory1SelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.accessory1?.ItemName ?? "None";
         Accessory2SelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.accessory2?.ItemName ?? "None";
+
+        WeaponSelectButton.onClick.RemoveAllListeners();
+        HelmetSelectButton.onClick.RemoveAllListeners();
+        BodySelectButton.onClick.RemoveAllListeners();
+        Accessory1SelectButton.onClick.RemoveAllListeners();
+        Accessory2SelectButton.onClick.RemoveAllListeners();
+
+        WeaponSelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Weapon); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, WeaponSelectButton.transform.position.y); });
+        HelmetSelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Head); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, HelmetSelectButton.transform.position.y); });
+        BodySelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Body); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, BodySelectButton.transform.position.y); });
+        Accessory1SelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Accessory); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, Accessory1SelectButton.transform.position.y); });
+        Accessory2SelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Accessory); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, Accessory2SelectButton.transform.position.y); });
+    }
+
+    private void OpenEquipmentSelection(PlayerCharData member,  EquipSlot slot)
+    {
+        EquipmentSelectionPanel.SetActive(true);
+        foreach (Transform child in EquipmentSelectionPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (ItemStack item in PartyManager.instance.inventory)
+        {
+            if (item.item is Equippable equipItem && equipItem.equipSlot == slot)
+            {
+                Button btn = Instantiate(EquipmentButtonPrefab, EquipmentSelectionPanel.transform);
+                btn.GetComponentInChildren<TextMeshProUGUI>().text = item.item.ItemName + " (" + item.count + ")";
+                btn.onClick.AddListener(() => {
+                    EquipItemToMember(member, equipItem, slot);
+                    EquipmentSelectionPanel.SetActive(false);
+                    SetupEquipmentSelectionButtons(member);
+                });
+            }
+        }
+    }
+
+    private void EquipItemToMember(PlayerCharData member, Equippable item, EquipSlot slot)
+    {
+        switch (slot)
+        {
+            case EquipSlot.Weapon:
+                member.weapon = item;
+                break;
+            case EquipSlot.Head:
+                member.head = item;
+                break;
+            case EquipSlot.Body:
+                member.body = item;
+                break;
+            case EquipSlot.Accessory:
+                if (member.accessory1 == null)
+                    member.accessory1 = item;
+                else
+                    member.accessory2 = item;
+                break;
+        }
     }
 
     private void ClearCards()

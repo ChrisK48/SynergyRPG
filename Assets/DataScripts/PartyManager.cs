@@ -45,6 +45,4 @@ public class PartyManager : MonoBehaviour
             inventory[index] = stack; 
         }
     }
-
-
 }

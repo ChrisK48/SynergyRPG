@@ -27,6 +27,7 @@ public class BattleManager : MonoBehaviour
         List<PlayerCharData> partyMembers = PartyManager.instance.activePartyMembers;
         playerChars = partyMembers.Select(data => data.charBattlePrefab).ToList();
         List<PlayerCharBattle> spawnedPlayers = new List<PlayerCharBattle>();
+        npcChars = BattleTransitionManager.instance.getCurrentBattleEnemies();
 
         for (int i = 0; i < playerChars.Count; i++)
         {
