@@ -11,6 +11,9 @@ public abstract class NpcBattle : CharBattle
     public List<ShieldTag> DamageWeaknesses;
     public int shieldsToRegain;
     public int xpValue;
+    public Item StealableItem;
+    public int StealMultiplier;
+    private bool itemStolen = false;
     private bool shieldBroken = false;
     private int DefNotBroken;
     private int MdefNotBroken;
@@ -204,4 +207,11 @@ public abstract class NpcBattle : CharBattle
         Mdef = MdefNotBroken;
         Debug.Log(CharName + "'s shields have been reset.");
     }
+
+    public void SetItemStolen()
+    {
+        itemStolen = true;
+    }
+
+    public bool GetIfItemStolen() => itemStolen;
 }

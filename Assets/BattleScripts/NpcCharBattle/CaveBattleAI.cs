@@ -8,7 +8,7 @@ public class CaveBatBattle : NpcBattle
         int randomInt = Random.Range(0, 100);
         if (hp < MaxHp * 0.5 && randomInt < 50)
         {
-            return AbilityWeights[1].Ability; // Drain Attack
+            return AbilityWeights[0].Ability; // Drain Attack
         }
         else
         {

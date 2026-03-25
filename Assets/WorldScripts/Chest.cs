@@ -5,7 +5,7 @@ public class Chest : MonoBehaviour, IInteractable
 {
     public Item lootItem;
     private bool isOpened = false;
-    public void OnPlayerInteraction()
+    public void OnPlayerInteraction(PlayerController player)
     {
         if (!isOpened)
         {

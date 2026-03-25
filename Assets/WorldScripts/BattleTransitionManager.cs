@@ -24,14 +24,12 @@ public class BattleTransitionManager : MonoBehaviour
         }
     }
 
-    public Vector3 getPlayerWorldPosition()
-    {
-        return playerWorldPosition;
-    }
+    public Vector3 getPlayerWorldPosition() => playerWorldPosition;
+    public void ClearPlayerWorldPosition() => playerWorldPosition = Vector3.zero;
 
     public List<NpcBattle> getCurrentBattleEnemies()
     {
-return currentBattleEnemies;
+        return currentBattleEnemies;
     }
 
     public void EnterBattle(List<NpcBattle> enemies)

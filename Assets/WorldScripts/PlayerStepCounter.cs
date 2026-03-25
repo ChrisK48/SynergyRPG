@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerStepCounter : MonoBehaviour
 {
+    [HideInInspector]
     public EncounterZone currentZone;
     public float distancePerStep = 2.0f; // Distance to walk before rolling
     private float distanceWalked = 0f;

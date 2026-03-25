@@ -130,3 +130,5 @@ MonoBehaviour:
     shieldAmount: 2
   shieldsToRegain: 1
   xpValue: 50
+  StealableItem: {fileID: 11400000, guid: fef8da9f878199947886f7233f88476b, type: 2}
+  StealMultiplier: 0

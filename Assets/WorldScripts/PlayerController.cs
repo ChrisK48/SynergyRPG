@@ -1,34 +1,57 @@
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+
+public enum PlayerState { Roaming, Dialogue, Menu }
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject player;
+    [Header("State")]
+    public PlayerState currentState = PlayerState.Roaming;
+
+    [Header("Movement")]
+    public float MoveSpeed = 7f;
+    public float SprintMultiplier = 1.8f;
     public Transform InteractionPoint;
-    private float MoveSpeed = 7f;
-    private float SprintMultiplier = 1.8f;
+
+    [Header("Interaction Settings")]
+    public Vector2 boxSize = new Vector2(0.5f, 0.2f);
+    public LayerMask InteractionLayer;
+
     private Vector2 moveInput;
-    void Start()
+    private Rigidbody2D rb;
+
+    void Awake()
     {
-        if (BattleTransitionManager.instance.getPlayerWorldPosition() != Vector3.zero) player.transform.position = BattleTransitionManager.instance.getPlayerWorldPosition();
+        rb = GetComponent<Rigidbody2D>();
     }
+
     void Update()
     {
+        switch (currentState)
+        {
+            case PlayerState.Roaming:
+                HandleRoamingInput();
+                break;
+            case PlayerState.Dialogue:
+                HandleDialogueInput();
+                break;
+            case PlayerState.Menu:
+                HandleMenuInput();
+                break;
+        }
+    }
+
+    void HandleRoamingInput()
+    {
+        // 1. Menu Toggle
         if (Keyboard.current.mKey.wasPressedThisFrame)
         {
+            SetState(PlayerState.Menu);
             MenuManager.instance.ToggleMenu();
-        }
-        
-        if (MenuManager.instance.GetIfMenuOpen()) 
-        {
-            moveInput = Vector2.zero;
             return;
-        };
+        }
 
+        // 2. Movement
         Vector2 tempInput = Vector2.zero;
         if (Keyboard.current.wKey.isPressed) tempInput.y += 1f;
         if (Keyboard.current.aKey.isPressed) tempInput.x -= 1f;
@@ -40,14 +63,85 @@ public class PlayerController : MonoBehaviour
         {
             InteractionPoint.localPosition = moveInput.normalized * 0.5f;
         }
+
+        // 3. Manual E Interaction (Signs/Chests)
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            CheckForInteraction();
+        }
     }
+
+    void HandleDialogueInput()
+    {
+        moveInput = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+
+        // Proceed dialogue
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            TextManager.instance.DisplayNextSentence();
+            
+            // Return to roaming only when text is finished
+            if (!TextManager.instance.IsDisplayingText())
+            {
+                SetState(PlayerState.Roaming);
+            }
+        }
+    }
+
+    void HandleMenuInput()
+    {
+        moveInput = Vector2.zero;
+        if (Keyboard.current.mKey.wasPressedThisFrame)
+        {
+            MenuManager.instance.ToggleMenu();
+            SetState(PlayerState.Roaming);
+        }
+    }
+
+    void CheckForInteraction()
+    {
+        // Using your working Box Physics
+        Collider2D hit = Physics2D.OverlapBox(InteractionPoint.position, boxSize, 0f, InteractionLayer);
+        
+        if (hit != null && hit.TryGetComponent(out IInteractable interactable))
+        {
+            // Passes 'this' to the sign to fix the NullReference error
+            interactable.OnPlayerInteraction(this);
+        }
+    }
+
+    // RESTORES YOUR OTHER INTERACTABLES (Portals, Auto-Triggers)
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent(out ICollisionTrigger trigger)) 
+        {
+            trigger.OnPlayerCollision();
+        }
+    }
+
+    public void SetState(PlayerState newState) => currentState = newState;
 
     void FixedUpdate()
     {
-        Vector2 inputDir = Vector2.ClampMagnitude(moveInput, 1f);
+        if (currentState != PlayerState.Roaming) 
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
 
-        float currentSpeed = MoveSpeed;
-        if (Keyboard.current.leftShiftKey.isPressed) currentSpeed *= SprintMultiplier;
-        GetComponent<Rigidbody2D>().linearVelocity = inputDir * currentSpeed;
+        Vector2 inputDir = Vector2.ClampMagnitude(moveInput, 1f);
+        float currentSpeed = MoveSpeed * (Keyboard.current.leftShiftKey.isPressed ? SprintMultiplier : 1f);
+        rb.linearVelocity = inputDir * currentSpeed;
+    }
+
+    // DEBUG: Shows the interaction box in Scene View
+    private void OnDrawGizmosSelected()
+    {
+        if (InteractionPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(InteractionPoint.position, boxSize);
+        }
     }
 }
