@@ -45,5 +45,6 @@ MonoBehaviour:
   accessory1: {fileID: 0}
   accessory2: {fileID: 0}
   currentLevel: 1
-  currentExp: 50
+  currentExp: 0
   charBattlePrefab: {fileID: -1566451580324075284, guid: 3629c995faccb6d4ea91647f3cfebee4, type: 3}
+  MenuImage: {fileID: 4863770912605182874, guid: b6ae4874030e0394a8e829f6f92434fc, type: 3}

@@ -12,7 +12,7 @@ public struct ItemStack
 public class PartyManager : MonoBehaviour
 {
     public List<PlayerCharData> activePartyMembers;
-    public int money;
+    public int heldMoney;
     public List<ItemStack> inventory;
     public static PartyManager instance;
 
@@ -44,5 +44,35 @@ public class PartyManager : MonoBehaviour
             stack.count += 1;
             inventory[index] = stack; 
         }
+    }
+
+    public void LoseItem(Item item)
+    {
+        int index = inventory.FindIndex(stack => stack.item == item);
+
+        if (index != -1)
+        {
+            ItemStack stack = inventory[index];
+            stack.count -= 1;
+
+            if (stack.count <= 0)
+            {
+                inventory.RemoveAt(index);
+            }
+            else
+            {
+                inventory[index] = stack; 
+            }
+        }
+    }
+
+    public void GainMoney(int amount)
+    {
+        heldMoney += amount;
+    }
+
+    public void LoseMoney(int amount)
+    {
+        heldMoney = Mathf.Max(0, heldMoney - amount);
     }
 }

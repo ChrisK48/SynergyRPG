@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WorldScene2.unity
     guid: 964dd8a207301c34f8731ce99d508e26
+  - enabled: 0
+    path: Assets/Scenes/3DBattleScene.unity
+    guid: b1abefccb0996c6458894a580736630a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

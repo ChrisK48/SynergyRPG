@@ -25,7 +25,7 @@ MonoBehaviour:
   BaseLuck: 15
   MaxHp: 100
   MaxMp: 15
-  Atk: 65
+  Atk: 15
   Mag: 15
   Def: 10
   Mdef: 15
@@ -41,11 +41,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8a2633f4926e2fb4db6a22a6eb579800, type: 2}
   - {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
   - {fileID: 11400000, guid: bd1aacf9bf3de6b4386d0a63cba368a9, type: 2}
-  weapon: {fileID: 11400000, guid: a690abaa6d0242f4aac78f64bd3b3ff5, type: 2}
+  weapon: {fileID: 0}
   head: {fileID: 0}
   body: {fileID: 0}
   accessory1: {fileID: 0}
   accessory2: {fileID: 0}
   currentLevel: 1
-  currentExp: 50
+  currentExp: 0
   charBattlePrefab: {fileID: -6576123505942400488, guid: e635e93752cd4e342a25c02d9adc663a, type: 3}
+  MenuImage: {fileID: -4037558033643720181, guid: 3b6d11d68884aa64ab0e7c4c28ca17a1, type: 3}

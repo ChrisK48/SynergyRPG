@@ -15,6 +15,9 @@ public class PlayerCharData : ScriptableObject
     public int currentExp;
     public PlayerCharBattle charBattlePrefab;
 
+    [Header("Resources")]
+    public Sprite MenuImage;
+    
     void OnEnable()
     {
         RefreshAllStats();

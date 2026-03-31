@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8354565886535131290, guid: 5021c14314b50ad4288fc7f2a4417a8e, type: 3}
+  m_Sprite: {fileID: 4863770912605182874, guid: b6ae4874030e0394a8e829f6f92434fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -115,6 +115,7 @@ MonoBehaviour:
   Acc: 0
   Eva: 0
   Luck: 10
+  activeBuffs: []
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   - {fileID: 11400000, guid: 620184e8dd5017e448c9482a7a7c2b96, type: 2}
@@ -122,5 +123,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8a2633f4926e2fb4db6a22a6eb579800, type: 2}
   - {fileID: 11400000, guid: aa74fbc574af7ec4591ec150d4254c5c, type: 2}
   - {fileID: 11400000, guid: 4eea1149fc951a14ebd7e7f290f576e9, type: 2}
-  activeBuffs: []
   uniqueUIPrefab: {fileID: 4003600137503552053, guid: b2e91756373579a48b298d7894f9e8ea, type: 3}
