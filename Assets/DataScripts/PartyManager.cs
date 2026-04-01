@@ -66,6 +66,12 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    public List<ItemStack> GetHeldTiles()
+    {
+        List<ItemStack> obtainedTiles = inventory.FindAll(stack => stack.item is Tile);
+        return obtainedTiles;
+    }
+
     public void GainMoney(int amount)
     {
         heldMoney += amount;

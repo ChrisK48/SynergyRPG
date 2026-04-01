@@ -49,4 +49,5 @@ MonoBehaviour:
   currentLevel: 1
   currentExp: 0
   charBattlePrefab: {fileID: -6576123505942400488, guid: e635e93752cd4e342a25c02d9adc663a, type: 3}
+  CharacterBoard: {fileID: 11400000, guid: 2bd316d063ad8554f96d66425e411104, type: 2}
   MenuImage: {fileID: -4037558033643720181, guid: 3b6d11d68884aa64ab0e7c4c28ca17a1, type: 3}

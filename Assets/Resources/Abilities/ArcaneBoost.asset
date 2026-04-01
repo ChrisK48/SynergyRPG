@@ -18,12 +18,16 @@ MonoBehaviour:
   ScalingMultiplier: 0
   MpCost: 10
   HpCost: 0
+  SkipTurnAndUseNextTurn: 0
   UniqueResourceCost:
     rid: -2
   TargetType: 3
+  TargetsToHitIfRandom: 0
   AbilityEffects:
   - rid: 9008616056108613706
   SynergyTags: 
+  gridShape: []
+  isExclusive: 0
   references:
     version: 2
     RefIds:

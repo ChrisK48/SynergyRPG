@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
+using Microsoft.Unity.VisualStudio.Editor;
 public enum AtkType { Physical, Magical }
 public enum ScalingStat { Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck }
 public enum TargetType { SingleEnemy, AllEnemies, Self, SingleAlly, AllAllies, AnyChar, AllChars, DeadAlly, DeadAllies, RandomEnemies, RandomAllies }
@@ -24,6 +26,9 @@ public class Ability : ScriptableObject, ITargetableAction
     [SerializeReference]
     public List<AbilityEffect> AbilityEffects = new List<AbilityEffect>();
     public List<SynergyTag> SynergyTags = new List<SynergyTag>();
+    [Header("Skill Board Info")]
+    public Sprite SkillTile;
+    public bool isExclusive;
 
     public virtual void ExecuteAbility(CharBattle user, ITurnEntity target)
     {

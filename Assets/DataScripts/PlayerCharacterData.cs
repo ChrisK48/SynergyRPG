@@ -14,6 +14,7 @@ public class PlayerCharData : ScriptableObject
     public int currentLevel;
     public int currentExp;
     public PlayerCharBattle charBattlePrefab;
+    public CharacterBoard CharacterBoard;
 
     [Header("Resources")]
     public Sprite MenuImage;

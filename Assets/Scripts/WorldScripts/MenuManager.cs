@@ -2,6 +2,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
@@ -34,6 +35,14 @@ public class MenuManager : MonoBehaviour
     public Button PlayerNameButtonPrefab;
     public GameObject EquipmentSelectionPanel;
     public Button EquipmentButtonPrefab;
+
+    [Header("Skill Board Menu")]
+    public GameObject SkillMenuContainer;
+    public GameObject SkillBoardContainer;
+    public GameObject SkillBoardTilePrefab;
+    public GameObject TileListContainer;
+    public GameObject TileSelectionButtonPrefab;
+
     private bool menuOpen = false;
     private bool inventoryOpen = false;
     private bool statsDisplayed = false;
@@ -75,6 +84,10 @@ public class MenuManager : MonoBehaviour
         if (EquipmentContainer.activeSelf)
         {
             EquipmentContainer.SetActive(false);
+        }
+        if (SkillMenuContainer.activeSelf)
+        {
+            SkillMenuContainer.SetActive(false);
         }
     }
 
@@ -183,6 +196,33 @@ public class MenuManager : MonoBehaviour
                 else
                     member.accessory2 = item;
                 break;
+        }
+    }
+
+    public void BuildSkillBoardMenu(CharacterBoard board)
+    {
+        SkillMenuContainer.SetActive(true);   
+        foreach (Transform child in SkillBoardContainer.transform) Destroy(child.gameObject);
+        SkillBoardContainer.GetComponent<GridLayoutGroup>().constraintCount = board.boardSize.x;
+        for (int y = 0; y < board.boardSize.y; y++)
+        {
+            for (int x = 0; x < board.boardSize.x; x++)
+            {
+                Vector2Int currentPos = new Vector2Int(x, y);
+                BoardTile tile = board.GetTileAt(currentPos);
+
+                GameObject tileObj = Instantiate(SkillBoardTilePrefab, SkillBoardContainer.transform);
+                
+                tileObj.GetComponent<SkillBoardTileUI>().Initialize(tile);
+            }
+        }
+
+        foreach (Transform child in TileListContainer.transform) Destroy(child.gameObject);
+
+        foreach (ItemStack tile in PartyManager.instance.GetHeldTiles())
+        {
+            GameObject btnObj = Instantiate(TileSelectionButtonPrefab, TileListContainer.transform);
+            btnObj.GetComponent<TileSelectionButton>().Initialize(tile);
         }
     }
 
