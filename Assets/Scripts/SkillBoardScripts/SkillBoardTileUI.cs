@@ -13,7 +13,7 @@ public class SkillBoardTileUI : MonoBehaviour
             background.enabled = false;
             return;
         }
-        else if (!tile.isUnlocked && tile.placedAbility == null)
+        else if (!tile.isUnlocked && tile.placedTile == null)
         {
             background.color = Color.gray;
         }

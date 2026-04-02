@@ -201,8 +201,15 @@ public class MenuManager : MonoBehaviour
 
     public void BuildSkillBoardMenu(CharacterBoard board)
     {
+        // 1. Prepare the manager
+        BoardInteractionManager.instance.allTileUIs.Clear();
+        BoardInteractionManager.instance.activeBoard = board;
+        
         SkillMenuContainer.SetActive(true);   
+
+        // 2. Clear and rebuild the physical background grid
         foreach (Transform child in SkillBoardContainer.transform) Destroy(child.gameObject);
+        
         SkillBoardContainer.GetComponent<GridLayoutGroup>().constraintCount = board.boardSize.x;
         for (int y = 0; y < board.boardSize.y; y++)
         {
@@ -212,17 +219,33 @@ public class MenuManager : MonoBehaviour
                 BoardTile tile = board.GetTileAt(currentPos);
 
                 GameObject tileObj = Instantiate(SkillBoardTilePrefab, SkillBoardContainer.transform);
-                
                 tileObj.GetComponent<SkillBoardTileUI>().Initialize(tile);
+
+                // Populate the list so the InteractionManager can find these tiles
+                BoardInteractionManager.instance.allTileUIs.Add(tileObj.GetComponent<SkillBoardTileUI>());
             }
         }
 
-        foreach (Transform child in TileListContainer.transform) Destroy(child.gameObject);
+        Canvas.ForceUpdateCanvases();
+        SkillBoardContainer.GetComponent<VerticalLayoutGroup>()?.SetLayoutVertical(); // If using layout groups
+        SkillBoardContainer.GetComponent<GridLayoutGroup>().CalculateLayoutInputHorizontal();
+        SkillBoardContainer.GetComponent<GridLayoutGroup>().CalculateLayoutInputVertical();
+        SkillBoardContainer.GetComponent<GridLayoutGroup>().SetLayoutHorizontal();
+        SkillBoardContainer.GetComponent<GridLayoutGroup>().SetLayoutVertical();
 
+        // --- THE FIX IS HERE ---
+        // Now that the tiles exist in 'allTileUIs', we can safely place stickers on them
+        BoardInteractionManager.instance.RebuildBoardUI(board);
+
+        // 3. Rebuild the side-list of available tiles
+        foreach (Transform child in TileListContainer.transform) Destroy(child.gameObject);
         foreach (ItemStack tile in PartyManager.instance.GetHeldTiles())
         {
             GameObject btnObj = Instantiate(TileSelectionButtonPrefab, TileListContainer.transform);
             btnObj.GetComponent<TileSelectionButton>().Initialize(tile);
+            btnObj.GetComponent<Button>().onClick.AddListener(() => {
+                BoardInteractionManager.instance.SpawnSticker((Tile)tile.item);
+            });
         }
     }
 

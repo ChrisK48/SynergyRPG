@@ -4,4 +4,6 @@ using UnityEngine;
 public class Tile : Item
 {
     public Ability ability;
+    public Sprite TileSprite;
+    public bool isExclusive;
 }

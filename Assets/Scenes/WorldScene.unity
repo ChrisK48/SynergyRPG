@@ -1223,7 +1223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &109759709
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1238,6 +1238,8 @@ RectTransform:
   m_Children:
   - {fileID: 676985593}
   - {fileID: 1101072458}
+  - {fileID: 845222479}
+  - {fileID: 2080807632}
   m_Father: {fileID: 1759629886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1561,10 +1563,45 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
+  m_CellSize: {x: 50, y: 50}
   m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
+  m_Constraint: 1
   m_ConstraintCount: 10
+--- !u!1 &845222478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 845222479}
+  m_Layer: 5
+  m_Name: DragLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &845222479
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845222478}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 109759709}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &929123752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2193,6 +2230,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 136333f7674c550449356d66826f1691, type: 3}
+--- !u!1 &1441171426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6922423774092809728, guid: fa642d553d2498249af46983510a2de2, type: 3}
+  m_PrefabInstance: {fileID: 901544332944779283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1441171433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441171426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789a8416eb4611c4eab6a17809e2e2d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardInteractionManager
+  activeBoard: {fileID: 0}
+  interactableTilePrefab: {fileID: 1902398955813247819, guid: 1950f3149dd7f0142aa280b26db548a4, type: 3}
+  dragLayer: {fileID: 845222479}
+  placedLayer: {fileID: 2080807632}
 --- !u!1 &1527519578
 GameObject:
   m_ObjectHideFlags: 0
@@ -2692,6 +2750,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875162549}
   m_CullTransparentMesh: 1
+--- !u!1 &2080807631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2080807632}
+  m_Layer: 5
+  m_Name: PlacedLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2080807632
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080807631}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 109759709}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &361754869182840297
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3014,6 +3107,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 109759709}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6922423774092809728, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1441171433}
     - targetCorrespondingSourceObject: {fileID: 2797178061497214765, guid: fa642d553d2498249af46983510a2de2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 504197794}

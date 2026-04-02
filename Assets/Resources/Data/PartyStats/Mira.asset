@@ -37,10 +37,6 @@ MonoBehaviour:
   currentMp: 15
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  - {fileID: 11400000, guid: 0ade4f07ae9b7f741b6edcb304ec0d9e, type: 2}
-  - {fileID: 11400000, guid: 8a2633f4926e2fb4db6a22a6eb579800, type: 2}
-  - {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
-  - {fileID: 11400000, guid: bd1aacf9bf3de6b4386d0a63cba368a9, type: 2}
   weapon: {fileID: 0}
   head: {fileID: 0}
   body: {fileID: 0}

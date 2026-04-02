@@ -2,19 +2,23 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-
 public class TileSelectionButton : MonoBehaviour
 {
     public TextMeshProUGUI TileName;
     public Image TileImage;
-    public float ImageScale;
+    private Tile myTile; // Reference to the Tile ScriptableObject
 
-    public void Initialize(ItemStack item)
+    public void Initialize(ItemStack stack)
     {
-        Tile tile = (Tile)item.item;
-        TileName.text = tile.ItemName;
-        TileImage.sprite = tile.ability.SkillTile;
+        myTile = (Tile)stack.item; 
+        
+        TileName.text = myTile.ItemName;
+        TileImage.sprite = myTile.TileSprite;
         TileImage.SetNativeSize();
-        TileImage.rectTransform.localScale = new Vector3(ImageScale, ImageScale, 1);
+    }
+
+    public void OnClick()
+    {
+        BoardInteractionManager.instance.SpawnSticker(myTile);
     }
 }

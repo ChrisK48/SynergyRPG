@@ -14,5 +14,10 @@ public class BoardTile
     public Vector2Int boardPosition;
     public bool isUnlocked;
     public AspectType aspectType;
-    public Ability placedAbility;
+    
+    // Change this from Ability to Tile
+    public Tile placedTile; 
+    
+    [HideInInspector] public Vector2Int originTile = new Vector2Int(-1, -1);
+    public bool IsEmpty => originTile.x == -1;
 }

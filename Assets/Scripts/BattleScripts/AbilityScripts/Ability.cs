@@ -26,9 +26,6 @@ public class Ability : ScriptableObject, ITargetableAction
     [SerializeReference]
     public List<AbilityEffect> AbilityEffects = new List<AbilityEffect>();
     public List<SynergyTag> SynergyTags = new List<SynergyTag>();
-    [Header("Skill Board Info")]
-    public Sprite SkillTile;
-    public bool isExclusive;
 
     public virtual void ExecuteAbility(CharBattle user, ITurnEntity target)
     {

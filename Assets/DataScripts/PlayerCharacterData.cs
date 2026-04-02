@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "New Player Character", menuName = "Player Character")]
 public class PlayerCharData : ScriptableObject
@@ -22,6 +23,17 @@ public class PlayerCharData : ScriptableObject
     void OnEnable()
     {
         RefreshAllStats();
+        if (CharacterBoard != null)
+        {
+            CharacterBoard.OnBoardChanged -= RefreshAbilityList;
+            CharacterBoard.OnBoardChanged += RefreshAbilityList;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (CharacterBoard != null)
+        CharacterBoard.OnBoardChanged -= RefreshAbilityList;
     }
 
     public void RefreshAllStats()
@@ -93,5 +105,10 @@ public class PlayerCharData : ScriptableObject
         currentLevel++;
         Debug.Log(CharName + " leveled up to level " + currentLevel + "!");
         // Will add stat curve stuff here
+    }
+
+    public void RefreshAbilityList()
+    {
+        abilities = abilities.Take(1).Concat(CharacterBoard.GetAllPlacedAbilities()).ToList();
     }
 }
