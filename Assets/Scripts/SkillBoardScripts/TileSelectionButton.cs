@@ -6,14 +6,15 @@ public class TileSelectionButton : MonoBehaviour
 {
     public TextMeshProUGUI TileName;
     public Image TileImage;
-    private Tile myTile; // Reference to the Tile ScriptableObject
+    private TileItem myTile; // Reference to the Tile ScriptableObject
 
-    public void Initialize(ItemStack stack)
+    public void Initialize(InventoryEntry stack)
     {
-        myTile = (Tile)stack.item; 
+        myTile = (TileItem)stack.item; 
         
         TileName.text = myTile.ItemName;
         TileImage.sprite = myTile.TileSprite;
+        TileImage.color = myTile.tileColor;
         TileImage.SetNativeSize();
     }
 

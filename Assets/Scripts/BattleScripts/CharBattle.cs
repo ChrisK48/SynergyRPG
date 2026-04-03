@@ -66,7 +66,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     {
         // temp damage calculation
         int damage = 0;
-
+        Debug.Log(CharName + " is taking " + amt + " " + atkType.ToString() + " damage.");
         if (!ignoreDef)
             if (atkType == AtkType.Physical)
                 damage = Mathf.Max(amt*amt/(amt+Def), 1);

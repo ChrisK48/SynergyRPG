@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 [CreateAssetMenu(fileName = "New Player Character", menuName = "Player Character")]
 public class PlayerCharData : ScriptableObject
@@ -27,13 +28,18 @@ public class PlayerCharData : ScriptableObject
         {
             CharacterBoard.OnBoardChanged -= RefreshAbilityList;
             CharacterBoard.OnBoardChanged += RefreshAbilityList;
+            CharacterBoard.OnBoardChanged -= RefreshStats;
+            CharacterBoard.OnBoardChanged += RefreshStats;
         }
     }
 
     void OnDisable()
     {
         if (CharacterBoard != null)
-        CharacterBoard.OnBoardChanged -= RefreshAbilityList;
+        {
+            CharacterBoard.OnBoardChanged -= RefreshAbilityList;
+            CharacterBoard.OnBoardChanged -= RefreshStats;
+        }
     }
 
     public void RefreshAllStats()
@@ -110,5 +116,22 @@ public class PlayerCharData : ScriptableObject
     public void RefreshAbilityList()
     {
         abilities = abilities.Take(1).Concat(CharacterBoard.GetAllPlacedAbilities()).ToList();
+    }
+
+    public void RefreshStats()
+    {
+        RefreshAllStats();
+        CharacterBoard.GetTotalStatBoosts().ToList().ForEach(pair => {
+            if (pair.Key == Stat.MaxHp) MaxHp += pair.Value;
+            else if (pair.Key == Stat.MaxMp) MaxMp += pair.Value;
+            else if (pair.Key == Stat.Atk) Atk += pair.Value;
+            else if (pair.Key == Stat.Mag) Mag += pair.Value;
+            else if (pair.Key == Stat.Def) Def += pair.Value;
+            else if (pair.Key == Stat.Mdef) Mdef += pair.Value;
+            else if (pair.Key == Stat.Spd) Spd += pair.Value;
+            else if (pair.Key == Stat.Acc) Acc += pair.Value;
+            else if (pair.Key == Stat.Eva) Eva += pair.Value;
+            else if (pair.Key == Stat.Luck) Luck += pair.Value;
+        });
     }
 }

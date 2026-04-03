@@ -11,6 +11,7 @@ public class AtkAbilityEffect : AbilityEffect
     public override void ApplyEffect(CharBattle[] users, ITurnEntity target, int calculatedPower)
     {
         int damage = calculateDamage(users, target, calculatedPower);
+        Debug.Log($"calculated damage to be dealt: {damage}");
         target.TakeDamage(damage, atkType, elementTypes, ShieldsToRemove, ignoreDef);   
     }
 

@@ -112,7 +112,7 @@ public class MenuManager : MonoBehaviour
 
         InventoryContainer.SetActive(true);
         inventoryOpen = true;
-        foreach(ItemStack item in PartyManager.instance.inventory)
+        foreach(InventoryEntry item in PartyManager.instance.inventory)
         {
             GameObject itemCard = Instantiate(ItemCardPrefab, InventoryContainer.transform);
             itemCard.GetComponent<ItemCard>().Initialize(item);
@@ -162,7 +162,7 @@ public class MenuManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (ItemStack item in PartyManager.instance.inventory)
+        foreach (InventoryEntry item in PartyManager.instance.inventory)
         {
             if (item.item is Equippable equipItem && equipItem.equipSlot == slot)
             {
@@ -233,18 +233,17 @@ public class MenuManager : MonoBehaviour
         SkillBoardContainer.GetComponent<GridLayoutGroup>().SetLayoutHorizontal();
         SkillBoardContainer.GetComponent<GridLayoutGroup>().SetLayoutVertical();
 
-        // --- THE FIX IS HERE ---
-        // Now that the tiles exist in 'allTileUIs', we can safely place stickers on them
+
         BoardInteractionManager.instance.RebuildBoardUI(board);
 
         // 3. Rebuild the side-list of available tiles
         foreach (Transform child in TileListContainer.transform) Destroy(child.gameObject);
-        foreach (ItemStack tile in PartyManager.instance.GetHeldTiles())
+        foreach (InventoryEntry tile in PartyManager.instance.GetHeldTiles())
         {
             GameObject btnObj = Instantiate(TileSelectionButtonPrefab, TileListContainer.transform);
             btnObj.GetComponent<TileSelectionButton>().Initialize(tile);
             btnObj.GetComponent<Button>().onClick.AddListener(() => {
-                BoardInteractionManager.instance.SpawnSticker((Tile)tile.item);
+                BoardInteractionManager.instance.SpawnSticker((TileItem)tile.item);
             });
         }
     }

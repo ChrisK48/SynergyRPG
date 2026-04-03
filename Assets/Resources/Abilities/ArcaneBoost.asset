@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ability
   AbilityName: Arcane Boost
   Description: 
-  ScalingStat: 0
+  ScalingStat: 1
   ScalingMultiplier: 0
   MpCost: 10
   HpCost: 0
@@ -26,8 +26,6 @@ MonoBehaviour:
   AbilityEffects:
   - rid: 9008616056108613706
   SynergyTags: 
-  gridShape: []
-  isExclusive: 0
   references:
     version: 2
     RefIds:

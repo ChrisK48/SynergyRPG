@@ -3,12 +3,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using UnityEditor; // Add this at the top!
 
-public class InteractableTile : MonoBehaviour, IDragHandler, IEndDragHandler
+public class InteractableTile : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Tile sourceTile;
-    public Ability abilityData;
+    public TileItem sourceTile;
+    public TileType tileData;
     private Image displayImage;
     private RectTransform rect;
     public bool isSlotted = false;
@@ -17,10 +16,12 @@ public class InteractableTile : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         rect = GetComponent<RectTransform>();
         displayImage = GetComponent<Image>();
+
     }
 
     void Update()
     {
+        // If it's already on the board, don't follow the mouse
         if (isSlotted) return;
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
@@ -28,15 +29,9 @@ public class InteractableTile : MonoBehaviour, IDragHandler, IEndDragHandler
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(boardRect, mousePos, null, out Vector2 localPoint);
 
-        // X: Floor to find the left edge of the column
         float snapX = Mathf.Floor(localPoint.x / 50f) * 50f;
-        
-        // Y: Since localPoint.y is negative, we use Ceil or Floor to find the top edge.
-        // If it's jumping one square too high/low, swap Ceil for Floor.
         float snapY = Mathf.Ceil(localPoint.y / 50f) * 50f;
 
-        // Convert back to world space. 
-        // Notice: We removed the "-25f" because the Pivot (0,1) matches the snap point (0,0) perfectly now.
         transform.position = boardRect.TransformPoint(new Vector3(snapX, snapY, 0));
 
         if (Mouse.current.leftButton.wasReleasedThisFrame)
@@ -45,26 +40,56 @@ public class InteractableTile : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
-    public void Setup(Tile tile)
+    public void Setup(TileItem tile)
     {
         sourceTile = tile;
-        abilityData = tile.ability;
+        tileData = tile.tileType;
         displayImage.sprite = tile.TileSprite;
-
-        // Reset dimensions based on the sprite
+        displayImage.color = tile.tileColor;
         rect.sizeDelta = new Vector2(tile.TileSprite.rect.width, tile.TileSprite.rect.height);
         rect.localScale = Vector3.one;
     }
 
-    // Keep OnDrag so the UI system knows you are interacting with it
-    public void OnDrag(PointerEventData eventData) 
+    // Required for OnBeginDrag to work on existing UI objects
+    public void OnPointerDown(PointerEventData eventData) { }
+
+    public void OnPointerClick(PointerEventData eventData)
     {
-        // We handle movement in Update, but this satisfies the Interface
+        // Right Click to instantly delete
+        if (eventData.button == PointerEventData.InputButton.Right && isSlotted)
+        {
+            SkillBoardTileUI closest = GetClosestTileUI();
+            if (closest != null)
+                BoardInteractionManager.instance.activeBoard.RemoveTileAt(closest.boardPosition);
+            
+            Destroy(gameObject);
+        }
     }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (isSlotted)
+        {
+            SkillBoardTileUI closest = GetClosestTileUI();
+            if (closest != null)
+            {
+                // Remove from data so the slots are free again
+                BoardInteractionManager.instance.activeBoard.RemoveTileAt(closest.boardPosition);
+            }
+
+            // Pick it back up
+            isSlotted = false;
+            transform.SetParent(BoardInteractionManager.instance.dragLayer);
+            displayImage.raycastTarget = false; // Prevent it from blocking its own raycasts while dragging
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData) { /* Handled in Update */ }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Handled by the Mouse Release check in Update
+        displayImage.raycastTarget = true;
+        AttemptPlacement();
     }
 
     private void AttemptPlacement()
@@ -73,133 +98,105 @@ public class InteractableTile : MonoBehaviour, IDragHandler, IEndDragHandler
 
         if (overlappedUI.Count > 0 && IsValidMove(overlappedUI))
         {
-            isSlotted = true; 
-
-            // 1. SORT to find the Top-Left tile (The Origin)
-            // We sort by Y (ascending) then X (ascending)
+            isSlotted = true;
             overlappedUI.Sort((a, b) => {
                 int res = a.boardPosition.y.CompareTo(b.boardPosition.y);
                 if (res == 0) res = a.boardPosition.x.CompareTo(b.boardPosition.x);
                 return res;
             });
 
-            // 2. SNAP VISUALLY to the Origin tile
+            transform.SetParent(BoardInteractionManager.instance.placedLayer);
             transform.position = overlappedUI[0].transform.position;
             transform.SetAsLastSibling();
 
-            // 3. DATA SAVE: Only the first tile gets the AbilityData
             Vector2Int originPos = overlappedUI[0].boardPosition;
 
             for (int i = 0; i < overlappedUI.Count; i++)
             {
-                Vector2Int currentPos = overlappedUI[i].boardPosition;
-                // Pass the sourceTile instead of just abilityData
                 BoardInteractionManager.instance.activeBoard.SetTileAbility(
-                    currentPos, 
+                    overlappedUI[i].boardPosition, 
                     (i == 0 ? sourceTile : null), 
                     originPos
                 );
             }
+            PartyManager.instance.SetTileEquipStatus(sourceTile, true);
         }
         else
         {
+            // If we were dragging an existing tile and failed placement, it gets destroyed
+            // (Or you could return it to the side list here)
             Destroy(gameObject);
         }
     }
 
-    private List<SkillBoardTileUI> GetOverlappedTiles()
+    private SkillBoardTileUI GetClosestTileUI()
     {
-        List<SkillBoardTileUI> found = new List<SkillBoardTileUI>();
-
-        int columns = Mathf.RoundToInt(rect.sizeDelta.x / 50f);
-        int rows = Mathf.RoundToInt(rect.sizeDelta.y / 50f);
-
-        for (int x = 0; x < columns; x++)
+        SkillBoardTileUI closest = null;
+        float closestDist = float.MaxValue;
+        foreach (var ui in BoardInteractionManager.instance.allTileUIs)
         {
-            for (int y = 0; y < rows; y++)
+            float dist = Vector2.Distance(transform.position, ui.transform.position);
+            if (dist < closestDist)
             {
-                // 1. Calculate the center of each 50x50 grid cell relative to the TOP-LEFT pivot.
-                // If x=0, segmentCenterX is 25. If x=1, it's 75.
-                float segmentCenterX = (x * 50f) + 25f;
-                
-                // If y=0, segmentCenterY is -25. If y=1, it's -75.
-                float segmentCenterY = -(y * 50f) - 25f;
-
-                // 2. Transform this local "sticker point" into a World Screen Point
-                Vector3 worldPoint = transform.TransformPoint(new Vector3(segmentCenterX, segmentCenterY, 0));
-
-                // --- DEBUG VISUALIZER ---
-                // This will show you exactly where the code is "feeling" for tiles.
-                // Look for the red dots in your SCENE view while dragging.
-                Debug.DrawRay(worldPoint, Vector3.forward * 100, Color.red, 0.1f);
-
-                PointerEventData pointerData = new PointerEventData(EventSystem.current);
-                pointerData.position = worldPoint;
-
-                List<RaycastResult> results = new List<RaycastResult>();
-                EventSystem.current.RaycastAll(pointerData, results);
-
-                foreach (var hit in results)
-                {
-                    if (hit.gameObject == gameObject) continue;
-
-                    SkillBoardTileUI tile = hit.gameObject.GetComponentInParent<SkillBoardTileUI>();
-                    if (tile != null)
-                    {
-                        if (!found.Contains(tile)) found.Add(tile);
-                        break; 
-                    }
-                }
+                closestDist = dist;
+                closest = ui;
             }
         }
-        return found;
+        return closest;
     }
 
-    private bool IsOverlapping(RectTransform a, RectTransform b)
+    public List<SkillBoardTileUI> GetOverlappedTiles()
     {
-        Vector3[] cornersA = new Vector3[4];
-        Vector3[] cornersB = new Vector3[4];
-        a.GetWorldCorners(cornersA);
-        b.GetWorldCorners(cornersB);
+        List<SkillBoardTileUI> foundSlots = new List<SkillBoardTileUI>();
 
-        // Create the Rects
-        Rect rectA = new Rect(cornersA[0].x, cornersA[0].y, cornersA[2].x - cornersA[0].x, cornersA[2].y - cornersA[0].y);
-        Rect rectB = new Rect(cornersB[0].x, cornersB[0].y, cornersB[2].x - cornersB[0].x, cornersB[2].y - cornersB[0].y);
+        // CHANGE: Raycast from the mouse position, NOT the tile's center
+        // This ensures the pivotCoords match the slot your top-left corner is touching
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        SkillBoardTileUI pivotSlot = GetSlotAtPosition(mousePos);
+        
+        if (pivotSlot == null) return foundSlots;
 
-        // --- THE FIX: SHRINK THE SENSOR ---
-        // Shrink the sprite's detection box by 5 pixels on each side 
-        // so it doesn't "bleed" into neighboring tiles.
-        float margin = 5f;
-        Rect shrunkenA = new Rect(
-            rectA.x + margin, 
-            rectA.y + margin, 
-            rectA.width - (margin * 2), 
-            rectA.height - (margin * 2)
-        );
+        Vector2Int pivotCoords = pivotSlot.boardPosition;
 
-        return shrunkenA.Overlaps(rectB);
+        foreach (var offset in sourceTile.layoutOffsets)
+        {
+            Vector2Int targetCoords = pivotCoords + new Vector2Int(offset.x, offset.y);
+            SkillBoardTileUI slot = BoardInteractionManager.instance.GetSlotAt(targetCoords);
+            
+            if (slot != null) foundSlots.Add(slot);
+        }
+
+        return foundSlots;
     }
 
     private bool IsValidMove(List<SkillBoardTileUI> uiList)
     {
-        // A 100x50 sprite MUST find exactly 2 tiles. 
-        int expected = Mathf.RoundToInt(rect.sizeDelta.x / 50f) * Mathf.RoundToInt(rect.sizeDelta.y / 50f);
-        
-        if (uiList.Count != expected) 
-        {
-            Debug.Log($"Invalid: Found {uiList.Count} tiles, expected {expected}");
-            return false;
-        }
+        // Use the actual count of defined blocks, not the calculated area
+        if (uiList.Count != sourceTile.layoutOffsets.Count) return false;
 
         foreach (var ui in uiList)
         {
             var data = BoardInteractionManager.instance.activeBoard.GetTileAt(ui.boardPosition);
-            if (data == null || !data.isUnlocked || data.placedTile != null || !data.IsEmpty) 
-            {
-                Debug.Log($"Tile at {ui.boardPosition} is invalid (Locked/Occupied)");
-                return false;
-            }
+            if (data == null || !data.isUnlocked || !data.IsEmpty) return false;
         }
         return true;
+    }
+
+    private SkillBoardTileUI GetSlotAtPosition(Vector3 worldPos)
+    {
+        // Create a pointer event for the UI Raycaster
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = worldPos;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var result in results)
+        {
+            SkillBoardTileUI slot = result.gameObject.GetComponent<SkillBoardTileUI>();
+            if (slot != null) return slot;
+        }
+
+        return null;
     }
 }

@@ -67,21 +67,21 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
     {
         switch (user.GetPreppedAbility().ScalingStat)
         {
-            case ScalingStat.Atk:
+            case Stat.Atk:
                 return user.Atk;
-            case ScalingStat.Mag:
+            case Stat.Mag:
                 return user.Mag;
-            case ScalingStat.Def:
+            case Stat.Def:
                 return user.Def;
-            case ScalingStat.Mdef:
+            case Stat.Mdef:
                 return user.Mdef;
-            case ScalingStat.Spd:
+            case Stat.Spd:
                 return user.Spd;
-            case ScalingStat.Acc:
+            case Stat.Acc:
                 return user.Acc;
-            case ScalingStat.Eva:
+            case Stat.Eva:
                 return user.Eva;
-            case ScalingStat.Luck:
+            case Stat.Luck:
                 return user.Luck;
             default:
                 return 0;

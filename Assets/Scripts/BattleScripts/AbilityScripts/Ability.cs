@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using Microsoft.Unity.VisualStudio.Editor;
 public enum AtkType { Physical, Magical }
-public enum ScalingStat { Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck }
+public enum Stat { Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck, MaxHp, MaxMp, Hp, Mp }
 public enum TargetType { SingleEnemy, AllEnemies, Self, SingleAlly, AllAllies, AnyChar, AllChars, DeadAlly, DeadAllies, RandomEnemies, RandomAllies }
 
 [CreateAssetMenu(fileName = "New Ability", menuName = "Ability")]
@@ -13,7 +13,7 @@ public class Ability : ScriptableObject, ITargetableAction
     public string AbilityName;
     public string Name => AbilityName;
     public string Description;
-    public ScalingStat ScalingStat; 
+    public Stat ScalingStat; 
     public int ScalingMultiplier;
     public int MpCost;
     public int HpCost;
@@ -61,21 +61,21 @@ public class Ability : ScriptableObject, ITargetableAction
     private int CalculatePower(CharBattle user)
     {
         int calculatedPower = 0;
-        if (ScalingStat == ScalingStat.Atk)
+        if (ScalingStat == Stat.Atk)
             calculatedPower = ScalingMultiplier * user.Atk;
-        else if (ScalingStat == ScalingStat.Mag)
+        else if (ScalingStat == Stat.Mag)
             calculatedPower = ScalingMultiplier * user.Mag;
-        else if (ScalingStat == ScalingStat.Def)
+        else if (ScalingStat == Stat.Def)
             calculatedPower = ScalingMultiplier * user.Def;
-        else if (ScalingStat == ScalingStat.Mdef)
+        else if (ScalingStat == Stat.Mdef)
             calculatedPower = ScalingMultiplier * user.Mdef;
-        else if (ScalingStat == ScalingStat.Spd)
+        else if (ScalingStat == Stat.Spd)
             calculatedPower = ScalingMultiplier * user.Spd;
-        else if (ScalingStat == ScalingStat.Acc)
+        else if (ScalingStat == Stat.Acc)
             calculatedPower = ScalingMultiplier * user.Acc;
-        else if (ScalingStat == ScalingStat.Eva)
+        else if (ScalingStat == Stat.Eva)
             calculatedPower = ScalingMultiplier * user.Eva;
-        else if (ScalingStat == ScalingStat.Luck)
+        else if (ScalingStat == Stat.Luck)
             calculatedPower = ScalingMultiplier * user.Luck;
 
         return calculatedPower;

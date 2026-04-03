@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemCard : MonoBehaviour
 {
     public TextMeshProUGUI ItemText;
-    public void Initialize(ItemStack itemStack)
+    public void Initialize(InventoryEntry itemStack)
     {
         ItemText.text = itemStack.item.ItemName + " x" + itemStack.count;
     }

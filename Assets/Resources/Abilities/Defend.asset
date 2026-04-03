@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ability
   AbilityName: Defend
   Description: 
-  ScalingStat: 0
+  ScalingStat: 2
   ScalingMultiplier: 0
   MpCost: 0
   HpCost: 0
+  SkipTurnAndUseNextTurn: 0
   UniqueResourceCost:
     rid: -2
   TargetType: 2
+  TargetsToHitIfRandom: 0
   AbilityEffects:
   - rid: 9008616039178567748
   SynergyTags: 

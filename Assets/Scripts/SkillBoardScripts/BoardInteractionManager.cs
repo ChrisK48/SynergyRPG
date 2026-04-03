@@ -73,7 +73,7 @@ public class BoardInteractionManager : MonoBehaviour
     }
 
 
-    public void SpawnSticker(Tile tileData)
+    public void SpawnSticker(TileItem tileData)
     {
         GameObject sticker = Instantiate(interactableTilePrefab, dragLayer);
         InteractableTile script = sticker.GetComponent<InteractableTile>();
@@ -82,5 +82,17 @@ public class BoardInteractionManager : MonoBehaviour
 
         // 2. Change this line right here:
         sticker.transform.position = Mouse.current.position.ReadValue();
+    }
+
+    public SkillBoardTileUI GetSlotAt(Vector2Int coords)
+    {
+        // We search the UI Grid for the slot that matches these coordinates
+        // Assuming your slots are children of a grid object
+        SkillBoardTileUI[] allSlots = GetComponentsInChildren<SkillBoardTileUI>();
+        foreach (var slot in allSlots)
+        {
+            if (slot.boardPosition == coords) return slot;
+        }
+        return null;
     }
 }

@@ -1238,8 +1238,8 @@ RectTransform:
   m_Children:
   - {fileID: 676985593}
   - {fileID: 1101072458}
-  - {fileID: 845222479}
   - {fileID: 2080807632}
+  - {fileID: 845222479}
   m_Father: {fileID: 1759629886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2251,6 +2251,7 @@ MonoBehaviour:
   interactableTilePrefab: {fileID: 1902398955813247819, guid: 1950f3149dd7f0142aa280b26db548a4, type: 3}
   dragLayer: {fileID: 845222479}
   placedLayer: {fileID: 2080807632}
+  allTileUIs: []
 --- !u!1 &1527519578
 GameObject:
   m_ObjectHideFlags: 0
@@ -2932,18 +2933,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.data[1].item
       value: 
-      objectReference: {fileID: 11400000, guid: 11059aee127e0f344b5e2df607652e04, type: 2}
+      objectReference: {fileID: 11400000, guid: 1736369bbb955184db053acf8760445a, type: 2}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[2].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 2bc5ff49c3ea2454e800de4d734b8054, type: 2}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[3].item
+      value: 
+      objectReference: {fileID: 11400000, guid: be7e09a9afcf17b4aab15b918ddbd6a4, type: 2}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[4].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 58b70b8c5ccf3e344ab39fec079026d5, type: 2}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: activePartyMembers.Array.size
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.data[1].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[2].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[3].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[4].count
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}

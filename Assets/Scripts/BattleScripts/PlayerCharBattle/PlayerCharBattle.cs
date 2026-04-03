@@ -18,7 +18,6 @@ public abstract class PlayerCharBattle : CharBattle
 
     public void InitializeStatsFromData(PlayerCharData data)
     {
-        data.RefreshAllStats();
         CharName = data.CharName;
         MaxHp = data.MaxHp;
         MaxMp = data.MaxMp;
@@ -33,6 +32,8 @@ public abstract class PlayerCharBattle : CharBattle
 
         hp = data.currentHp;
         mp = data.currentMp;
+
+        Debug.Log($"Initialized stats from data for {CharName}: MaxHp: {MaxHp}, MaxMp: {MaxMp}, Atk: {Atk}, Mag: {Mag}, Def: {Def}, Mdef: {Mdef}, Spd: {Spd}, Acc: {Acc}, Eva: {Eva}, Luck: {Luck}");
 
         abilities = new List<Ability>(data.abilities);
     }
