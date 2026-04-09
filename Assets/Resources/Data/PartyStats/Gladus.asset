@@ -23,7 +23,7 @@ MonoBehaviour:
   BaseAcc: 10
   BaseEva: 8
   BaseLuck: 10
-  MaxHp: 250
+  MaxHp: 1250
   MaxMp: 25
   Atk: 12
   Mag: 6
@@ -37,9 +37,6 @@ MonoBehaviour:
   currentMp: 25
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  - {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
-  - {fileID: 11400000, guid: 044b6ce1b03add442900abf0cd9639c9, type: 2}
-  - {fileID: 11400000, guid: e53256605f15fee4fb347c2e86ca90c0, type: 2}
   weapon: {fileID: 0}
   head: {fileID: 0}
   body: {fileID: 0}
@@ -48,4 +45,5 @@ MonoBehaviour:
   currentLevel: 1
   currentExp: 0
   charBattlePrefab: {fileID: 3932255046324115680, guid: 04994195d8de16844974f7d4fad7a253, type: 3}
+  CharacterBoard: {fileID: 11400000, guid: dae4adc07c18a184896e2099c2953d04, type: 2}
   MenuImage: {fileID: 5407174444207805271, guid: 192070108b034de438aa9a6766ed591f, type: 3}

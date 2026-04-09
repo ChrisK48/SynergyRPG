@@ -3,55 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public abstract class TileType {}
+public abstract class GemType {}
 
 [Serializable]
-public class AbilityTile : TileType
+public class AbilityGem : GemType
 {
     public Ability ability;
 }
 
 [Serializable]
-public class StatTile : TileType
+public class StatGem : GemType
 {
     public Stat statType;
     public int statBoost;
 }
 
 [Serializable]
-public class BuffTile : TileType
+public class BuffGem : GemType
 {
     public Buff buff;
     public int buffDuration;
 }
 
-[Serializable]
-public struct TileOffset
-{
-    public int x;
-    public int y;
-}
 
 [CreateAssetMenu(fileName = "NewTile", menuName = "Item/Tile")]
-public class TileItem : Item
+public class GemItem : Item
 {
-    public List<TileOffset> layoutOffsets = new List<TileOffset>();
+    public List<Vector2Int> layoutOffsets = new List<Vector2Int>();
     [SerializeReference]
-    public TileType tileType;
-    public Sprite TileSprite;
-    public Color tileColor;
-    public bool isExclusive;
-}
-
-[Serializable]
-public class TileInventoryEntry
-{
-    public TileItem tile;
-    [HideInInspector] public bool isEquipped;
-
-    public TileInventoryEntry(TileItem tile)
-    {
-        this.tile = tile;
-        isEquipped = false;
-    }
+    public GemType GemType;
+    public Sprite GemSprite;
+    public Color GemColor;
+    public bool IsExclusive;
 }

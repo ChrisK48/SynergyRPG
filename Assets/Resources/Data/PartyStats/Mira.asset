@@ -23,7 +23,7 @@ MonoBehaviour:
   BaseAcc: 15
   BaseEva: 15
   BaseLuck: 15
-  MaxHp: 100
+  MaxHp: 600
   MaxMp: 15
   Atk: 15
   Mag: 15
@@ -37,8 +37,6 @@ MonoBehaviour:
   currentMp: 15
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  - {fileID: 11400000, guid: 0ade4f07ae9b7f741b6edcb304ec0d9e, type: 2}
-  - {fileID: 11400000, guid: 8a2633f4926e2fb4db6a22a6eb579800, type: 2}
   weapon: {fileID: 0}
   head: {fileID: 0}
   body: {fileID: 0}

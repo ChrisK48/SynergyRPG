@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum EquipSlot { Weapon, Head, Body, Accessory }
+public enum EquipSlot { Weapon, Armor, Accessory }
 
 [CreateAssetMenu(fileName = "New Equippable", menuName = "Equippable")]
 public class Equippable : Item

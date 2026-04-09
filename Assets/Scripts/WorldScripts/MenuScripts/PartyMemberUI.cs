@@ -22,10 +22,5 @@ public class PartyMemberUI : MonoBehaviour
         PortraitDisplay.sprite = member.MenuImage;
         PortraitDisplay.SetNativeSize();
         PortraitDisplay.rectTransform.localScale = new Vector3(ImageScale, ImageScale, 1);
-
-        Button btn = GetComponent<Button>();
-        btn.onClick.AddListener(() => {
-            MenuManager.instance.BuildSkillBoardMenu(member.CharacterBoard);
-        });
     }
 }

@@ -15,7 +15,7 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
-        foreach (InventoryEntry entry in PartyManager.instance.inventory)
+        foreach (ItemStack entry in PartyManager.instance.inventory)
         {
             if (entry.item is ConsumableItem consumable && entry.count > 0)
             {
@@ -52,7 +52,8 @@ public class InventoryManager : MonoBehaviour
 
         foreach (var pair in items)
         {
-            PartyManager.instance.inventory.Add(new InventoryEntry(pair.Key, pair.Value));
+            ItemStack stack = new ItemStack { item = pair.Key, count = pair.Value };
+            PartyManager.instance.inventory.Add(stack);
         }
     }
 }

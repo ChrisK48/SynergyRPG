@@ -3,46 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class InventoryEntry
+public class ItemStack
 {
-    public Item item; // The ScriptableObject (Template)
-    public int count; // Used for Consumables
-    
-    // This holds the "Live" data for things like Tiles
-    // It's null for regular items like Potions
-    public TileMetadata tileMetadata; 
-
-    public bool IsEquipped => tileMetadata != null && tileMetadata.isEquipped;
-
-    // Constructor for Consumables
-    public InventoryEntry(Item item, int count)
-    {
-        this.item = item;
-        this.count = count;
-        this.tileMetadata = null;
-    }
-
-    // Constructor for Tiles
-    public InventoryEntry(TileItem tile)
-    {
-        item = tile;
-        count = 1;
-        tileMetadata = new TileMetadata();
-    }
-}
-
-[System.Serializable]
-public class TileMetadata
-{
-    public bool isEquipped;
-    // You can add more later: e.g., currentLevel, experience, etc.
+    public Item item;
+    public int count;
 }
 
 public class PartyManager : MonoBehaviour
 {
     public List<PlayerCharData> activePartyMembers;
     public int heldMoney;
-    public List<InventoryEntry> inventory;
+    public List<ItemStack> inventory;
     public static PartyManager instance;
 
     void Awake()
@@ -61,53 +32,23 @@ public class PartyManager : MonoBehaviour
 
     public void GainItem(Item newItem)
     {
-        if (newItem is TileItem tile)
-        {
-            // Tiles never stack, always add a new unique entry
-            inventory.Add(new InventoryEntry(tile));
-        }
+        ItemStack existingStack = inventory.Find(stack => stack.item == newItem);
+        if (existingStack != null) existingStack.count++;
         else
         {
-            // Consumables stack by count
-            InventoryEntry existing = inventory.Find(e => e.item == newItem);
-            if (existing != null) existing.count++;
-            else inventory.Add(new InventoryEntry(newItem, 1));
+            inventory.Add(new ItemStack { item = newItem, count = 1 });
         }
     }
 
     public void LoseItem(Item item)
     {
-        int index = inventory.FindIndex(stack => stack.item == item);
-
-        if (index != -1)
-        {
-            InventoryEntry stack = inventory[index];
-            stack.count -= 1;
-
-            if (stack.count <= 0)
+        ItemStack existingStack = inventory.Find(stack => stack.item == item);
+        if (existingStack != null)        {
+            existingStack.count--;
+            if (existingStack.count <= 0)
             {
-                inventory.RemoveAt(index);
+                inventory.Remove(existingStack);
             }
-            else
-            {
-                inventory[index] = stack; 
-            }
-        }
-    }
-
-    public List<InventoryEntry> GetHeldTiles()
-    {
-        List<InventoryEntry> obtainedTiles = inventory.FindAll(stack => stack.item is TileItem);
-        return obtainedTiles;
-    }
-
-    public void SetTileEquipStatus(TileItem tileSO, bool status)
-    {
-        InventoryEntry entry = inventory.Find(e => e.item == tileSO && e.tileMetadata != null);
-        
-        if (entry != null)
-        {
-            entry.tileMetadata.isEquipped = status;
         }
     }
 

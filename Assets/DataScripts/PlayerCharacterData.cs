@@ -12,11 +12,10 @@ public class PlayerCharData : ScriptableObject
     public int MaxHp, MaxMp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
     public int currentHp, currentMp;
     public List<Ability> abilities;
-    public Equippable weapon, head, body, accessory1, accessory2;
+    public Equippable weapon, armor, accessory;
     public int currentLevel;
     public int currentExp;
     public PlayerCharBattle charBattlePrefab;
-    public CharacterBoard CharacterBoard;
 
     [Header("Resources")]
     public Sprite MenuImage;
@@ -24,32 +23,19 @@ public class PlayerCharData : ScriptableObject
     void OnEnable()
     {
         RefreshAllStats();
-        if (CharacterBoard != null)
-        {
-            CharacterBoard.OnBoardChanged -= RefreshAbilityList;
-            CharacterBoard.OnBoardChanged += RefreshAbilityList;
-            CharacterBoard.OnBoardChanged -= RefreshStats;
-            CharacterBoard.OnBoardChanged += RefreshStats;
-        }
     }
 
     void OnDisable()
     {
-        if (CharacterBoard != null)
-        {
-            CharacterBoard.OnBoardChanged -= RefreshAbilityList;
-            CharacterBoard.OnBoardChanged -= RefreshStats;
-        }
+
     }
 
     public void RefreshAllStats()
     {
         InitializeStats();
         if (weapon != null) ApplyEquipBonus(weapon);
-        if (head != null) ApplyEquipBonus(head);
-        if (body != null) ApplyEquipBonus(body);
-        if (accessory1 != null) ApplyEquipBonus(accessory1);
-        if (accessory2 != null) ApplyEquipBonus(accessory2);
+        if (armor != null) ApplyEquipBonus(armor);
+        if (accessory != null) ApplyEquipBonus(accessory);
     }
 
     public void InitializeStats()
@@ -111,27 +97,5 @@ public class PlayerCharData : ScriptableObject
         currentLevel++;
         Debug.Log(CharName + " leveled up to level " + currentLevel + "!");
         // Will add stat curve stuff here
-    }
-
-    public void RefreshAbilityList()
-    {
-        abilities = abilities.Take(1).Concat(CharacterBoard.GetAllPlacedAbilities()).ToList();
-    }
-
-    public void RefreshStats()
-    {
-        RefreshAllStats();
-        CharacterBoard.GetTotalStatBoosts().ToList().ForEach(pair => {
-            if (pair.Key == Stat.MaxHp) MaxHp += pair.Value;
-            else if (pair.Key == Stat.MaxMp) MaxMp += pair.Value;
-            else if (pair.Key == Stat.Atk) Atk += pair.Value;
-            else if (pair.Key == Stat.Mag) Mag += pair.Value;
-            else if (pair.Key == Stat.Def) Def += pair.Value;
-            else if (pair.Key == Stat.Mdef) Mdef += pair.Value;
-            else if (pair.Key == Stat.Spd) Spd += pair.Value;
-            else if (pair.Key == Stat.Acc) Acc += pair.Value;
-            else if (pair.Key == Stat.Eva) Eva += pair.Value;
-            else if (pair.Key == Stat.Luck) Luck += pair.Value;
-        });
     }
 }

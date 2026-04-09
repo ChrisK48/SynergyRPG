@@ -26,22 +26,6 @@ public class MenuManager : MonoBehaviour
 
     [Header("Equipment Menu")]
     public GameObject EquipmentContainer;
-    public GameObject PlayerSelectContainer;
-    public Button WeaponSelectButton;
-    public Button HelmetSelectButton;
-    public Button BodySelectButton;
-    public Button Accessory1SelectButton;
-    public Button Accessory2SelectButton;
-    public Button PlayerNameButtonPrefab;
-    public GameObject EquipmentSelectionPanel;
-    public Button EquipmentButtonPrefab;
-
-    [Header("Skill Board Menu")]
-    public GameObject SkillMenuContainer;
-    public GameObject SkillBoardContainer;
-    public GameObject SkillBoardTilePrefab;
-    public GameObject TileListContainer;
-    public GameObject TileSelectionButtonPrefab;
 
     private bool menuOpen = false;
     private bool inventoryOpen = false;
@@ -85,10 +69,6 @@ public class MenuManager : MonoBehaviour
         {
             EquipmentContainer.SetActive(false);
         }
-        if (SkillMenuContainer.activeSelf)
-        {
-            SkillMenuContainer.SetActive(false);
-        }
     }
 
     public bool GetIfMenuOpen() { return menuOpen; }
@@ -112,7 +92,7 @@ public class MenuManager : MonoBehaviour
 
         InventoryContainer.SetActive(true);
         inventoryOpen = true;
-        foreach(InventoryEntry item in PartyManager.instance.inventory)
+        foreach(ItemStack item in PartyManager.instance.inventory)
         {
             GameObject itemCard = Instantiate(ItemCardPrefab, InventoryContainer.transform);
             itemCard.GetComponent<ItemCard>().Initialize(item);
@@ -122,130 +102,6 @@ public class MenuManager : MonoBehaviour
     private void BuildEquipmentMenu()
     {
         EquipmentContainer.SetActive(true);
-        foreach(PlayerCharData member in Resources.LoadAll<PlayerCharData>("Data/PartyStats"))
-        {
-            Button btn = Instantiate(PlayerNameButtonPrefab, PlayerSelectContainer.transform);
-            btn.GetComponentInChildren<TextMeshProUGUI>().text = member.CharName;
-            btn.GetComponent<Button>().onClick.AddListener(() => {
-                PlayerCharData selectedMember = member;
-                SetupEquipmentSelectionButtons(selectedMember);
-            });
-        }
-    }
-
-    private void SetupEquipmentSelectionButtons(PlayerCharData member)
-    {
-        WeaponSelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.weapon?.ItemName ?? "None";
-        HelmetSelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.head?.ItemName ?? "None";
-        BodySelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.body?.ItemName ?? "None";
-        Accessory1SelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.accessory1?.ItemName ?? "None";
-        Accessory2SelectButton.GetComponentInChildren<TextMeshProUGUI>().text = member.accessory2?.ItemName ?? "None";
-
-        WeaponSelectButton.onClick.RemoveAllListeners();
-        HelmetSelectButton.onClick.RemoveAllListeners();
-        BodySelectButton.onClick.RemoveAllListeners();
-        Accessory1SelectButton.onClick.RemoveAllListeners();
-        Accessory2SelectButton.onClick.RemoveAllListeners();
-
-        WeaponSelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Weapon); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, WeaponSelectButton.transform.position.y); });
-        HelmetSelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Head); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, HelmetSelectButton.transform.position.y); });
-        BodySelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Body); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, BodySelectButton.transform.position.y); });
-        Accessory1SelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Accessory); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, Accessory1SelectButton.transform.position.y); });
-        Accessory2SelectButton.onClick.AddListener(() => { OpenEquipmentSelection(member, EquipSlot.Accessory); EquipmentSelectionPanel.transform.position = new Vector2(EquipmentSelectionPanel.transform.position.x, Accessory2SelectButton.transform.position.y); });
-    }
-
-    private void OpenEquipmentSelection(PlayerCharData member,  EquipSlot slot)
-    {
-        EquipmentSelectionPanel.SetActive(true);
-        foreach (Transform child in EquipmentSelectionPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (InventoryEntry item in PartyManager.instance.inventory)
-        {
-            if (item.item is Equippable equipItem && equipItem.equipSlot == slot)
-            {
-                Button btn = Instantiate(EquipmentButtonPrefab, EquipmentSelectionPanel.transform);
-                btn.GetComponentInChildren<TextMeshProUGUI>().text = item.item.ItemName + " (" + item.count + ")";
-                btn.onClick.AddListener(() => {
-                    EquipItemToMember(member, equipItem, slot);
-                    EquipmentSelectionPanel.SetActive(false);
-                    SetupEquipmentSelectionButtons(member);
-                });
-            }
-        }
-    }
-
-    private void EquipItemToMember(PlayerCharData member, Equippable item, EquipSlot slot)
-    {
-        switch (slot)
-        {
-            case EquipSlot.Weapon:
-                member.weapon = item;
-                break;
-            case EquipSlot.Head:
-                member.head = item;
-                break;
-            case EquipSlot.Body:
-                member.body = item;
-                break;
-            case EquipSlot.Accessory:
-                if (member.accessory1 == null)
-                    member.accessory1 = item;
-                else
-                    member.accessory2 = item;
-                break;
-        }
-    }
-
-    public void BuildSkillBoardMenu(CharacterBoard board)
-    {
-        // 1. Prepare the manager
-        BoardInteractionManager.instance.allTileUIs.Clear();
-        BoardInteractionManager.instance.activeBoard = board;
-        
-        SkillMenuContainer.SetActive(true);   
-
-        // 2. Clear and rebuild the physical background grid
-        foreach (Transform child in SkillBoardContainer.transform) Destroy(child.gameObject);
-        
-        SkillBoardContainer.GetComponent<GridLayoutGroup>().constraintCount = board.boardSize.x;
-        for (int y = 0; y < board.boardSize.y; y++)
-        {
-            for (int x = 0; x < board.boardSize.x; x++)
-            {
-                Vector2Int currentPos = new Vector2Int(x, y);
-                BoardTile tile = board.GetTileAt(currentPos);
-
-                GameObject tileObj = Instantiate(SkillBoardTilePrefab, SkillBoardContainer.transform);
-                tileObj.GetComponent<SkillBoardTileUI>().Initialize(tile);
-
-                // Populate the list so the InteractionManager can find these tiles
-                BoardInteractionManager.instance.allTileUIs.Add(tileObj.GetComponent<SkillBoardTileUI>());
-            }
-        }
-
-        Canvas.ForceUpdateCanvases();
-        SkillBoardContainer.GetComponent<VerticalLayoutGroup>()?.SetLayoutVertical(); // If using layout groups
-        SkillBoardContainer.GetComponent<GridLayoutGroup>().CalculateLayoutInputHorizontal();
-        SkillBoardContainer.GetComponent<GridLayoutGroup>().CalculateLayoutInputVertical();
-        SkillBoardContainer.GetComponent<GridLayoutGroup>().SetLayoutHorizontal();
-        SkillBoardContainer.GetComponent<GridLayoutGroup>().SetLayoutVertical();
-
-
-        BoardInteractionManager.instance.RebuildBoardUI(board);
-
-        // 3. Rebuild the side-list of available tiles
-        foreach (Transform child in TileListContainer.transform) Destroy(child.gameObject);
-        foreach (InventoryEntry tile in PartyManager.instance.GetHeldTiles())
-        {
-            GameObject btnObj = Instantiate(TileSelectionButtonPrefab, TileListContainer.transform);
-            btnObj.GetComponent<TileSelectionButton>().Initialize(tile);
-            btnObj.GetComponent<Button>().onClick.AddListener(() => {
-                BoardInteractionManager.instance.SpawnSticker((TileItem)tile.item);
-            });
-        }
     }
 
     private void ClearCards()

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 20e3238627fd2fd4cb2ab60b6b6440fd
+guid: 0a0c44d0f1b02924aaec6d662680ac4a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7234269308445878555
-    second: MenuBanner 1_0
+      213: 589379281899956518
+    second: EquipMenuBanner-export_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MenuBanner 1_0
+      name: EquipMenuBanner-export_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e6929c8466ba9b90800000000000000
-      internalID: -7234269308445878555
+      spriteID: 6292f9f8555ed2800800000000000000
+      internalID: 589379281899956518
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MenuBanner 1_0: -7234269308445878555
+      EquipMenuBanner-export_0: 589379281899956518
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
