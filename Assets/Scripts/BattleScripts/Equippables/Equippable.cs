@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum EquipSlot { Weapon, Armor, Accessory }
@@ -7,4 +8,6 @@ public class Equippable : Item
 {
     public int MaxHpBonus, MaxMpBonus, AtkBonus, MagBonus, DefBonus, MdefBonus, SpdBonus, AccBonus, EvaBonus, LuckBonus;
     public EquipSlot equipSlot;
+    [SerializeField] public List<GemSlot> gemSlots = new List<GemSlot>();
 }
+

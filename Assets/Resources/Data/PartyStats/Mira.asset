@@ -23,7 +23,7 @@ MonoBehaviour:
   BaseAcc: 15
   BaseEva: 15
   BaseLuck: 15
-  MaxHp: 600
+  MaxHp: 100
   MaxMp: 15
   Atk: 15
   Mag: 15
@@ -37,13 +37,16 @@ MonoBehaviour:
   currentMp: 15
   abilities:
   - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  weapon: {fileID: 0}
-  head: {fileID: 0}
-  body: {fileID: 0}
-  accessory1: {fileID: 0}
-  accessory2: {fileID: 0}
+  weaponSlot:
+    slotType: 0
+    currentItem: {fileID: 0}
+  armorSlot:
+    slotType: 1
+    currentItem: {fileID: 0}
+  accessorySlot:
+    slotType: 2
+    currentItem: {fileID: 0}
   currentLevel: 1
   currentExp: 0
   charBattlePrefab: {fileID: -6576123505942400488, guid: e635e93752cd4e342a25c02d9adc663a, type: 3}
-  CharacterBoard: {fileID: 11400000, guid: 2bd316d063ad8554f96d66425e411104, type: 2}
   MenuImage: {fileID: -4037558033643720181, guid: 3b6d11d68884aa64ab0e7c4c28ca17a1, type: 3}

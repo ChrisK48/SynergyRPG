@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 
 [Serializable]
 public class ItemStack
@@ -14,6 +15,7 @@ public class PartyManager : MonoBehaviour
     public List<PlayerCharData> activePartyMembers;
     public int heldMoney;
     public List<ItemStack> inventory;
+    public List<Tuple<PlayerCharData,Equippable>> equipList = new List<Tuple<PlayerCharData, Equippable>>();
     public static PartyManager instance;
 
     void Awake()
@@ -60,5 +62,25 @@ public class PartyManager : MonoBehaviour
     public void LoseMoney(int amount)
     {
         heldMoney = Mathf.Max(0, heldMoney - amount);
+    }
+
+    private void CreateEquipList()
+    {
+        foreach (PlayerCharData charData in activePartyMembers)
+        {
+            if (!charData.weaponSlot.IsEmpty) equipList.Add(new Tuple<PlayerCharData, Equippable>(charData, charData.weaponSlot.currentItem));
+            if (!charData.armorSlot.IsEmpty) equipList.Add(new Tuple<PlayerCharData, Equippable>(charData, charData.armorSlot.currentItem));
+            if (!charData.accessorySlot.IsEmpty) equipList.Add(new Tuple<PlayerCharData, Equippable>(charData, charData.accessorySlot.currentItem));
+        }
+    }
+
+    public void UpdateEquipList(PlayerCharData charData, Equippable newEquip)
+    {
+        Tuple<PlayerCharData, Equippable> existingEntry = equipList.Find(entry => entry.Item1 == charData && entry.Item2.equipSlot == newEquip.equipSlot);
+        if (existingEntry != null)
+        {
+            equipList.Remove(existingEntry);
+        }
+        equipList.Add(new Tuple<PlayerCharData, Equippable>(charData, newEquip));
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.UI;
+using System.Collections;
 public class EquipMenuScript : MonoBehaviour
 {
     public GameObject WeaponContainer;
@@ -63,12 +64,18 @@ public class EquipMenuScript : MonoBehaviour
 
     private void SetupEquipSlots()
     {
-        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().UpdateEquipSlot(currentChar.weapon);
-        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().UpdateEquipSlot(currentChar.armor);
-        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().UpdateEquipSlot(currentChar.accessory);
-        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().onClicked = () => OpenEquipSelection();
-        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().onClicked = () => OpenEquipSelection();
-        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().onClicked = () => OpenEquipSelection();
+        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().Setup(currentChar.weaponSlot.currentItem, currentChar.weaponSlot);
+        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().Setup(currentChar.armorSlot.currentItem, currentChar.armorSlot);
+        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().Setup(currentChar.accessorySlot.currentItem, currentChar.accessorySlot);
+        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().openEquipSelection = OpenEquipSelection;
+        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().openEquipSelection = OpenEquipSelection;
+        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().openEquipSelection = OpenEquipSelection;
+        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (slotIndex) => OpenGemSelection(currentChar.weaponSlot, slotIndex);
+        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (slotIndex) => OpenGemSelection(currentChar.armorSlot, slotIndex);
+        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (slotIndex) => OpenGemSelection(currentChar.accessorySlot, slotIndex);
+        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); };
+        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); };
+        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); };
     }
 
     private void SwapInPartyMember()
@@ -97,26 +104,79 @@ public class EquipMenuScript : MonoBehaviour
         {
             Button btn = Instantiate(EquipButton, EquipSelectionContainer.transform);
             btn.GetComponentInChildren<TextMeshProUGUI>().text = itemStack.item.ItemName + " x" + itemStack.count;
-            btn.onClick.AddListener(() => EquipItem(itemStack));
+            if (itemStack.item is Equippable equippable)
+            {
+                var entry = PartyManager.instance.equipList.Find(e => e.Item2 == equippable);
+                if (entry != null)
+                {
+                    if (entry.Item1 == currentChar)
+                    {
+                        btn.GetComponentInChildren<TextMeshProUGUI>().text += " (Currently Equipped)";
+                    }
+                    else
+                    {
+                        btn.GetComponentInChildren<TextMeshProUGUI>().text += " (Equipped by " + entry.Item1.CharName + ")";
+                        btn.onClick.AddListener(() => {
+                            EquipSlot equippedSlot = entry.Item2.equipSlot;
+                            entry.Item1.GetEquipSlot(equippedSlot).Unequip(entry.Item1, entry.Item2);
+                            entry.Item1.GetEquipSlot(equippedSlot).equippedGems.Clear();
+                            entry.Item1.RefreshAllStats();
+                            entry.Item1.RefreshAbilities();
+                            EquipItem(equippable);
+                        });
+                    }
+                }
+                else
+                {
+                    btn.onClick.AddListener(() => EquipItem(equippable));
+                }
+            }
         }
     }
 
-    private void EquipItem(ItemStack itemStack)
+    private void EquipItem(Equippable equipItem)
     {
-        Equippable equipItem = itemStack.item as Equippable;
         switch (equipItem.equipSlot)
         {
             case EquipSlot.Weapon:
-                currentChar.weapon = equipItem;
+                currentChar.weaponSlot.Equip(currentChar,equipItem);
                 break;
             case EquipSlot.Armor:
-                currentChar.armor = equipItem;
+                currentChar.armorSlot.Equip(currentChar, equipItem);
                 break;
             case EquipSlot.Accessory:
-                currentChar.accessory = equipItem;
+                currentChar.accessorySlot.Equip(currentChar, equipItem);
                 break;
         }
         SetupEquipSlots();
         EquipSelectionContainer.SetActive(false);
+    }
+
+    private void EquipGem(Gem gem, EquipmentSlot equipmentSlot, int gemSlotIndex)
+    {
+        equipmentSlot.EquipGem(gem, gemSlotIndex, currentChar);
+        SetupEquipSlots();
+        EquipSelectionContainer.SetActive(false);
+    }
+
+    public void OpenGemSelection(EquipmentSlot equipmentSlot, int gemSlotIndex)
+    {
+        EquipSelectionContainer.SetActive(true);
+        foreach (Transform child in EquipSelectionContainer.transform) Destroy(child.gameObject);
+
+        foreach (ItemStack itemStack in PartyManager.instance.inventory.Where(stack => stack.item is Gem))
+        {
+            Button btn = Instantiate(EquipButton, EquipSelectionContainer.transform);
+            btn.GetComponentInChildren<TextMeshProUGUI>().text = itemStack.item.ItemName + " x" + itemStack.count;
+            if (itemStack.item is Gem gem)
+            {
+                btn.onClick.AddListener(() => 
+                { 
+                    EquipGem(gem, equipmentSlot, gemSlotIndex); 
+                    currentChar.RefreshAllStats();
+                    currentChar.RefreshAbilities();
+                });
+            }
+        }
     }
 }

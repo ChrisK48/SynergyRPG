@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99991052a0559d647aacf2ad22c2b968, type: 3}
-  m_Name: LifeRing
+  m_Name: ShortSword
   m_EditorClassIdentifier: Assembly-CSharp::Equippable
-  ItemName: Life Ring
-  ItemDescription: Increases the wearers max health points by 200
-  MaxHpBonus: 200
+  ItemName: Short Sword
+  ItemDescription: 
+  MaxHpBonus: 0
   MaxMpBonus: 0
-  AtkBonus: 0
+  AtkBonus: 5
   MagBonus: 0
   DefBonus: 0
   MdefBonus: 0
@@ -24,5 +24,6 @@ MonoBehaviour:
   AccBonus: 0
   EvaBonus: 0
   LuckBonus: 0
-  equipSlot: 3
-  gemSlots: []
+  equipSlot: 0
+  gemSlots:
+  - slotType: 0

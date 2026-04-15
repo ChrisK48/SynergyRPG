@@ -1,18 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
-using System;
+
 
 [CreateAssetMenu(fileName = "New Player Character", menuName = "Player Character")]
 public class PlayerCharData : ScriptableObject
 {
     public string CharName;
     public int BaseMaxHp, BaseMaxMp, BaseAtk, BaseMag, BaseDef, BaseMdef, BaseSpd, BaseAcc, BaseEva, BaseLuck;
-    [HideInInspector]
-    public int MaxHp, MaxMp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
+    [HideInInspector] public int MaxHp, MaxMp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
     public int currentHp, currentMp;
     public List<Ability> abilities;
-    public Equippable weapon, armor, accessory;
+    public EquipmentSlot weaponSlot = new EquipmentSlot { slotType = EquipSlot.Weapon };
+    public EquipmentSlot armorSlot = new EquipmentSlot { slotType = EquipSlot.Armor };
+    public EquipmentSlot accessorySlot = new EquipmentSlot { slotType = EquipSlot.Accessory };
     public int currentLevel;
     public int currentExp;
     public PlayerCharBattle charBattlePrefab;
@@ -33,9 +33,138 @@ public class PlayerCharData : ScriptableObject
     public void RefreshAllStats()
     {
         InitializeStats();
-        if (weapon != null) ApplyEquipBonus(weapon);
-        if (armor != null) ApplyEquipBonus(armor);
-        if (accessory != null) ApplyEquipBonus(accessory);
+        if (!weaponSlot.IsEmpty) ApplyEquipBonus(weaponSlot.currentItem);
+        if (!armorSlot.IsEmpty) ApplyEquipBonus(armorSlot.currentItem);
+        if (!accessorySlot.IsEmpty) ApplyEquipBonus(accessorySlot.currentItem);
+
+        foreach (Gem gem in weaponSlot.equippedGems)
+        {
+            if (gem != null && gem.StatBonus.value != 0)
+            {
+                switch (gem.StatBonus.type)
+                {
+                    case Stat.MaxHp:
+                        MaxHp += gem.StatBonus.value;
+                        break;
+                    case Stat.MaxMp:
+                        MaxMp += gem.StatBonus.value;
+                        break;
+                    case Stat.Atk:
+                        Atk += gem.StatBonus.value;
+                        break;
+                    case Stat.Mag:
+                        Mag += gem.StatBonus.value;
+                        break;
+                    case Stat.Def:
+                        Def += gem.StatBonus.value;
+                        break;
+                    case Stat.Mdef:
+                        Mdef += gem.StatBonus.value;
+                        break;
+                    case Stat.Spd:
+                        Spd += gem.StatBonus.value;
+                        break;
+                    case Stat.Acc:
+                        Acc += gem.StatBonus.value;
+                        break;
+                    case Stat.Eva:
+                        Eva += gem.StatBonus.value;
+                        break;
+                    case Stat.Luck:
+                        Luck += gem.StatBonus.value;
+                        break;
+                }
+            }
+        }
+
+        foreach (Gem gem in armorSlot.equippedGems)
+        {
+            if (gem != null && gem.StatBonus.value != 0)
+            {
+                switch (gem.StatBonus.type)
+                {
+                    case Stat.MaxHp:
+                        MaxHp += gem.StatBonus.value;
+                        break;
+                    case Stat.MaxMp:
+                        MaxMp += gem.StatBonus.value;
+                        break;
+                    case Stat.Atk:
+                        Atk += gem.StatBonus.value;
+                        break;
+                    case Stat.Mag:
+                        Mag += gem.StatBonus.value;
+                        break;
+                    case Stat.Def:
+                        Def += gem.StatBonus.value;
+                        break;
+                    case Stat.Mdef:
+                        Mdef += gem.StatBonus.value;
+                        break;
+                    case Stat.Spd:
+                        Spd += gem.StatBonus.value;
+                        break;
+                    case Stat.Acc:
+                        Acc += gem.StatBonus.value;
+                        break;
+                    case Stat.Eva:
+                        Eva += gem.StatBonus.value;
+                        break;
+                    case Stat.Luck:
+                        Luck += gem.StatBonus.value;
+                        break;
+                }
+            }
+        }
+
+        foreach (Gem gem in accessorySlot.equippedGems)
+        {
+            if (gem != null && gem.StatBonus.value != 0)
+            {
+                switch (gem.StatBonus.type)
+                {
+                    case Stat.MaxHp:
+                        MaxHp += gem.StatBonus.value;
+                        break;
+                    case Stat.MaxMp:
+                        MaxMp += gem.StatBonus.value;
+                        break;
+                    case Stat.Atk:
+                        Atk += gem.StatBonus.value;
+                        break;
+                    case Stat.Mag:
+                        Mag += gem.StatBonus.value;
+                        break;
+                    case Stat.Def:
+                        Def += gem.StatBonus.value;
+                        break;
+                    case Stat.Mdef:
+                        Mdef += gem.StatBonus.value;
+                        break;
+                    case Stat.Spd:
+                        Spd += gem.StatBonus.value;
+                        break;
+                    case Stat.Acc:
+                        Acc += gem.StatBonus.value;
+                        break;
+                    case Stat.Eva:
+                        Eva += gem.StatBonus.value;
+                        break;
+                    case Stat.Luck:
+                        Luck += gem.StatBonus.value;
+                        break;
+                }
+            }
+        }
+
+    }
+
+    public void RefreshAbilities()
+    {
+        abilities.Clear();
+        if (!weaponSlot.IsEmpty) abilities.AddRange(weaponSlot.equippedGems.FindAll(gem => gem != null && gem.GemAbility != null).ConvertAll(gem => gem.GemAbility));
+        if (!armorSlot.IsEmpty) abilities.AddRange(armorSlot.equippedGems.FindAll(gem => gem != null && gem.GemAbility != null).ConvertAll(gem => gem.GemAbility));
+        if (!accessorySlot.IsEmpty) abilities.AddRange(accessorySlot.equippedGems.FindAll(gem => gem != null && gem.GemAbility != null).ConvertAll(gem => gem.GemAbility));
     }
 
     public void InitializeStats()
@@ -97,5 +226,20 @@ public class PlayerCharData : ScriptableObject
         currentLevel++;
         Debug.Log(CharName + " leveled up to level " + currentLevel + "!");
         // Will add stat curve stuff here
+    }
+
+    public EquipmentSlot GetEquipSlot(EquipSlot slotType)
+    {
+        switch (slotType)
+        {
+            case EquipSlot.Weapon:
+                return weaponSlot;
+            case EquipSlot.Armor:
+                return armorSlot;
+            case EquipSlot.Accessory:
+                return accessorySlot;
+            default:
+                return null;
+        }
     }
 }
