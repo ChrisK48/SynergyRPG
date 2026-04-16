@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c921d70979da24048b4ad772a2306739, type: 3}
-  m_Name: HP500Gem
+  m_Name: GrandShield
   m_EditorClassIdentifier: Assembly-CSharp::Gem
-  ItemName: HP 500 Gem
+  ItemName: Grand Shield
   ItemDescription: 
   GemSprite: {fileID: -4080278737599844964, guid: 96d1933b1d4cf3c45845897e8040c0df, type: 3}
-  GemColor: {r: 0.09746444, g: 0.40251565, b: 0.10711635, a: 1}
-  GemType: 5
-  GemAbility: {fileID: 0}
+  GemColor: {r: 0.30170873, g: 0.69572, b: 0.8490566, a: 1}
+  GemType: 2
+  GemAbility: {fileID: 11400000, guid: 044b6ce1b03add442900abf0cd9639c9, type: 2}
   StatBonus:
-    type: 8
-    value: 500
+    type: 0
+    value: 0

@@ -1,10 +1,10 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Interactions;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EquipSlotUIScript : MonoBehaviour
+public class EquipSlotUIScript : MonoBehaviour, IPointerClickHandler
 {
     public TextMeshProUGUI EquipNameText;
     public GameObject GemSlotContainer;
@@ -13,8 +13,10 @@ public class EquipSlotUIScript : MonoBehaviour
     private Equippable currentEquip;
     private EquipmentSlot equipSlot;
     [HideInInspector] public Action openEquipSelection;
-    [HideInInspector] public Action<int> openGemSelection;
+    [HideInInspector] public Action<GemSlotUI> openGemSelection;
+    [HideInInspector] public Action<EquipSlot> UnequipItem;
     [HideInInspector] public Action Refresh;
+
     void Awake()
     {
         SwapItemButton.onClick.AddListener(() => openEquipSelection?.Invoke());
@@ -47,8 +49,9 @@ public class EquipSlotUIScript : MonoBehaviour
             GameObject newGemSlot = Instantiate(GemSlot, GemSlotContainer.transform);
             GemSlotUI gemSlotUI = newGemSlot.GetComponent<GemSlotUI>();
             gemSlotUI.Setup(equipSlot.equippedGems[i]);
+            gemSlotUI.slotType = currentEquip.gemSlots[i].slotType;
             gemSlotUI.slotIndex = slotIndex;
-            newGemSlot.GetComponentInChildren<Button>().onClick.AddListener(() => openGemSelection?.Invoke(slotIndex));
+            newGemSlot.GetComponentInChildren<Button>().onClick.AddListener(() => openGemSelection?.Invoke(gemSlotUI));
             gemSlotUI.onRightClick = (index) => RemoveGemFromSlot(index);
         }
     }
@@ -62,6 +65,14 @@ public class EquipSlotUIScript : MonoBehaviour
 
             PopulateGemSlots();
             Refresh?.Invoke();
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            UnequipItem?.Invoke(equipSlot.slotType);
         }
     }
 }

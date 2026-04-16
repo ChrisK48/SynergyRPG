@@ -35,17 +35,20 @@ MonoBehaviour:
   Luck: 15
   currentHp: 100
   currentMp: 15
-  abilities:
-  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  abilities: []
   weaponSlot:
     slotType: 0
     currentItem: {fileID: 0}
+    equippedGems: []
   armorSlot:
     slotType: 1
     currentItem: {fileID: 0}
+    equippedGems: []
   accessorySlot:
     slotType: 2
     currentItem: {fileID: 0}
+    equippedGems: []
   currentLevel: 1
   currentExp: 0
   charBattlePrefab: {fileID: -6576123505942400488, guid: e635e93752cd4e342a25c02d9adc663a, type: 3}

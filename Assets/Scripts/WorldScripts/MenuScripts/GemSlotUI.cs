@@ -6,6 +6,7 @@ public class GemSlotUI : MonoBehaviour, IPointerClickHandler
 {
     public Button GemButton;
     public Image GemImage;
+    public GemType slotType;
     [HideInInspector] public int slotIndex;
     [HideInInspector] public Action<int> onRightClick;
     private Gem currentGem;

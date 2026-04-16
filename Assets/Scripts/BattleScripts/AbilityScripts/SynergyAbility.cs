@@ -14,13 +14,13 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
     [SerializeReference]
     public List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
 
-    public void PerformAction(CharBattle[] users, List<ITurnEntity> targets, System.Action onComplete = null)
+    public void PerformAction(CharBattle[] users, List<ITurnEntity> targets, System.Action onComplete)
     {
         foreach (CharBattle user in users)
         {
             if (user is PlayerCharBattle player)
             {
-                player.DeductPreppedAbilityResourceCosts();
+                player.DeductStoredMpCost();
             }
         }
 

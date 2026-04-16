@@ -12,7 +12,6 @@ public class EquipmentSlot
 
     public void Equip(PlayerCharData charData, Equippable newItem)
     {
-        PartyManager.instance.UpdateEquipList(charData, newItem);
         currentItem = newItem;
 
         List<Gem> oldGems = new List<Gem>(equippedGems);
@@ -31,7 +30,6 @@ public class EquipmentSlot
 
     public void Unequip(PlayerCharData charData, Equippable itemToRemove)
     {
-        PartyManager.instance.equipList.RemoveAll(entry => entry.Item1 == charData && entry.Item2 == itemToRemove);
         currentItem = null;
         charData.RefreshAllStats();
     }

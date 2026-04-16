@@ -23,9 +23,10 @@ MonoBehaviour:
   UniqueResourceCost:
     rid: -2
   TargetType: 4
+  TargetsToHitIfRandom: 0
   AbilityEffects:
   - rid: 1609082675180601411
-  SynergyTags: 
+  SynergyTags: 15000000
   references:
     version: 2
     RefIds:
@@ -40,6 +41,6 @@ MonoBehaviour:
         ShieldsToRemove: 0
         buffsToApply:
         - {fileID: 11400000, guid: e7948bd25b343cd46905da8674e5e6f1, type: 2}
-        buffDuration: 1
+        buffDuration: 0
         AppliedtoUser: 0
         SharedInStance: 0

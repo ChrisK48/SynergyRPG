@@ -16,7 +16,7 @@ public class SynergyAttack : ITargetableAction
     {
         foreach (PlayerCharBattle member in users)
         {
-            member.abilities[0].PerformAction(new CharBattle[] { member }, targets);
+            member.attackAbility.PerformAction(new CharBattle[] { member }, targets);
         }
         onComplete?.Invoke();
     }

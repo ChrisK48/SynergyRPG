@@ -25,7 +25,7 @@ MonoBehaviour:
   BaseLuck: 5
   MaxHp: 150
   MaxMp: 50
-  Atk: 65
+  Atk: 15
   Mag: 25
   Def: 17
   Mdef: 25
@@ -35,14 +35,12 @@ MonoBehaviour:
   Luck: 5
   currentHp: 150
   currentMp: 50
+  attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   abilities: []
   weaponSlot:
     slotType: 0
-    currentItem: {fileID: 11400000, guid: a690abaa6d0242f4aac78f64bd3b3ff5, type: 2}
-    equippedGems:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    currentItem: {fileID: 0}
+    equippedGems: []
   armorSlot:
     slotType: 1
     currentItem: {fileID: 0}

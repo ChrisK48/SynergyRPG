@@ -6,9 +6,11 @@ using UnityEngine.Rendering;
 public abstract class PlayerCharBattle : CharBattle
 {
     [HideInInspector]
+    public Ability attackAbility;
     public List<Ability> abilities;
     public GameObject uniqueUIPrefab;
     public event Action OnStatsChanged;
+    private int mpCost;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,6 +37,7 @@ public abstract class PlayerCharBattle : CharBattle
 
         Debug.Log($"Initialized stats from data for {CharName}: MaxHp: {MaxHp}, MaxMp: {MaxMp}, Atk: {Atk}, Mag: {Mag}, Def: {Def}, Mdef: {Mdef}, Spd: {Spd}, Acc: {Acc}, Eva: {Eva}, Luck: {Luck}");
 
+        attackAbility = data.attackAbility;
         abilities = new List<Ability>(data.abilities);
     }
 
@@ -76,16 +79,14 @@ public abstract class PlayerCharBattle : CharBattle
 
     public void ChangeMp(int amt)
     {
-        Debug.Log(CharName + (amt >= 0 ? " restores " : " loses ") + Mathf.Abs(amt) + " MP.");
         mp = Mathf.Clamp(mp + amt, 0, MaxMp);
         TriggerStatsUpdate();
     }
 
-    public void DeductPreppedAbilityResourceCosts()
+    public void DeductStoredMpCost()
     {
-        hp -= preppedAbility.HpCost;
-        mp -= preppedAbility.MpCost;
-        if (preppedAbility.UniqueResourceCost != null) preppedAbility.UniqueResourceCost.PayCost(this);
+        Debug.Log($"Deducting stored MP cost of {mpCost} from {CharName}");
+        mp -= mpCost;
         TriggerStatsUpdate();
     }
 
@@ -108,4 +109,6 @@ public abstract class PlayerCharBattle : CharBattle
         Debug.Log(CharName + " has been revived!");
         TriggerStatsUpdate();
     }
+
+    public void StoreAbilityCost(int mpCost) => this.mpCost = mpCost;
 }

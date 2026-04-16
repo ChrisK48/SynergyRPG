@@ -10,22 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99991052a0559d647aacf2ad22c2b968, type: 3}
-  m_Name: SwordoftheDawn
+  m_Name: DefendersShield
   m_EditorClassIdentifier: Assembly-CSharp::Equippable
-  ItemName: Sword of the Dawn
-  ItemDescription: 
+  ItemName: Defenders Shield
+  ItemDescription: A large shield focused on defense
   MaxHpBonus: 0
   MaxMpBonus: 0
-  AtkBonus: 50
+  AtkBonus: 0
   MagBonus: 0
-  DefBonus: 0
-  MdefBonus: 0
+  DefBonus: 20
+  MdefBonus: 15
   SpdBonus: 0
   AccBonus: 0
   EvaBonus: 0
   LuckBonus: 0
   equipSlot: 0
   gemSlots:
-  - slotType: 0
-  - slotType: 1
   - slotType: 2
+  - slotType: 2
+  - slotType: 2
+  - slotType: 5

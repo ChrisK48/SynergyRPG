@@ -35,10 +35,8 @@ MonoBehaviour:
   Luck: 15
   currentHp: 175
   currentMp: 15
-  abilities:
-  - {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  - {fileID: 11400000, guid: aa74fbc574af7ec4591ec150d4254c5c, type: 2}
-  - {fileID: 11400000, guid: d2e92735597dbdf4a8edb51707bd9b0b, type: 2}
+  attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
+  abilities: []
   weaponSlot:
     slotType: 0
     currentItem: {fileID: 0}

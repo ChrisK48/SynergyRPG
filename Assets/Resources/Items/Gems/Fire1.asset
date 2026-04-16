@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemDescription: 
   GemSprite: {fileID: -4080278737599844964, guid: 96d1933b1d4cf3c45845897e8040c0df, type: 3}
   GemColor: {r: 0.72955966, g: 0.31151706, b: 0.13077004, a: 1}
-  GemType: 0
+  GemType: 4
   GemAbility: {fileID: 11400000, guid: 23d23238c1dcaa046912d78d8c88f0f3, type: 2}
   StatBonus:
     type: 0
