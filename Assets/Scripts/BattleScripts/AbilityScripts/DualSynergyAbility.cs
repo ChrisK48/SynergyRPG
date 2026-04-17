@@ -63,6 +63,7 @@ public class DualSynergyAbility : SynergyAbility, ITargetableAction
     public override int GetUserMpCost(CharBattle user)
     {
         List<SynergyTag> tags = user.GetStoredTags();
+        foreach (var tag in tags) Debug.Log($"[CHECK] User: {user.CharName} | Tag: {tag}");
         foreach (var tagSet in SynergyTagSets)
         {
             if (tags.Contains(tagSet.tag1))

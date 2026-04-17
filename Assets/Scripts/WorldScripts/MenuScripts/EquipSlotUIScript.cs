@@ -47,6 +47,9 @@ public class EquipSlotUIScript : MonoBehaviour, IPointerClickHandler
         {
             int slotIndex = i;
             GameObject newGemSlot = Instantiate(GemSlot, GemSlotContainer.transform);
+            
+            SetSlotColor(newGemSlot, slotIndex);
+
             GemSlotUI gemSlotUI = newGemSlot.GetComponent<GemSlotUI>();
             gemSlotUI.Setup(equipSlot.equippedGems[i]);
             gemSlotUI.slotType = currentEquip.gemSlots[i].slotType;
@@ -65,6 +68,35 @@ public class EquipSlotUIScript : MonoBehaviour, IPointerClickHandler
 
             PopulateGemSlots();
             Refresh?.Invoke();
+        }
+    }
+
+    private void SetSlotColor(GameObject slot, int slotIndex)
+    {
+        Image slotImage = slot.GetComponent<Image>();
+        if (slotImage != null)
+        {
+            switch (currentEquip.gemSlots[slotIndex].slotType)
+            {
+                case GemType.Mira:
+                    slotImage.color = Color.green;
+                    break;
+                case GemType.Rain:
+                    slotImage.color = Color.lightBlue;
+                    break;
+                case GemType.Gladus:
+                    slotImage.color = Color.blue;
+                    break;
+                case GemType.Eldric:
+                    slotImage.color = Color.purple;
+                    break;
+                case GemType.GeneralAbility:
+                    slotImage.color = Color.yellow;
+                    break;
+                default:
+                    slotImage.color = Color.white;
+                    break;
+            }
         }
     }
 

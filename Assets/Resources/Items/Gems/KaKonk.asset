@@ -15,7 +15,7 @@ MonoBehaviour:
   ItemName: KaKonk Gem
   ItemDescription: 
   GemSprite: {fileID: -4080278737599844964, guid: 96d1933b1d4cf3c45845897e8040c0df, type: 3}
-  GemColor: {r: 0.754717, g: 0.6796439, b: 0.1305327, a: 0}
+  GemColor: {r: 0.754717, g: 0.6796439, b: 0.1305327, a: 1}
   GemType: 2
   GemAbility: {fileID: 11400000, guid: e53256605f15fee4fb347c2e86ca90c0, type: 2}
   StatBonus:

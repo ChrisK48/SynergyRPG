@@ -36,6 +36,11 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        UpdateSynergies();
+    }
+
     public void GainItem(Item newItem)
     {
         ItemStack existingStack = inventory.Find(stack => stack.item == newItem);

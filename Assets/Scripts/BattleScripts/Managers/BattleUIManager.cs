@@ -190,32 +190,33 @@ public class BattleUIManager : MonoBehaviour
         TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc }, ability);
     }
 
-    private void HandleDualAbility(PlayerCharBattle userA, PlayerCharBattle userB, DualSynergyAbility ability)
+    private void HandleDualAbility(SynergyStance stance, DualSynergyAbility ability)
     {
         bool prepping = Keyboard.current.leftShiftKey.isPressed;
 
+        var results = PartyManager.instance.GetAvailableDualSynergies((PlayerCharBattle)stance.users[0], (PlayerCharBattle)stance.users[1]);
+        var synergy = results.Find(s => s.Ability == ability);
+
+        if (synergy.Ability != null)
+        {
+            stance.StartPrep(new List<SynergyTag> { synergy.UserATag, synergy.UserBTag });
+            stance.users[0].StartPrep(new List<SynergyTag> { synergy.UserATag });
+            stance.users[1].StartPrep(new List<SynergyTag> { synergy.UserBTag });
+        }
+
         if (prepping) 
         {
-            var results = PartyManager.instance.GetAvailableDualSynergies(userA, userB);
-            var synergy = results.Find(s => s.Ability == ability);
-
-            if (synergy.Ability != null)
-            {
-                userA.StartPrep(new List<SynergyTag> { synergy.UserATag });
-                userB.StartPrep(new List<SynergyTag> { synergy.UserBTag });
-            }
 
             HideCommandMenu();
             HideSubMenu();
 
-            userA.EndTurn();
-            userB.EndTurn();
+            stance.EndTurn();
             return;
         }
 
         HideCommandMenu();
         HideSubMenu();
-        TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { userA, userB }, ability);
+        TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { stance.users[0], stance.users[1] }, ability);
     }
 
     private void CreateSynergyAbilityList(SynergyStance stance)
@@ -233,7 +234,7 @@ public class BattleUIManager : MonoBehaviour
         foreach (DualSynergyResult DualSynergy in PartyManager.instance.GetAvailableDualSynergies((PlayerCharBattle)stance.users[0], (PlayerCharBattle)stance.users[1]))
         {
             CreateDynamicButton($"Synergy: {DualSynergy.Ability.Name}", () => {
-                HandleDualAbility((PlayerCharBattle)stance.users[0], (PlayerCharBattle)stance.users[1], DualSynergy.Ability);
+                HandleDualAbility(stance, DualSynergy.Ability);
             }, ButtonContainer);
         }
 
@@ -294,14 +295,12 @@ public class BattleUIManager : MonoBehaviour
 
             bool partnerIsReady = partnerBattle.IsPreppingSynergy() && 
                                 partnerBattle.GetStoredTags().Any(t => t == partnerReqTag);
-
-            Debug.Log($"[CHECK] User: {user.CharName} | Partner: {partnerBattle.CharName} | Partner Needs: {partnerReqTag} | Partner Has: {(partnerBattle.GetStoredTags().Count > 0 ? partnerBattle.GetStoredTags()[0] : "None")}");
-
             if (partnerIsReady)
             {
                 CreateDynamicButton($"Execute Synergy: {synergy.Ability.Name}", () => {
 
                     user.StartPrep(new List<SynergyTag> { userReqTag });
+                    Debug.Log($"User {user.CharName} prepping with tag {userReqTag}");
 
                     TargetSelectionManager.instance.BeginTargetSelection(
                         new CharBattle[] { user, partnerBattle }, 
