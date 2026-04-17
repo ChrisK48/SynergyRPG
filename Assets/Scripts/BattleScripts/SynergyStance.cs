@@ -14,6 +14,7 @@ public class SynergyStance : ITurnEntity
     public int spd => amalgamatedSpd;
     private bool isPreppingSynergy = false;
     public bool entityIsPreppingSynergy => isPreppingSynergy;
+    private List<SynergyTag> storedTags = new List<SynergyTag>();
     private bool isDefending = false;
     public bool entityDefending => isDefending;
     public bool hasActed { get; private set; }
@@ -81,22 +82,6 @@ public class SynergyStance : ITurnEntity
         }
     }
 
-    public bool GetIfPreppingSynergy() => isPreppingSynergy;
-
-    public void StartPrep(Ability[] abilities)
-    {
-        users[0].StorePreppedAbility(abilities[0]);
-        users[1].StorePreppedAbility(abilities[1]);
-        Debug.Log($"Synergy Stance prep started with abilities: {users[0].CharName} using {abilities[0].Name} and {users[1].CharName} using {abilities[1].Name}");
-        isPreppingSynergy = true;
-        FlowManager.instance.ConsumeFlow(10);
-    }
-
-    public void EndPrep()
-    {
-        isPreppingSynergy = false;
-    }
-
     public void EndTurn()
     {
         SetHasActed(true);
@@ -118,4 +103,18 @@ public class SynergyStance : ITurnEntity
             user.SetHasActed(value);
         }
     }
+
+    public void StartPrep(List<SynergyTag> tags)
+    {
+        isPreppingSynergy = true;
+        storedTags.AddRange(tags);
+    }
+
+    public void EndPrep()
+    {
+        isPreppingSynergy = false;
+        storedTags.Clear();
+    }
+
+    public bool GetIfPreppingSynergy() => isPreppingSynergy;
 }

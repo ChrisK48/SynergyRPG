@@ -25,7 +25,7 @@ MonoBehaviour:
   TargetsToHitIfRandom: 0
   AbilityEffects:
   - rid: 9008616056108613706
-  SynergyTags: 
+  SynergyTags: 00000000
   references:
     version: 2
     RefIds:

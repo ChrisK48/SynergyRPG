@@ -27,3 +27,4 @@ MonoBehaviour:
   equipSlot: 0
   gemSlots:
   - slotType: 0
+  - slotType: 4

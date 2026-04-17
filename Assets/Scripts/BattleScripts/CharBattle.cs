@@ -15,7 +15,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     protected bool inSynergyStance = false;
     protected SynergyStance currentSynergyStance;
     public bool entityIsPreppingSynergy => isPreppingSynergy;
-    protected Ability preppedAbility;
+    private List<SynergyTag> storedTags = new List<SynergyTag>();
     protected Ability storedAbility;
     protected List<ITurnEntity> storedTargets;
     protected int startDef;
@@ -138,18 +138,23 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         }
     }
 
-    // Used on prep to store the prepped ability so that resource costs can be deducted on the next turn when the synergy is executed
-    public void StartPrep(Ability[] abilities)
-    {
-        isPreppingSynergy = true;
-        preppedAbility = abilities[0];
-        Debug.Log(CharName + " has started prepping " + preppedAbility.Name);
-    }
-
     public bool IsPreppingSynergy() => isPreppingSynergy;
     public bool GetIfInSynergyStance() => inSynergyStance;
     public SynergyStance GetCurrentSynergyStance() => currentSynergyStance;
-    public Ability GetPreppedAbility() => preppedAbility;
+
+    public void StartPrep(List<SynergyTag> tags)
+    {
+        isPreppingSynergy = true;
+        storedTags.AddRange(tags);
+    }    
+    
+    public void EndPrep()
+    {
+        isPreppingSynergy = false;
+        storedTags.Clear();
+    }
+    
+    public List<SynergyTag> GetStoredTags() => storedTags;
     public void StoreAbilityForNextTurn(Ability ability) => storedAbility = ability;
     public List<ITurnEntity> StoreTargetsForNextTurn(List<ITurnEntity> targets) => storedTargets = targets;
     public List<ITurnEntity> GetStoredTargets() => storedTargets;
@@ -172,16 +177,6 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         GetComponentInChildren<SpriteRenderer>().enabled = true;
     }
 
-    public void StorePreppedAbility(Ability ability)
-    {
-        preppedAbility = ability;
-    }
-
-    public void EndPrep()
-    {
-        isPreppingSynergy = false;
-        preppedAbility = null;
-    }
 
     public void EnterSynergyStance(SynergyStance stance)
     {

@@ -3405,7 +3405,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.size
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.data[1].item
@@ -3436,9 +3436,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 96923ae7cbf6ab54ea9d769bde28e2ea, type: 2}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[8].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 10f28bf58070b9c4e9fc8a2e28ab7321, type: 2}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[9].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 6499824ba5c62a945861940e4d900072, type: 2}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: activePartyMembers.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[10].item
+      value: 
+      objectReference: {fileID: 11400000, guid: a534603ce6da1084cb20918e972ee7c5, type: 2}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.data[1].count
       value: 3
@@ -3465,6 +3477,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.data[7].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[8].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[9].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[10].count
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}

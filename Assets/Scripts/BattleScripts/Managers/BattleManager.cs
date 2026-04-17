@@ -13,6 +13,7 @@ public class BattleManager : MonoBehaviour
     public List<ITurnEntity> npcEntities = new List<ITurnEntity>();
     public List<Transform> playerSpawnPoints;
     public List<Transform> npcSpawnPoints;
+    public List<DualSynergyResult> preppedDualSynergies = new List<DualSynergyResult>();
     private TurnManager turnManager;
     private int earnedXp = 0;
     private int earnedMoney = 0;

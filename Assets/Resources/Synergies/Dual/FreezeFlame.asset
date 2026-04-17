@@ -20,7 +20,13 @@ MonoBehaviour:
   - rid: 9008616018334974019
   SynergyTagSets:
   - tag1: 1
+    mpCost1: 5
+    scalingStat1: 1
+    scalingMultiplier1: 1
     tag2: 10
+    mpCost2: 5
+    scalingStat2: 1
+    scalingMultiplier2: 1
   references:
     version: 2
     RefIds:

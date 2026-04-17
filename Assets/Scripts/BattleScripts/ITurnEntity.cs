@@ -13,7 +13,7 @@ public interface ITurnEntity
     public bool GetIfDefending();
     public void ReceiveBuff(Buff buff, int duration);
     public void ProcessTurnBuffs();
-    public void StartPrep(Ability[] abilities);
+    public void StartPrep(List<SynergyTag> tags);
     public void EndPrep();
     public void EndTurn();
     public bool hasActed { get; }

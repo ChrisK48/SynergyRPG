@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.Events;
 using System;
+using UnityEditor.SettingsManagement;
+using System.Runtime.InteropServices;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -19,9 +21,9 @@ public class BattleUIManager : MonoBehaviour
     public GameObject CommandMenu;
     public GameObject Submenu;
     public GameObject MenuButtonPrefab;
-    public GameObject FastTrackButton;
+    public GameObject SynergyButton;
     public RectTransform ButtonContainer;
-    public RectTransform FastTrackButtonContainer;
+    public RectTransform SynergyButtonContainer;
     public GameObject PopupPrefab;
     public GameObject turnOrderIconPrefab;
 
@@ -80,6 +82,13 @@ public class BattleUIManager : MonoBehaviour
             synergyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Cancel Synergy";
         }
         else synergyButton.gameObject.SetActive(false);
+
+        Button btn = Submenu.transform.Find("SynergyButton").GetComponent<Button>();
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() => {
+            ButtonContainer.gameObject.SetActive(ButtonContainer.gameObject.activeSelf == false);
+            SynergyButtonContainer.gameObject.SetActive(ButtonContainer.gameObject.activeSelf == false);
+        });
         
         if (entity is PlayerCharBattle pc)
         {
@@ -87,7 +96,7 @@ public class BattleUIManager : MonoBehaviour
             BindStaticButton("Defend", () => { pc.Defend(); HideCommandMenu(); HideSubMenu(); pc.EndTurn(); });
             BindStaticButton("Ability", () => CreateAbilityList(pc));
             BindStaticButton("Item", () => CreateItemList(pc));
-            BindStaticButton("Synergize", () => CreateDuoList(pc));
+            BindStaticButton("Synergize", () => CreateStanceList(pc));
         }
         else if (entity is SynergyStance stance)
         {
@@ -113,7 +122,7 @@ public class BattleUIManager : MonoBehaviour
 
     private void PositionSubMenu()
     {
-        Submenu.GetComponent<RectTransform>().position = new Vector3(CommandMenu.GetComponent<RectTransform>().position.x + 300, CommandMenu.GetComponent<RectTransform>().position.y, 0);
+        Submenu.GetComponent<RectTransform>().position = new Vector3(CommandMenu.GetComponent<RectTransform>().position.x + 500, CommandMenu.GetComponent<RectTransform>().position.y, -100);
     }
 
     private void BindStaticButton(string buttonName, UnityAction action)
@@ -132,24 +141,24 @@ public class BattleUIManager : MonoBehaviour
 
     private void ClearSubmenuButtons()
     {
-        FastTrackButton.SetActive(false);
+        SynergyButton.SetActive(false);
         foreach (Transform child in ButtonContainer)
         {
             Destroy(child.gameObject);
         }
-        foreach (Transform child in FastTrackButtonContainer)
+        foreach (Transform child in SynergyButtonContainer)
         {
             Destroy(child.gameObject);
         }
         ButtonContainer.gameObject.SetActive(true);
-        FastTrackButtonContainer.gameObject.SetActive(false);
+        SynergyButtonContainer.gameObject.SetActive(false);
     }
 
     private void CreateAbilityList(PlayerCharBattle pc)
     {
         HideSubMenu();
         Submenu.SetActive(true);
-        FastTrackButton.SetActive(true);
+        SynergyButton.SetActive(true);
         
         for (int i = 0; i < pc.abilities.Count; i++)
         {
@@ -159,6 +168,7 @@ public class BattleUIManager : MonoBehaviour
             }, ButtonContainer);
         }
         CreateButtonsForSynergies(pc);
+        CreateButtonsForTriSynergies(pc, null);
         PositionSubMenu();
     }
 
@@ -168,7 +178,7 @@ public class BattleUIManager : MonoBehaviour
 
         if (prepping)
         {
-            pc.StartPrep(new Ability[] { ability });
+            pc.StartPrep(ability.SynergyTags);
             HideCommandMenu();
             HideSubMenu();
             pc.EndTurn();
@@ -180,6 +190,34 @@ public class BattleUIManager : MonoBehaviour
         TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { pc }, ability);
     }
 
+    private void HandleDualAbility(PlayerCharBattle userA, PlayerCharBattle userB, DualSynergyAbility ability)
+    {
+        bool prepping = Keyboard.current.leftShiftKey.isPressed;
+
+        if (prepping) 
+        {
+            var results = PartyManager.instance.GetAvailableDualSynergies(userA, userB);
+            var synergy = results.Find(s => s.Ability == ability);
+
+            if (synergy.Ability != null)
+            {
+                userA.StartPrep(new List<SynergyTag> { synergy.UserATag });
+                userB.StartPrep(new List<SynergyTag> { synergy.UserBTag });
+            }
+
+            HideCommandMenu();
+            HideSubMenu();
+
+            userA.EndTurn();
+            userB.EndTurn();
+            return;
+        }
+
+        HideCommandMenu();
+        HideSubMenu();
+        TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { userA, userB }, ability);
+    }
+
     private void CreateSynergyAbilityList(SynergyStance stance)
     {
         HideSubMenu();
@@ -187,21 +225,19 @@ public class BattleUIManager : MonoBehaviour
         PositionSubMenu();
         foreach (PlayerCharBattle user in stance.users)
         {
-            for (int i = 2; i < user.abilities.Count; i++)
+            foreach (Ability ability in user.abilities)
             {
-                Ability ability = user.abilities[i];
                 CreateDynamicButton($"{user.CharName}: {ability.Name}", () => HandleAbility(user, ability), ButtonContainer);
             }
         }
-
-        List<DualSynergyAbility> availableSynergies = SynergyStanceManager.instance.GetAvailableSynergiesForStance(stance);
-        foreach (var synergy in availableSynergies)
+        foreach (DualSynergyResult DualSynergy in PartyManager.instance.GetAvailableDualSynergies((PlayerCharBattle)stance.users[0], (PlayerCharBattle)stance.users[1]))
         {
-            foreach (var recipe in synergy.SynergyTagSets)
-            {
-                GenerateButtonsForMatch(stance, recipe, synergy);
-            }
+            CreateDynamicButton($"Synergy: {DualSynergy.Ability.Name}", () => {
+                HandleDualAbility((PlayerCharBattle)stance.users[0], (PlayerCharBattle)stance.users[1], DualSynergy.Ability);
+            }, ButtonContainer);
         }
+
+        CreateButtonsForTriSynergies((PlayerCharBattle)stance.users[0], (PlayerCharBattle)stance.users[1]);
     }
 
     private void CreateItemList(ITurnEntity entity)
@@ -225,7 +261,7 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    private void CreateDuoList(PlayerCharBattle pc)
+    private void CreateStanceList(PlayerCharBattle pc)
     {
         HideSubMenu();
         Submenu.SetActive(true);
@@ -242,114 +278,106 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    
-    private void GenerateButtonsForMatch(SynergyStance stance, SynergyTagSet recipe, SynergyAbility synergy)
+    private void CreateButtonsForSynergies(PlayerCharBattle user)
     {
-        if(stance.users[0] is PlayerCharBattle pc0 && stance.users[1] is PlayerCharBattle pc1)
+        foreach (DualSynergyResult synergy in PartyManager.instance.GetAvailableDualSynergies(user, null))
         {
-            // Case A: User 0 has Tag 1, User 1 has Tag 2
-            var m0_T1 = pc0.abilities.Where(a => a.SynergyTags.Contains(recipe.tag1));
-            var m1_T2 = pc1.abilities.Where(a => a.SynergyTags.Contains(recipe.tag2));
-            int mpCost1 = recipe.mpCost1;
-            int mpCost2 = recipe.mpCost2;
-            CreateCombinationButtons(pc0, pc1, m0_T1, m1_T2, mpCost1, mpCost2, stance, synergy);
+            // 1. Correctly identify the partner
+            bool isUserA = synergy.UserA.name == user.charData.name;
+            PlayerCharData partnerData = isUserA ? synergy.UserB : synergy.UserA;
+            PlayerCharBattle partnerBattle = BattleManager.instance.playerChars.Find(pc => pc.charData.name == partnerData.name);
 
-            // Case B: User 0 has Tag 2, User 1 has Tag 1 
-            // (Only run if Tag1 and Tag2 aren't the same, to avoid duplicates)
-            if (recipe.tag1 != recipe.tag2)
+            if (partnerBattle == null) continue;
+
+            SynergyTag partnerReqTag = isUserA ? synergy.UserBTag : synergy.UserATag;
+            SynergyTag userReqTag = isUserA ? synergy.UserATag : synergy.UserBTag;
+
+            bool partnerIsReady = partnerBattle.IsPreppingSynergy() && 
+                                partnerBattle.GetStoredTags().Any(t => t == partnerReqTag);
+
+            Debug.Log($"[CHECK] User: {user.CharName} | Partner: {partnerBattle.CharName} | Partner Needs: {partnerReqTag} | Partner Has: {(partnerBattle.GetStoredTags().Count > 0 ? partnerBattle.GetStoredTags()[0] : "None")}");
+
+            if (partnerIsReady)
             {
-                var m0_T2 = pc0.abilities.Where(a => a.SynergyTags.Contains(recipe.tag2));
-                var m1_T1 = pc1.abilities.Where(a => a.SynergyTags.Contains(recipe.tag1));
-                mpCost2 = recipe.mpCost2;
-                mpCost1 = recipe.mpCost1;
-                CreateCombinationButtons(pc0, pc1, m0_T2, m1_T1, mpCost1, mpCost2, stance, synergy);
+                CreateDynamicButton($"Execute Synergy: {synergy.Ability.Name}", () => {
+
+                    user.StartPrep(new List<SynergyTag> { userReqTag });
+
+                    TargetSelectionManager.instance.BeginTargetSelection(
+                        new CharBattle[] { user, partnerBattle }, 
+                        synergy.Ability
+                    );
+                }, SynergyButtonContainer);
             }
         }
     }
 
-    private void CreateButtonsForSynergies(PlayerCharBattle user)
+    private void CreateButtonsForTriSynergies(PlayerCharBattle userA, PlayerCharBattle userB)
     {
-        foreach (Ability ability in user.abilities)
+        // Pass userA, userB, and null to find all potential Tri-Synergies involving these players
+        foreach (TriSynergyResult synergy in PartyManager.instance.GetAvailableTriSynergies(userA, userB, null))
         {
-            List<Tuple<DualSynergyAbility, CharBattle>> synergies = synergySearchLogic.GetDoubleSynergy(user, ability);
-            if (synergies.Count > 0)
+            List<PlayerCharData> requiredParticipants = new List<PlayerCharData> { synergy.UserA, synergy.UserB, synergy.UserC };
+            
+            // Remove the current actors from the "Required Partners" check
+            requiredParticipants.RemoveAll(p => p.name == userA.charData.name);
+            if (userB != null) 
+                requiredParticipants.RemoveAll(p => p.name == userB.charData.name);
+
+            bool allPartnersReady = true;
+            List<PlayerCharBattle> partnersToJoin = new List<PlayerCharBattle>();
+
+            foreach (PlayerCharData pData in requiredParticipants)
             {
-                foreach (Tuple<DualSynergyAbility, CharBattle> synergy in synergies)
+                PlayerCharBattle pBattle = BattleManager.instance.playerChars.Find(pc => pc.charData.name == pData.name);
+                
+                SynergyTag neededTag;
+                if (pData.name == synergy.UserA.name)      neededTag = synergy.UserATag;
+                else if (pData.name == synergy.UserB.name) neededTag = synergy.UserBTag;
+                else                                      neededTag = synergy.UserCTag;
+
+                // Check if the third/other party member is already prepping the right tag
+                if (pBattle != null && pBattle.IsPreppingSynergy() && pBattle.GetStoredTags().Any(t => t == neededTag))
                 {
-                    PlayerCharBattle finalPartner1 = (PlayerCharBattle)synergy.Item2;
-                    SynergyAbility finalAbility = synergy.Item1;
-                    CreateDynamicButton($"{synergy.Item1.Name} with {synergy.Item2.CharName}", () =>
-                    {
-                        if (finalPartner1.CanPerformAbility(finalPartner1.GetPreppedAbility()) && user.CanPerformAbility(ability))
-                        {
-                            user.StorePreppedAbility(ability);
-                            TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1 }, finalAbility);
-                            HideCommandMenu();
-                            HideSubMenu();
-                        }
-                    }, ButtonContainer);
+                    partnersToJoin.Add(pBattle);
+                }
+                else
+                {
+                    allPartnersReady = false;
+                    break;
                 }
             }
 
-            List<Tuple<TriSynergyAbility, CharBattle[]>> triSynergies = synergySearchLogic.GetTripleSynergy(user, ability);
-            if (triSynergies.Count > 0)            
+            if (allPartnersReady)
             {
-                PlayerCharBattle finalPartner1 = (PlayerCharBattle)triSynergies[0].Item2[0];
-                PlayerCharBattle finalPartner2 = (PlayerCharBattle)triSynergies[0].Item2[1];
-                SynergyAbility finalTriSynergy = triSynergies[0].Item1;
-                CreateDynamicButton($"{triSynergies[0].Item1.Name} with {triSynergies[0].Item2[0].CharName} and {triSynergies[0].Item2[1].CharName}", () =>
-                {
-                    if (finalPartner1.CanPerformAbility(user.GetPreppedAbility()) && finalPartner2.CanPerformAbility(user.GetPreppedAbility()) && user.CanPerformAbility(ability))
+                // Use SynergyButtonContainer so it stays in the toggled Synergy list
+                CreateDynamicButton($"TRI: {synergy.Ability.Name}", () => {
+                    StoreTagForUser(userA, synergy);
+                    if (userB != null) StoreTagForUser(userB, synergy);
+
+                    List<CharBattle> finalParticipants = new List<CharBattle> { userA };
+                    if (userB != null) finalParticipants.Add(userB);
+
+                    foreach (var p in partnersToJoin)
                     {
-                        user.StorePreppedAbility(ability);
-                        TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { user, finalPartner1, finalPartner2 }, finalTriSynergy);
-                        HideCommandMenu();
-                        HideSubMenu();
+                        finalParticipants.Add(p);
                     }
-                }, ButtonContainer);
+
+                    HideCommandMenu();
+                    HideSubMenu();
+
+                    TargetSelectionManager.instance.BeginTargetSelection(finalParticipants.ToArray(), synergy.Ability);
+                }, SynergyButtonContainer); 
             }
         }
     }
 
-    private void CreateCombinationButtons(CharBattle userA, CharBattle userB, IEnumerable<Ability> movesA, IEnumerable<Ability> movesB, int mpCost1, int mpCost2, SynergyStance stance, SynergyAbility synergy)
+    private void StoreTagForUser(PlayerCharBattle user, TriSynergyResult synergy)
     {
-        foreach (var aMove in movesA)
-        {
-            foreach (var bMove in movesB)
-            {
-                GameObject btnObj = Instantiate(MenuButtonPrefab, ButtonContainer);
-                btnObj.GetComponentInChildren<TextMeshProUGUI>().text = $"{synergy.Name}\n<size=70%>({aMove.Name} + {bMove.Name})</size>";
-
-                // Capture local references for the listener
-                Ability finalA = aMove;
-                Ability finalB = bMove;
-
-                btnObj.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    if (Keyboard.current.leftShiftKey.isPressed)
-                    {
-                        stance.StartPrep(new Ability[] { finalA, finalB });
-                        HideCommandMenu();
-                        BattleManager.instance.NextTurn();
-                        return;
-                    }
-
-                    // Standard Instant Execution
-                    userA.StorePreppedAbility(finalA);
-                    userB.StorePreppedAbility(finalB);
-
-                    if (userA is PlayerCharBattle playerA && userB is PlayerCharBattle playerB)
-                    {
-                        Debug.Log($"Storing MP Costs for Synergy: {mpCost1} for {playerA.CharName}, {mpCost2} for {playerB.CharName}");
-                        playerA.StoreAbilityCost(mpCost1);
-                        playerB.StoreAbilityCost(mpCost2);   
-                    }
-                    TargetSelectionManager.instance.BeginTargetSelection(new CharBattle[] { userA, userB }, synergy);
-                    HideCommandMenu();
-                    HideSubMenu();
-                });
-            }
-        }
+        user.GetStoredTags().Clear();
+        if (user.charData.name == synergy.UserA.name)      user.GetStoredTags().Add(synergy.UserATag);
+        else if (user.charData.name == synergy.UserB.name) user.GetStoredTags().Add(synergy.UserBTag);
+        else                                               user.GetStoredTags().Add(synergy.UserCTag);
     }
 
     public void HideCommandMenu()

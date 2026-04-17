@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public abstract class SynergyAbility : ScriptableObject, ITargetableAction
 {
@@ -20,7 +21,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
         {
             if (user is PlayerCharBattle player)
             {
-                player.DeductStoredMpCost();
+                player.ChangeMp(-GetUserMpCost(user));
             }
         }
 
@@ -31,12 +32,11 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
 
         foreach (CharBattle user in users)
         {
-            user.EndPrep();
             if (user.GetIfInSynergyStance())
             {
                 SynergyStance stance = user.GetCurrentSynergyStance();
                 stance.EndPrep();
-            }
+            } else user.EndPrep();
         }
 
         if (!users.Any(u => u.GetIfInSynergyStance()) && !BattleUIManager.instance.GetIfFastTracked()) FlowManager.instance.GainFlow(10); // This is also temporary until we have a better system for handling synergy resource costs and flow gain
@@ -57,15 +57,19 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
         float power = 0f;
         foreach (CharBattle user in users)
         {
-            power += GetUserPower(user) * user.GetPreppedAbility().ScalingMultiplier;
+            power += GetUserPower(user) * GetUserScalingMultiplier(user);
         }
         power *= synergyPowerMultiplier; // Use the synergy power multiplier
         return (int)power;
     }
 
+    public abstract Stat GetUserStat(CharBattle user);
+    public abstract int GetUserScalingMultiplier(CharBattle user);
+    public abstract int GetUserMpCost(CharBattle user);
+
     protected int GetUserPower(CharBattle user)
     {
-        switch (user.GetPreppedAbility().ScalingStat)
+        switch (GetUserStat(user))
         {
             case Stat.Atk:
                 return user.Atk;

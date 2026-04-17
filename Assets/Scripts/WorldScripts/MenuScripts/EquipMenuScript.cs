@@ -76,9 +76,9 @@ public class EquipMenuScript : MonoBehaviour
         WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (gemSlotUI) => OpenGemSelection(currentChar.weaponSlot, gemSlotUI);
         ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (gemSlotUI) => OpenGemSelection(currentChar.armorSlot, gemSlotUI);
         AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (gemSlotUI) => OpenGemSelection(currentChar.accessorySlot, gemSlotUI);
-        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); };
-        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); };
-        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); };
+        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); PartyManager.instance.UpdateSynergies(); };
+        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); PartyManager.instance.UpdateSynergies(); };
+        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); PartyManager.instance.UpdateSynergies(); };
         WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
         ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
         AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
@@ -150,6 +150,7 @@ private void OpenEquipSelection()
                             
                             entry.charData.RefreshAllStats();
                             entry.charData.RefreshAbilities();
+                            PartyManager.instance.UpdateSynergies();
 
                             SwapEquipContainer.SetActive(false);
                             EquipItem(equippable);
@@ -205,6 +206,7 @@ private void OpenEquipSelection()
         currentChar.GetEquipSlot(slot).equippedGems.Clear();
         currentChar.RefreshAllStats();
         currentChar.RefreshAbilities();
+        PartyManager.instance.UpdateSynergies();
         SetupEquipSlots();
     }
 
@@ -264,6 +266,7 @@ private void OpenEquipSelection()
                             
                             entry.charData.RefreshAllStats();
                             entry.charData.RefreshAbilities();
+                            PartyManager.instance.UpdateSynergies();
                             
                             SwapEquipContainer.SetActive(false);
                             EquipGem(gem, equipmentSlot, gemSlotUI.slotIndex);
@@ -284,6 +287,7 @@ private void OpenEquipSelection()
                         EquipGem(gem, equipmentSlot, gemSlotUI.slotIndex); 
                         currentChar.RefreshAllStats();
                         currentChar.RefreshAbilities();
+                        PartyManager.instance.UpdateSynergies();
                     });
                 }
             }

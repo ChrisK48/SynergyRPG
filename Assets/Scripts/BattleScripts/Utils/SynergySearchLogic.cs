@@ -2,6 +2,47 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using JetBrains.Annotations;
+
+public struct DualSynergyResult
+{
+    public DualSynergyAbility Ability;
+    public PlayerCharData UserA;
+    public SynergyTag UserATag;
+    public PlayerCharData UserB;
+    public SynergyTag UserBTag;
+
+    public DualSynergyResult(DualSynergyAbility ability, PlayerCharData userA, SynergyTag userATag, PlayerCharData userB, SynergyTag userBTag)
+    {
+        Ability = ability;
+        UserA = userA;
+        UserATag = userATag;
+        UserB = userB;
+        UserBTag = userBTag;
+    }
+}
+
+public struct TriSynergyResult
+{
+    public TriSynergyAbility Ability;
+    public PlayerCharData UserA;
+    public PlayerCharData UserB;
+    public PlayerCharData UserC;
+    public SynergyTag UserATag;
+    public SynergyTag UserBTag;
+    public SynergyTag UserCTag;
+
+    public TriSynergyResult(TriSynergyAbility ab, PlayerCharData a, PlayerCharData b, PlayerCharData c, SynergyTag tagA, SynergyTag tagB, SynergyTag tagC)
+    {
+        Ability = ab;
+        UserA = a;
+        UserB = b;
+        UserC = c;
+        UserATag = tagA;
+        UserBTag = tagB;
+        UserCTag = tagC;
+    }
+}
 
 public class SynergySearchLogic
 {
@@ -14,148 +55,64 @@ public class SynergySearchLogic
         masterTriSynergyList = Resources.LoadAll<TriSynergyAbility>("Synergies/Tri");
     }
 
-    public List<Tuple<DualSynergyAbility, CharBattle>> GetDoubleSynergy(CharBattle currentActor, Ability currentAbility)
+    public List<DualSynergyResult> GetDoubleSynergies(List<PlayerCharData> activeMembers)
     {
-        List<Tuple<DualSynergyAbility, CharBattle>> matchingSynergies = new List<Tuple<DualSynergyAbility, CharBattle>>();
+        var results = new List<DualSynergyResult>();
 
-        foreach (var potentialPartner in BattleManager.instance.playerChars.Where(pc => pc.GetIfAlive() && pc != currentActor))
+        for (int i = 0; i < activeMembers.Count; i++)
         {
-            Ability prepped = potentialPartner.GetPreppedAbility();
-            
-            if (prepped != null && potentialPartner != currentActor)
+            for (int j = i + 1; j < activeMembers.Count; j++)
             {
+                var charA = activeMembers[i];
+                var charB = activeMembers[j];
+
                 foreach (var synergy in masterSynergyList)
                 {
-                    foreach (var recipe in synergy.SynergyTagSets)
+                    var validSet = synergy.GetValidTagSet(charA, charB, out bool swapped);
+                    
+                    if (validSet != null) 
                     {
-                        if (CheckDuoMatch(currentAbility, prepped, recipe))
-                        {
-                            matchingSynergies.Add(new Tuple<DualSynergyAbility, CharBattle>(synergy, potentialPartner));
-                        }
+                        // If swapped is FALSE: CharA has Tag1, CharB has Tag2
+                        // If swapped is TRUE:  CharA has Tag2, CharB has Tag1
+                        SynergyTag tagForA = !swapped ? validSet.tag1 : validSet.tag2;
+                        SynergyTag tagForB = !swapped ? validSet.tag2 : validSet.tag1;
+
+                        results.Add(new DualSynergyResult(synergy, charA, tagForA, charB, tagForB));
                     }
                 }
             }
         }
-        return matchingSynergies;
+        return results;
     }
 
-    public List<Tuple<TriSynergyAbility, CharBattle[]>> GetTripleSynergy(CharBattle currentActor, Ability currentAbility)
+    public List<TriSynergyResult> GetTripleSynergies(List<PlayerCharData> activeMembers)
     {
-        List<Tuple<TriSynergyAbility, CharBattle[]>> matchingSynergies = new List<Tuple<TriSynergyAbility, CharBattle[]>>();
+        var results = new List<TriSynergyResult>();
 
-        foreach (var stance in BattleManager.instance.GetSynergyStances())
+        for (int i = 0; i < activeMembers.Count; i++)
         {
-                CharBattle potentialPartner1 = stance.users[0];
-                CharBattle potentialPartner2 = stance.users[1];
-                Ability prepped1 = potentialPartner1.GetPreppedAbility();
-                Ability prepped2 = potentialPartner2.GetPreppedAbility();
-
-                if (prepped1 != null && prepped2 != null && potentialPartner1 != currentActor && potentialPartner2 != currentActor && potentialPartner1 != potentialPartner2)
+            for (int j = i + 1; j < activeMembers.Count; j++)
+            {
+                for (int k = j + 1; k < activeMembers.Count; k++)
                 {
+                    var charA = activeMembers[i];
+                    var charB = activeMembers[j];
+                    var charC = activeMembers[k];
+
                     foreach (var synergy in masterTriSynergyList)
                     {
-                        foreach (var recipe in synergy.SynergyTagTrios)
+                        var match = synergy.GetValidTripleSet(charA, charB, charC);
+                        Debug.Log(match);
+                        if (match.HasValue)
                         {
-                            if (CheckTrioMatch(currentAbility, prepped1, prepped2, recipe))
-                            {
-                                matchingSynergies.Add(new Tuple<TriSynergyAbility, CharBattle[]>(synergy, new CharBattle[] { potentialPartner1, potentialPartner2 }));
-                            }
+                            results.Add(new TriSynergyResult(
+                                synergy, charA, charB, charC, match.Value.userTagA, match.Value.userTagB, match.Value.userTagC
+                            ));
                         }
                     }
                 }
-        }
-        
-        return matchingSynergies;
-    }
-
-
-    private bool CheckDuoMatch(Ability a, Ability b, SynergyTagSet recipe)
-    {
-        bool aMatches1 = a.SynergyTags.Contains(recipe.tag1);
-        bool aMatches2 = a.SynergyTags.Contains(recipe.tag2);
-        bool bMatches1 = b.SynergyTags.Contains(recipe.tag1);
-        bool bMatches2 = b.SynergyTags.Contains(recipe.tag2);
-
-        return (aMatches1 && bMatches2) || (aMatches2 && bMatches1);
-    }
-
-    private bool CheckTrioMatch(Ability a, Ability b, Ability c, SynergyTagTrio recipe)
-    {
-        bool aHasTag1 = a.SynergyTags.Contains(recipe.tag1);
-        bool aHasTag2 = a.SynergyTags.Contains(recipe.tag2);
-        bool aHasTag3 = a.SynergyTags.Contains(recipe.tag3);
-
-        bool bHasTag1 = b.SynergyTags.Contains(recipe.tag1);
-        bool bHasTag2 = b.SynergyTags.Contains(recipe.tag2);
-        bool bHasTag3 = b.SynergyTags.Contains(recipe.tag3);
-
-        bool cHasTag1 = c.SynergyTags.Contains(recipe.tag1);
-        bool cHasTag2 = c.SynergyTags.Contains(recipe.tag2);
-        bool cHasTag3 = c.SynergyTags.Contains(recipe.tag3);
-
-        if (aHasTag1 && bHasTag2 && cHasTag3 || 
-            aHasTag1 && bHasTag3 && cHasTag2 || 
-            aHasTag2 && bHasTag1 && cHasTag3 || 
-            aHasTag2 && bHasTag3 && cHasTag1 || 
-            aHasTag3 && bHasTag1 && cHasTag2 || 
-            aHasTag3 && bHasTag2 && cHasTag1)
-        {
-            return true;
-        }
-        
-        return false;
-    }
-
-    public List<Tuple<DualSynergyAbility, CharBattle>> GetPotentialPairings(CharBattle currentActor, Ability currentAbility)
-    {
-        List<Tuple<DualSynergyAbility, CharBattle>> matchingSynergies = new List<Tuple<DualSynergyAbility, CharBattle>>();
-
-        foreach (PlayerCharBattle player in BattleManager.instance.playerEntities)
-        {
-            foreach(var ability in player.abilities)
-            {
-                foreach (var synergy in masterSynergyList)
-                {
-                    foreach (var recipe in synergy.SynergyTagSets)
-                    {
-                        if (CheckDuoMatch(currentAbility, ability, recipe))
-                        {
-                            matchingSynergies.Add(new Tuple<DualSynergyAbility, CharBattle>(synergy, player));
-                        }
-                    }
-                }   
             }
         }
-        return matchingSynergies;
-    }
-
-    public List<Tuple<TriSynergyAbility, CharBattle[]>> GetPotentialTriPairings(CharBattle currentActor, Ability currentAbility)
-    {
-        List<Tuple<TriSynergyAbility, CharBattle[]>> matchingSynergies = new List<Tuple<TriSynergyAbility, CharBattle[]>>();
-
-        foreach (var stance in BattleManager.instance.GetSynergyStances())
-        {
-                PlayerCharBattle potentialPartner1 = (PlayerCharBattle)stance.users[0];
-                PlayerCharBattle potentialPartner2 = (PlayerCharBattle)stance.users[1];
-                
-                foreach(var ability1 in potentialPartner1.abilities)
-                {
-                    foreach(var ability2 in potentialPartner2.abilities)
-                    {
-                        foreach (var synergy in masterTriSynergyList)
-                        {
-                            foreach (var recipe in synergy.SynergyTagTrios)
-                            {
-                                if (CheckTrioMatch(currentAbility, ability1, ability2, recipe))
-                                {
-                                    matchingSynergies.Add(new Tuple<TriSynergyAbility, CharBattle[]>(synergy, new CharBattle[] { potentialPartner1, potentialPartner2 }));
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-        
-        return matchingSynergies;
+        return results;
     }
 }
