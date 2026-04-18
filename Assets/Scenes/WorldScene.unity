@@ -3405,7 +3405,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.data[1].item
@@ -3452,6 +3452,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a534603ce6da1084cb20918e972ee7c5, type: 2}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[11].item
+      value: 
+      objectReference: {fileID: 11400000, guid: c103ae0466ac42448bb3c9ec5aeb1000, type: 2}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: inventory.Array.data[1].count
       value: 3
       objectReference: {fileID: 0}
@@ -3492,8 +3496,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: inventory.Array.data[11].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: unlockedPartyMembers.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: 'activePartyMembers.Array.data[0]'
@@ -3510,7 +3518,7 @@ PrefabInstance:
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: 'activePartyMembers.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: 0e20eda2bc374aa41ae932d71efc27f7, type: 2}
+      objectReference: {fileID: 11400000, guid: ef873d53900a9bd48a7391fa3abd4976, type: 2}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: 'unlockedPartyMembers.Array.data[0]'
       value: 
@@ -3527,6 +3535,10 @@ PrefabInstance:
       propertyPath: 'unlockedPartyMembers.Array.data[3]'
       value: 
       objectReference: {fileID: 11400000, guid: 28814408086ebe347be29e8a2f5505a1, type: 2}
+    - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
+      propertyPath: 'unlockedPartyMembers.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ef873d53900a9bd48a7391fa3abd4976, type: 2}
     - target: {fileID: 5885899311592492547, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: m_Enabled
       value: 1

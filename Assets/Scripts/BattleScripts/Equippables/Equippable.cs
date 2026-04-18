@@ -8,6 +8,7 @@ public class Equippable : Item
 {
     public int MaxHpBonus, MaxMpBonus, AtkBonus, MagBonus, DefBonus, MdefBonus, SpdBonus, AccBonus, EvaBonus, LuckBonus;
     public EquipSlot equipSlot;
+    public PlayerID charExclusive;
     [SerializeField] public List<GemSlot> gemSlots = new List<GemSlot>();
 }
 

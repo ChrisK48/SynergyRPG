@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
+  m_Name: YouLoseSome
+  m_EditorClassIdentifier: Assembly-CSharp::Ability
+  AbilityName: You lose some
+  Description: 
+  ScalingStat: 0
+  ScalingMultiplier: 100
+  MpCost: 0
+  HpCost: 0
+  SkipTurnAndUseNextTurn: 0
+  UniqueResourceCost:
+    rid: -2
+  TargetType: 2
+  TargetsToHitIfRandom: 0
+  AbilityEffects:
+  - rid: 3425318879801638986
+  SynergyTags: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3425318879801638986
+      type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 0
+        elementTypes: 
+        atkType: 1
+        ignoreDef: 1

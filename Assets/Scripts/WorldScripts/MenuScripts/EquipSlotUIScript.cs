@@ -15,7 +15,6 @@ public class EquipSlotUIScript : MonoBehaviour, IPointerClickHandler
     [HideInInspector] public Action openEquipSelection;
     [HideInInspector] public Action<GemSlotUI> openGemSelection;
     [HideInInspector] public Action<EquipSlot> UnequipItem;
-    [HideInInspector] public Action Refresh;
 
     void Awake()
     {
@@ -67,7 +66,7 @@ public class EquipSlotUIScript : MonoBehaviour, IPointerClickHandler
             equipSlot.equippedGems[slotIndex] = null;
 
             PopulateGemSlots();
-            Refresh?.Invoke();
+            PartyManager.instance.UpdateSynergies();
         }
     }
 
@@ -78,23 +77,13 @@ public class EquipSlotUIScript : MonoBehaviour, IPointerClickHandler
         {
             switch (currentEquip.gemSlots[slotIndex].slotType)
             {
-                case GemType.Mira:
-                    slotImage.color = Color.green;
+                case GemType.CharacterAbility:
+                    slotImage.color = Color.lightYellow;
                     break;
-                case GemType.Rain:
-                    slotImage.color = Color.lightBlue;
-                    break;
-                case GemType.Gladus:
-                    slotImage.color = Color.blue;
-                    break;
-                case GemType.Eldric:
-                    slotImage.color = Color.purple;
-                    break;
-                case GemType.GeneralAbility:
-                    slotImage.color = Color.yellow;
+                case GemType.Passive:
+                    slotImage.color = Color.lightGray;
                     break;
                 default:
-                    slotImage.color = Color.white;
                     break;
             }
         }

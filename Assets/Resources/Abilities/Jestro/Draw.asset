@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
+  m_Name: Draw
+  m_EditorClassIdentifier: Assembly-CSharp::Ability
+  AbilityName: Draw
+  Description: 
+  ScalingStat: 0
+  ScalingMultiplier: 0
+  MpCost: 5
+  HpCost: 0
+  SkipTurnAndUseNextTurn: 0
+  UniqueResourceCost:
+    rid: -2
+  TargetType: 2
+  TargetsToHitIfRandom: 0
+  AbilityEffects:
+  - rid: 3425318879801638982
+  SynergyTags: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3425318879801638982
+      type: {class: RandomAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 0
+        abilityWeights:
+        - Ability: {fileID: 11400000, guid: 13dea704fd4e0f3458113440e63bc5b7, type: 2}
+          Weight: 1
+        - Ability: {fileID: 11400000, guid: 2c11ae8fbf5df6345b634a1d7a79e900, type: 2}
+          Weight: 1

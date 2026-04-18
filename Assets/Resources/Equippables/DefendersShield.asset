@@ -25,8 +25,9 @@ MonoBehaviour:
   EvaBonus: 0
   LuckBonus: 0
   equipSlot: 0
+  charExclusive: 4
   gemSlots:
+  - slotType: 0
+  - slotType: 0
+  - slotType: 0
   - slotType: 2
-  - slotType: 2
-  - slotType: 2
-  - slotType: 5

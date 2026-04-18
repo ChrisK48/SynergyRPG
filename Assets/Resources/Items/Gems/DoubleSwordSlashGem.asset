@@ -21,3 +21,4 @@ MonoBehaviour:
   StatBonus:
     type: 0
     value: 0
+  charExclusive: 3

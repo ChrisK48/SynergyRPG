@@ -102,7 +102,6 @@ public class SynergySearchLogic
                     foreach (var synergy in masterTriSynergyList)
                     {
                         var match = synergy.GetValidTripleSet(charA, charB, charC);
-                        Debug.Log(match);
                         if (match.HasValue)
                         {
                             results.Add(new TriSynergyResult(

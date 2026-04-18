@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public enum GemType {Mira, Eldric, Gladus, Rain, GeneralAbility, Passive}
+public enum GemType {CharacterAbility, GeneralAbility, Passive}
 
 [Serializable]
 public struct StatBonusEntry
@@ -18,4 +18,5 @@ public class Gem : Item
     public GemType GemType;
     public Ability GemAbility;
     public StatBonusEntry StatBonus;
+    public PlayerID charExclusive;
 }

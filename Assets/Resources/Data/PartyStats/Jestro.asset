@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06df4cb620dedbe4f97e12788ebd494e, type: 3}
-  m_Name: Eldric
+  m_Name: Jestro
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCharData
-  CharName: Eldric
-  BaseMaxHp: 150
-  BaseMaxMp: 50
-  BaseAtk: 15
-  BaseMag: 25
-  BaseDef: 17
-  BaseMdef: 25
-  BaseSpd: 8
-  BaseAcc: 15
-  BaseEva: 8
-  BaseLuck: 5
-  MaxHp: 150
-  MaxMp: 50
-  Atk: 15
-  Mag: 25
-  Def: 17
-  Mdef: 25
-  Spd: 8
-  Acc: 15
-  Eva: 8
-  Luck: 5
-  currentHp: 150
-  currentMp: 50
+  CharName: Jestro
+  BaseMaxHp: 100
+  BaseMaxMp: 30
+  BaseAtk: 5
+  BaseMag: 15
+  BaseDef: 5
+  BaseMdef: 10
+  BaseSpd: 5
+  BaseAcc: 10
+  BaseEva: 15
+  BaseLuck: 15
+  MaxHp: 100
+  MaxMp: 30
+  Atk: 5
+  Mag: 15
+  Def: 5
+  Mdef: 10
+  Spd: 5
+  Acc: 10
+  Eva: 15
+  Luck: 15
+  currentHp: 100
+  currentMp: 30
   attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   abilities: []
   weaponSlot:
@@ -51,6 +51,6 @@ MonoBehaviour:
     equippedGems: []
   currentLevel: 1
   currentExp: 0
-  playerID: 1
-  charBattlePrefab: {fileID: 7643124037856912594, guid: 59c7b5f2637b72e44b949a27167e476a, type: 3}
-  MenuImage: {fileID: 7817108346809545794, guid: 582c5530b2310dd4e9fd67ec3b695555, type: 3}
+  playerID: 5
+  charBattlePrefab: {fileID: -7790583121598180660, guid: 5b9ea410aed78b04687efe14ff6c1177, type: 3}
+  MenuImage: {fileID: -3901732947560790049, guid: ec8f9d42a16d106458c7d35c559af5e6, type: 3}

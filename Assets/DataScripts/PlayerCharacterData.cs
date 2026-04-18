@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum PlayerID { Any, Eldric, Rain, Mira, Gladus, Jestro }
+
 [CreateAssetMenu(fileName = "New Player Character", menuName = "Player Character")]
 public class PlayerCharData : ScriptableObject
 {
@@ -15,6 +17,7 @@ public class PlayerCharData : ScriptableObject
     public EquipmentSlot accessorySlot = new EquipmentSlot { slotType = EquipSlot.Accessory };
     public int currentLevel;
     public int currentExp;
+    public PlayerID playerID;
     public PlayerCharBattle charBattlePrefab;
 
     [Header("Resources")]

@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c921d70979da24048b4ad772a2306739, type: 3}
-  m_Name: Ice1
+  m_Name: Draw
   m_EditorClassIdentifier: Assembly-CSharp::Gem
-  ItemName: Ice I
+  ItemName: Draw Gem
   ItemDescription: 
   GemSprite: {fileID: -4080278737599844964, guid: 96d1933b1d4cf3c45845897e8040c0df, type: 3}
-  GemColor: {r: 0.5049246, g: 0.8056848, b: 0.8679245, a: 1}
-  GemType: 1
-  GemAbility: {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
+  GemColor: {r: 0.54088044, g: 0.083343096, b: 0.535342, a: 1}
+  GemType: 0
+  GemAbility: {fileID: 11400000, guid: 92c00a7ffedcfa84d9a13547c903fb58, type: 2}
   StatBonus:
     type: 0
     value: 0
+  charExclusive: 5

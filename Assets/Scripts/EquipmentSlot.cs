@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 
 [System.Serializable]
@@ -24,14 +25,14 @@ public class EquipmentSlot
                 EquipGem(oldGems[i], i, charData);
             }
         }
-        charData.RefreshAllStats();
-        charData.RefreshAbilities();
+        Refresh(charData);
     }
 
-    public void Unequip(PlayerCharData charData, Equippable itemToRemove)
+    public void Unequip(PlayerCharData charData)
     {
         currentItem = null;
-        charData.RefreshAllStats();
+        equippedGems.Clear();
+        Refresh(charData);
     }
 
     public void EquipGem(Gem newGem, int gemSlotIndex, PlayerCharData charData)
@@ -42,5 +43,12 @@ public class EquipmentSlot
             if (newGem.GemAbility != null) charData.abilities.Add(newGem.GemAbility);
             Debug.Log($"Equipped {newGem.ItemName} in slot {gemSlotIndex + 1} of {currentItem.ItemName}");
         }
+    }
+
+    private void Refresh(PlayerCharData charData)
+    {
+        charData.RefreshAllStats();
+        charData.RefreshAbilities();
+        PartyManager.instance.UpdateSynergies();
     }
 }

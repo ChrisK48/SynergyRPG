@@ -25,7 +25,7 @@ MonoBehaviour:
   BaseLuck: 15
   MaxHp: 100
   MaxMp: 15
-  Atk: 20
+  Atk: 15
   Mag: 15
   Def: 10
   Mdef: 15
@@ -36,15 +36,11 @@ MonoBehaviour:
   currentHp: 100
   currentMp: 15
   attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  abilities:
-  - {fileID: 11400000, guid: 8a2633f4926e2fb4db6a22a6eb579800, type: 2}
-  - {fileID: 11400000, guid: 9276b16770b9bd148a08eba6bed13c76, type: 2}
+  abilities: []
   weaponSlot:
     slotType: 0
-    currentItem: {fileID: 11400000, guid: 8940c6d2f7dc2184ebfe6042a3400188, type: 2}
-    equippedGems:
-    - {fileID: 11400000, guid: 96923ae7cbf6ab54ea9d769bde28e2ea, type: 2}
-    - {fileID: 11400000, guid: 10f28bf58070b9c4e9fc8a2e28ab7321, type: 2}
+    currentItem: {fileID: 0}
+    equippedGems: []
   armorSlot:
     slotType: 1
     currentItem: {fileID: 0}
@@ -55,5 +51,6 @@ MonoBehaviour:
     equippedGems: []
   currentLevel: 1
   currentExp: 0
+  playerID: 3
   charBattlePrefab: {fileID: -6576123505942400488, guid: e635e93752cd4e342a25c02d9adc663a, type: 3}
   MenuImage: {fileID: -4037558033643720181, guid: 3b6d11d68884aa64ab0e7c4c28ca17a1, type: 3}

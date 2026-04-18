@@ -3,9 +3,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.UI;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+using Unity.VisualScripting;
+
 public class EquipMenuScript : MonoBehaviour
 {
     public GameObject WeaponContainer;
@@ -16,14 +15,12 @@ public class EquipMenuScript : MonoBehaviour
     public GameObject EquipSelectionContainer;
     public GameObject SwapEquipContainer;
     public Button EquipButton;
-    private PlayerCharData[] unlockedPartyMembers;
     private PlayerCharData currentChar;
     private int currentCharIndex = 0;
 
     void Awake()
     {
-        unlockedPartyMembers = Resources.LoadAll<PlayerCharData>("Data/PartyStats");
-        currentChar = unlockedPartyMembers[currentCharIndex];
+        currentChar = PartyManager.instance.unlockedPartyMembers[currentCharIndex];
         Debug.Log($"Current char in equip menu: {currentChar.CharName}");
     }
 
@@ -37,7 +34,7 @@ public class EquipMenuScript : MonoBehaviour
     {
         if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
-            if (currentCharIndex == unlockedPartyMembers.Length - 1)
+            if (currentCharIndex == PartyManager.instance.unlockedPartyMembers.Count - 1)
             {
                 currentCharIndex = 0;
             }
@@ -45,7 +42,7 @@ public class EquipMenuScript : MonoBehaviour
             {
                 currentCharIndex++;
             }
-            currentChar = unlockedPartyMembers[currentCharIndex];
+            currentChar = PartyManager.instance.unlockedPartyMembers[currentCharIndex];
             SwapInPartyMember();
             SetupEquipSlots();
         }
@@ -53,13 +50,13 @@ public class EquipMenuScript : MonoBehaviour
         {
             if (currentCharIndex == 0)
             {
-                currentCharIndex = unlockedPartyMembers.Length - 1;
+                currentCharIndex = PartyManager.instance.unlockedPartyMembers.Count - 1;
             }
             else
             {
                 currentCharIndex--;
             }
-            currentChar = unlockedPartyMembers[currentCharIndex];
+            currentChar = PartyManager.instance.unlockedPartyMembers[currentCharIndex];
             SwapInPartyMember();
             SetupEquipSlots();
         }
@@ -76,9 +73,6 @@ public class EquipMenuScript : MonoBehaviour
         WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (gemSlotUI) => OpenGemSelection(currentChar.weaponSlot, gemSlotUI);
         ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (gemSlotUI) => OpenGemSelection(currentChar.armorSlot, gemSlotUI);
         AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().openGemSelection = (gemSlotUI) => OpenGemSelection(currentChar.accessorySlot, gemSlotUI);
-        WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); PartyManager.instance.UpdateSynergies(); };
-        ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); PartyManager.instance.UpdateSynergies(); };
-        AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().Refresh = () => { currentChar.RefreshAllStats(); currentChar.RefreshAbilities(); PartyManager.instance.UpdateSynergies(); };
         WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
         ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
         AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
@@ -98,78 +92,67 @@ public class EquipMenuScript : MonoBehaviour
         clone.GetComponent<PartyMemberUI>().Initialize(currentChar);
     }
 
-private void OpenEquipSelection()
-{
-    EquipSelectionContainer.SetActive(true);
-    foreach (Transform child in EquipSelectionContainer.transform) Destroy(child.gameObject);
-
-    foreach (ItemStack itemStack in PartyManager.instance.inventory.Where(stack => stack.item is Equippable))
+    private void OpenEquipSelection()
     {
-        Button btn = Instantiate(EquipButton, EquipSelectionContainer.transform);
-        btn.GetComponentInChildren<TextMeshProUGUI>().text = itemStack.item.ItemName + " x" + itemStack.count;
+        EquipSelectionContainer.SetActive(true);
+        foreach (Transform child in EquipSelectionContainer.transform) Destroy(child.gameObject);
 
-        if (itemStack.item is Equippable equippable)
+        foreach (ItemStack itemStack in PartyManager.instance.inventory.Where(stack => stack.item is Equippable equip && IsMatching(stack)))
         {
-            // 1. Calculate the truth: Who is currently wearing this specific equippable asset?
-            var equippedEntries = PartyManager.instance.unlockedPartyMembers
-                .SelectMany(charData => new[] { 
-                    new { charData, slot = charData.weaponSlot }, 
-                    new { charData, slot = charData.armorSlot }, 
-                    new { charData, slot = charData.accessorySlot } 
-                })
-                .Where(x => x.slot.currentItem == equippable)
-                .ToList();
+            Button btn = Instantiate(EquipButton, EquipSelectionContainer.transform);
+            btn.GetComponentInChildren<TextMeshProUGUI>().text = itemStack.item.ItemName + " x" + itemStack.count;
 
-            int equippedCount = equippedEntries.Count;
-            Debug.Log($"Equipped count for {equippable.ItemName}: {equippedCount}");
-            bool isEquippedByCurrent = equippedEntries.Any(e => e.charData == currentChar);
-
-            if (isEquippedByCurrent)
+            if (itemStack.item is Equippable equippable)
             {
-                btn.GetComponentInChildren<TextMeshProUGUI>().text += " (Currently Equipped)";
-            }
-            else if (equippedCount >= itemStack.count && equippedCount > 0)
-            {
-                // 2. All copies are in use. Show who has them.
-                string names = string.Join(", ", equippedEntries.Select(e => e.charData.CharName));
-                btn.GetComponentInChildren<TextMeshProUGUI>().text += $" (Equipped by {names})";
+                var equippedEntries = PartyManager.instance.unlockedPartyMembers
+                    .SelectMany(charData => new[] { 
+                        new { charData, slot = charData.weaponSlot }, 
+                        new { charData, slot = charData.armorSlot }, 
+                        new { charData, slot = charData.accessorySlot } 
+                    })
+                    .Where(x => x.slot.currentItem == equippable)
+                    .ToList();
 
-                btn.onClick.AddListener(() => {
-                    SwapEquipContainer.SetActive(true);
-                    foreach (Transform child in SwapEquipContainer.transform) Destroy(child.gameObject);
+                int equippedCount = equippedEntries.Count;
+                bool isEquippedByCurrent = equippedEntries.Any(e => e.charData == currentChar);
 
-                    foreach (var entry in equippedEntries)
-                    {
-                        Button swapBtn = Instantiate(EquipButton, SwapEquipContainer.transform);
-                        swapBtn.GetComponentInChildren<TextMeshProUGUI>().text = $"Swap with {entry.charData.CharName}";
-
-                        swapBtn.onClick.AddListener(() => {
-                            // Strip item and gems from target
-                            entry.slot.Unequip(entry.charData, equippable);
-                            entry.slot.equippedGems.Clear();
-                            
-                            entry.charData.RefreshAllStats();
-                            entry.charData.RefreshAbilities();
-                            PartyManager.instance.UpdateSynergies();
-
-                            SwapEquipContainer.SetActive(false);
-                            EquipItem(equippable);
-                        });
-                    }
-                });
-            }
-            else
-            {
-                // 3. Available in inventory
-                if (equippedCount > 0)
+                if (isEquippedByCurrent)
                 {
-                    btn.GetComponentInChildren<TextMeshProUGUI>().text += $" ({equippedCount} of {itemStack.count} Equipped)";
+                    btn.GetComponentInChildren<TextMeshProUGUI>().text += " (Currently Equipped)";
                 }
-                btn.onClick.AddListener(() => EquipItem(equippable));
+                else if (equippedCount >= itemStack.count && equippedCount > 0)
+                {
+                    string names = string.Join(", ", equippedEntries.Select(e => e.charData.CharName));
+                    btn.GetComponentInChildren<TextMeshProUGUI>().text += $" (Equipped by {names})";
+
+                    btn.onClick.AddListener(() => {
+                        SwapEquipContainer.SetActive(true);
+                        foreach (Transform child in SwapEquipContainer.transform) Destroy(child.gameObject);
+
+                        foreach (var entry in equippedEntries)
+                        {
+                            Button swapBtn = Instantiate(EquipButton, SwapEquipContainer.transform);
+                            swapBtn.GetComponentInChildren<TextMeshProUGUI>().text = $"Swap with {entry.charData.CharName}";
+
+                            swapBtn.onClick.AddListener(() => {
+                                entry.slot.Unequip(entry.charData);
+                                SwapEquipContainer.SetActive(false);
+                                EquipItem(equippable);
+                            });
+                        }
+                    });
+                }
+                else
+                {
+                    if (equippedCount > 0)
+                    {
+                        btn.GetComponentInChildren<TextMeshProUGUI>().text += $" ({equippedCount} of {itemStack.count} Equipped)";
+                    }
+                    btn.onClick.AddListener(() => EquipItem(equippable));
+                }
             }
         }
     }
-}
     private void EquipItem(Equippable equipItem)
     {
         switch (equipItem.equipSlot)
@@ -193,13 +176,13 @@ private void OpenEquipSelection()
         switch (slot)
         {
             case EquipSlot.Weapon:
-                currentChar.weaponSlot.Unequip(currentChar, currentChar.weaponSlot.currentItem);
+                currentChar.weaponSlot.Unequip(currentChar);
                 break;
             case EquipSlot.Armor:
-                currentChar.armorSlot.Unequip(currentChar, currentChar.armorSlot.currentItem);
+                currentChar.armorSlot.Unequip(currentChar);
                 break;
             case EquipSlot.Accessory:
-                currentChar.accessorySlot.Unequip(currentChar, currentChar.accessorySlot.currentItem);
+                currentChar.accessorySlot.Unequip(currentChar);
                 break;
         }
 
@@ -222,7 +205,7 @@ private void OpenEquipSelection()
         EquipSelectionContainer.SetActive(true);
         foreach (Transform child in EquipSelectionContainer.transform) Destroy(child.gameObject);
 
-        foreach (ItemStack itemStack in PartyManager.instance.inventory.Where(stack => stack.item is Gem && ((Gem)stack.item).GemType == gemSlotUI.slotType))
+        foreach (ItemStack itemStack in PartyManager.instance.inventory.Where(stack => stack.item is Gem gem && gem.GemType == gemSlotUI.slotType && IsMatching(stack)))
         {
             Button btn = Instantiate(EquipButton, EquipSelectionContainer.transform);
             btn.GetComponentInChildren<TextMeshProUGUI>().text = itemStack.item.ItemName + " x" + itemStack.count;
@@ -245,7 +228,6 @@ private void OpenEquipSelection()
                 if (isEquippedByCurrent)
                 {
                     btn.GetComponentInChildren<TextMeshProUGUI>().text += " (Currently Equipped)";
-                    // Optional: You could still allow re-equipping to a different slot if you want
                 }
                 else if (equippedCount >= itemStack.count && equippedCount > 0)
                 {
@@ -275,7 +257,6 @@ private void OpenEquipSelection()
                     });
                 } else if (equippedCount > 0)
                 {
-                    // 2. If some but not all owned gems are in use, indicate that and allow equipping
                     btn.GetComponentInChildren<TextMeshProUGUI>().text += $" ({equippedCount} of {itemStack.count} Equipped)";
                     btn.onClick.AddListener(() => EquipGem(gem, equipmentSlot, gemSlotUI.slotIndex));
                 }
@@ -292,5 +273,17 @@ private void OpenEquipSelection()
                 }
             }
         }
+    }
+
+    public bool IsMatching(ItemStack itemStack)
+    {
+        PlayerID? exclusive = itemStack.item switch
+        {
+            Equippable equip => equip.charExclusive,
+            Gem gem          => gem.charExclusive,
+            _                => null
+        };
+
+        return exclusive.HasValue && (exclusive == PlayerID.Any || exclusive == currentChar.playerID);
     }
 }
