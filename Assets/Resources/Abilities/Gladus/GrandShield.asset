@@ -10,34 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
-  m_Name: Water I
+  m_Name: GrandShield
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  AbilityName: Water I
-  Description: 
-  ScalingStat: 1
-  ScalingMultiplier: 1
-  MpCost: 5
+  AbilityName: Grand Shield
+  Description: Gladus grants all party members a 10% defense buff with duration based
+    on his shield points / 2
+  ScalingStat: 0
+  ScalingMultiplier: 0
+  MpCost: 0
   HpCost: 0
   SkipTurnAndUseNextTurn: 0
   UniqueResourceCost:
     rid: -2
-  TargetType: 0
+  TargetType: 4
   TargetsToHitIfRandom: 0
   AbilityEffects:
-  - rid: 9008616056108613701
-  SynergyTags: 05000000
+  - rid: 1609082675180601411
+  SynergyTags: 0a000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 9008616056108613701
-      type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
+    - rid: 1609082675180601411
+      type: {class: GladusShieldBuffAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectIsMissable: 0
         EffectHitChance: 0
         NumHits: 1
-        ShieldsToRemove: 1
-        elementTypes: 03000000
-        atkType: 1
-        ignoreDef: 0
+        ShieldsToRemove: 0
+        buffsToApply:
+        - {fileID: 11400000, guid: e7948bd25b343cd46905da8674e5e6f1, type: 2}
+        buffDuration: 0
+        AppliedtoUser: 0
+        SharedInStance: 0

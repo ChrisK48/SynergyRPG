@@ -157,13 +157,6 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public List<SynergyTag> GetStoredTags() => storedTags;
     public void StoreAbilityForNextTurn(Ability ability) => storedAbility = ability;
     public List<ITurnEntity> StoreTargetsForNextTurn(List<ITurnEntity> targets) => storedTargets = targets;
-    public List<ITurnEntity> GetStoredTargets() => storedTargets;
-    public void ClearStoredAbilityAndTargets()
-    {
-        storedAbility = null;
-        storedTargets = null;
-    }
-    public Ability GetStoredAbility() => storedAbility;
     public bool GetIfHiding() => isHiding;
     public void HideChar()
     {
@@ -175,8 +168,13 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     {
         isHiding = false;
         GetComponentInChildren<SpriteRenderer>().enabled = true;
+        foreach (var target in storedTargets)
+        {
+            storedAbility.ExecuteAbility(this, target);
+        }
+        storedAbility = null;
+        storedTargets = null;
     }
-
 
     public void EnterSynergyStance(SynergyStance stance)
     {
@@ -189,6 +187,8 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         inSynergyStance = false;
         currentSynergyStance = null;
     }
+
+    public SynergyStance GetSynergyStance() => currentSynergyStance;
 
     public void SetHasActed(bool value)
     {

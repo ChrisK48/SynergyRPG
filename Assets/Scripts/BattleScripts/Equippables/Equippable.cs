@@ -10,5 +10,6 @@ public class Equippable : Item
     public EquipSlot equipSlot;
     public PlayerID charExclusive;
     [SerializeField] public List<GemSlot> gemSlots = new List<GemSlot>();
+    void OnValidate() => itemType = ItemType.Equippable;
 }
 

@@ -9,6 +9,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
     public string Name => synergyName;
     public string description;
     public float synergyPowerMultiplier;
+    public bool SkipTurnAndUseNextTurn;
     public TargetType targetType;
     public TargetType Targets => targetType;
 
@@ -17,11 +18,23 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
 
     public void PerformAction(CharBattle[] users, List<ITurnEntity> targets, System.Action onComplete)
     {
-        foreach (CharBattle user in users)
+        foreach (PlayerCharBattle player in users) player.ChangeMp(-GetUserMpCost(player));
+
+        if (SkipTurnAndUseNextTurn)
         {
-            if (user is PlayerCharBattle player)
+            SynergyStance currentStance = users[0].GetSynergyStance();
+            if(currentStance != null)
             {
-                player.ChangeMp(-GetUserMpCost(user));
+                currentStance.StoreAbilityForNextTurn(this);
+                currentStance.StoreTargetsForNextTurn(targets);
+                currentStance.HideChar();      
+                onComplete?.Invoke();
+                return;
+            } else
+            {
+                // logic for not in stance here
+                Debug.Log("Is this triggered?");
+                onComplete?.Invoke();
             }
         }
 
@@ -43,7 +56,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
         onComplete?.Invoke();
     }
 
-    public void ExecuteSynergy(CharBattle[] users, CharBattle target)
+    public void ExecuteSynergy(CharBattle[] users, ITurnEntity target)
     {
         int calculatedPower = CalculatePower(users);
         foreach (AbilityEffect effect in abilityEffects)

@@ -22,9 +22,10 @@ MonoBehaviour:
   UniqueResourceCost:
     rid: -2
   TargetType: 0
+  TargetsToHitIfRandom: 0
   AbilityEffects:
   - rid: 1609082675180601413
-  SynergyTags: 
+  SynergyTags: 0c000000
   references:
     version: 2
     RefIds:

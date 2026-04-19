@@ -97,15 +97,11 @@ public class BattleManager : MonoBehaviour
             }   
         }
 
-        if (currentEntity is CharBattle charBattle && charBattle.GetIfHiding()) 
+        if (currentEntity.GetIfHiding()) 
         {
-            charBattle.RevealChar();
-            foreach (var target in charBattle.GetStoredTargets())
-            {
-                charBattle.GetStoredAbility().ExecuteAbility(charBattle, target);
-                charBattle.ClearStoredAbilityAndTargets();
-            }
-            turnManager.AdvanceTurn();
+            currentEntity.RevealChar();
+            if (turnManager.GetTurnOrder().Contains(currentEntity))
+                turnManager.AdvanceTurn();
             NextTurn();
             yield break;
         }
@@ -189,7 +185,7 @@ public class BattleManager : MonoBehaviour
     {
         playerEntities.Remove(stance);
         playerEntities.AddRange(stance.users);
-        turnManager.createTurnOrder();
+        turnManager.RemoveFromTurnOrder(stance);
     }
 
     public List<SynergyStance> GetSynergyStances()

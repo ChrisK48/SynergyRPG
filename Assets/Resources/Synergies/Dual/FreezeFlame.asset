@@ -23,7 +23,7 @@ MonoBehaviour:
     mpCost1: 5
     scalingStat1: 1
     scalingMultiplier1: 1
-    tag2: 10
+    tag2: 2
     mpCost2: 5
     scalingStat2: 1
     scalingMultiplier2: 1

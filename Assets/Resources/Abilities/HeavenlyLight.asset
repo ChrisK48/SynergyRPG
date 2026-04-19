@@ -10,32 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cd9cf99cfa90794798294ade4dd88cf, type: 3}
-  m_Name: ShieldBash
+  m_Name: HeavenlyLight
   m_EditorClassIdentifier: Assembly-CSharp::Ability
-  AbilityName: Ka konk
-  Description: Hit the opponent twice
-  ScalingStat: 0
-  ScalingMultiplier: 1
-  MpCost: 10
+  AbilityName: Heavenly Light
+  Description: 
+  ScalingStat: 1
+  ScalingMultiplier: 2
+  MpCost: 20
   HpCost: 0
+  SkipTurnAndUseNextTurn: 0
   UniqueResourceCost:
     rid: -2
   TargetType: 0
+  TargetsToHitIfRandom: 0
   AbilityEffects:
-  - rid: 9008616039178567757
-  SynergyTags: 13000000
+  - rid: 3425318901804957766
+  SynergyTags: 06000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 9008616039178567757
+    - rid: 3425318901804957766
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectIsMissable: 0
         EffectHitChance: 0
-        NumHits: 2
-        ShieldsToRemove: 1
-        elementTypes: 
-        atkType: 0
+        NumHits: 1
+        ShieldsToRemove: 0
+        elementTypes: 06000000
+        atkType: 1
         ignoreDef: 0

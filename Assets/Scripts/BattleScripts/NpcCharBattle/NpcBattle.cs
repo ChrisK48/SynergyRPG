@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using NUnit.Framework;
 
 public abstract class NpcBattle : CharBattle
 {
@@ -69,13 +70,15 @@ public abstract class NpcBattle : CharBattle
 
     protected List<ITurnEntity> NpcTargeting(Ability ability)
     {
+        List<ITurnEntity> validTargets = new List<ITurnEntity>();
+        validTargets = BattleManager.instance.playerEntities.Where(p => p is PlayerCharBattle player && !p.GetIfHiding() && player.GetIfAlive() || p.GetIfHiding()).ToList();
         switch (ability.TargetType)
         {
             case TargetType.SingleEnemy:
-                int randomAllyIndex = UnityEngine.Random.Range(0, BattleManager.instance.playerEntities.Count);
-                return new List<ITurnEntity> { BattleManager.instance.playerEntities[randomAllyIndex] };
+                int randomAllyIndex = UnityEngine.Random.Range(0, validTargets.Count);
+                return new List<ITurnEntity> { validTargets[randomAllyIndex] };
             case TargetType.AllEnemies:
-                return BattleManager.instance.playerEntities.Where(p => p is PlayerCharBattle player && player.GetIfAlive() || p is SynergyStance).ToList();
+                return validTargets;
             case TargetType.Self:
                 return new List<ITurnEntity> { this };
             case TargetType.SingleAlly:
@@ -85,19 +88,19 @@ public abstract class NpcBattle : CharBattle
                 return BattleManager.instance.npcEntities;
             case TargetType.AnyChar:
                 List<ITurnEntity> allChars = new List<ITurnEntity>();
-                allChars.AddRange(BattleManager.instance.playerEntities);
+                allChars.AddRange(validTargets);
                 allChars.AddRange(BattleManager.instance.npcEntities);
                 int randomCharIndex = UnityEngine.Random.Range(0, allChars.Count);
                 return new List<ITurnEntity> { allChars[randomCharIndex] };
             case TargetType.AllChars:
                 List<ITurnEntity> allCharacters = new List<ITurnEntity>();
-                allCharacters.AddRange(BattleManager.instance.playerEntities);
+                allCharacters.AddRange(validTargets);
                 allCharacters.AddRange(BattleManager.instance.npcEntities);
                 return allCharacters;
             case TargetType.RandomAllies:
                 return BattleManager.instance.npcEntities;
             case TargetType.RandomEnemies:
-                return BattleManager.instance.playerEntities.Where(p => p is PlayerCharBattle player && player.GetIfAlive() || p is SynergyStance).ToList();
+                return validTargets;
             default:
                 return new List<ITurnEntity>();
         }

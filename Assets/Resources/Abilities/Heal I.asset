@@ -25,9 +25,7 @@ MonoBehaviour:
   TargetsToHitIfRandom: 0
   AbilityEffects:
   - rid: 9008616039178567750
-  SynergyTags: 
-  SkillTile: {fileID: -1437518083614475044, guid: 9f7e5a76d4c21e94cb66bc806dc33da2, type: 3}
-  isExclusive: 0
+  SynergyTags: 0b000000
   references:
     version: 2
     RefIds:

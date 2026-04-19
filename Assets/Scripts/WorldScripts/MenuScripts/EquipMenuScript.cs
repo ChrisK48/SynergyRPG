@@ -15,6 +15,7 @@ public class EquipMenuScript : MonoBehaviour
     public GameObject EquipSelectionContainer;
     public GameObject SwapEquipContainer;
     public Button EquipButton;
+    public Button BackButton;
     private PlayerCharData currentChar;
     private int currentCharIndex = 0;
 
@@ -28,6 +29,7 @@ public class EquipMenuScript : MonoBehaviour
     {
         SwapInPartyMember();
         SetupEquipSlots();
+        BackButton.onClick.AddListener(() => MenuManager.instance.EquipmentContainer.SetActive(false));
     }
 
     void Update()
@@ -45,6 +47,7 @@ public class EquipMenuScript : MonoBehaviour
             currentChar = PartyManager.instance.unlockedPartyMembers[currentCharIndex];
             SwapInPartyMember();
             SetupEquipSlots();
+            EquipSelectionContainer.SetActive(false);
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
@@ -59,6 +62,7 @@ public class EquipMenuScript : MonoBehaviour
             currentChar = PartyManager.instance.unlockedPartyMembers[currentCharIndex];
             SwapInPartyMember();
             SetupEquipSlots();
+            EquipSelectionContainer.SetActive(false);
         }
     }
 

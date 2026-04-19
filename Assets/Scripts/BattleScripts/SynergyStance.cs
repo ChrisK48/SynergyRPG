@@ -16,6 +16,9 @@ public class SynergyStance : ITurnEntity
     public bool entityIsPreppingSynergy => isPreppingSynergy;
     private List<SynergyTag> storedTags = new List<SynergyTag>();
     private bool isDefending = false;
+    private bool isHiding = false;
+    private SynergyAbility storedAbility;
+    private List<ITurnEntity> storedTargets;
     public bool entityDefending => isDefending;
     public bool hasActed { get; private set; }
     private ShieldCharBattle shieldPlayer;
@@ -92,7 +95,7 @@ public class SynergyStance : ITurnEntity
         if (FlowManager.instance.currentFlow <= 0) 
         {
             Debug.Log("Synergy Stance broken due to flow depletion!");
-            SynergyStanceManager.instance.EndSynergyStance(this);
+            if (!isHiding) SynergyStanceManager.instance.EndSynergyStance(this);
         }
     }
 
@@ -107,7 +110,6 @@ public class SynergyStance : ITurnEntity
     public void StartPrep(List<SynergyTag> tags)
     {
         isPreppingSynergy = true;
-        storedTags.AddRange(tags);
     }
 
     public void EndPrep()
@@ -116,5 +118,36 @@ public class SynergyStance : ITurnEntity
         storedTags.Clear();
     }
 
+    public void StoreTags(List<SynergyTag> tags) => storedTags.AddRange(tags);
+
     public bool GetIfPreppingSynergy() => isPreppingSynergy;
+    public bool GetIfHiding() => isHiding;
+    public void RevealChar()
+    {
+        Debug.Log("Stored move in stance triggered");
+        isHiding = false;
+        foreach(PlayerCharBattle user in users)
+        {
+            user.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        }
+        foreach(var target in storedTargets)
+        {
+            storedAbility.ExecuteSynergy(users, target);
+        }
+        storedTargets = null;
+        storedAbility = null;
+        if (FlowManager.instance.currentFlow <= 0) SynergyStanceManager.instance.EndSynergyStance(this);
+    }
+
+    public void HideChar()
+    {
+        isHiding = true;
+        foreach (PlayerCharBattle user in users)
+        {
+            user.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    public void StoreAbilityForNextTurn(SynergyAbility synergyAbility) => storedAbility = synergyAbility;
+    public void StoreTargetsForNextTurn(List<ITurnEntity> targets) => storedTargets = targets;
 }

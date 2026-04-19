@@ -28,7 +28,6 @@ public class MenuManager : MonoBehaviour
     public GameObject EquipmentContainer;
 
     private bool menuOpen = false;
-    private bool inventoryOpen = false;
     private bool statsDisplayed = false;
 
     void Awake()
@@ -60,10 +59,9 @@ public class MenuManager : MonoBehaviour
     {
         menuOpen = !menuOpen;
         MenuPanel.SetActive(menuOpen);
-        if (inventoryOpen)
+        if (InventoryContainer.activeSelf)
         {
             InventoryContainer.SetActive(false);
-            inventoryOpen = false;
         }
         if (EquipmentContainer.activeSelf)
         {
@@ -85,18 +83,7 @@ public class MenuManager : MonoBehaviour
 
     private void BuildInventoryMenu()
     {
-        foreach (Transform child in InventoryContainer.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
         InventoryContainer.SetActive(true);
-        inventoryOpen = true;
-        foreach(ItemStack item in PartyManager.instance.inventory)
-        {
-            GameObject itemCard = Instantiate(ItemCardPrefab, InventoryContainer.transform);
-            itemCard.GetComponent<ItemCard>().Initialize(item);
-        }
     }
 
     private void BuildEquipmentMenu()

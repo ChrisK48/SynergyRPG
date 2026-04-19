@@ -19,8 +19,14 @@ MonoBehaviour:
   abilityEffects:
   - rid: 1609082513517445190
   SynergyTagSets:
-  - tag1: 10
-    tag2: 4
+  - tag1: 2
+    mpCost1: 0
+    scalingStat1: 0
+    scalingMultiplier1: 0
+    tag2: 5
+    mpCost2: 0
+    scalingStat2: 0
+    scalingMultiplier2: 0
   references:
     version: 2
     RefIds:

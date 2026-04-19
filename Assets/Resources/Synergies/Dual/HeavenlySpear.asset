@@ -10,33 +10,48 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 066e3bdd5fd6efb4a90825376c054e54, type: 3}
-  m_Name: FlameSlash
+  m_Name: HeavenlySpear
   m_EditorClassIdentifier: Assembly-CSharp::DualSynergyAbility
-  synergyName: Double Flame Slash
+  synergyName: Heavenly Spear
   description: 
   synergyPowerMultiplier: 1
+  SkipTurnAndUseNextTurn: 1
   targetType: 0
   abilityEffects:
-  - rid: 1609082607231565892
+  - rid: 3425318901804957767
+  - rid: 3425318901804957768
+  - rid: -2
   SynergyTagSets:
-  - tag1: 1
-    mpCost1: 0
-    scalingStat1: 0
-    scalingMultiplier1: 0
-    tag2: 7
-    mpCost2: 0
+  - tag1: 6
+    mpCost1: 10
+    scalingStat1: 1
+    scalingMultiplier1: 1
+    tag2: 12
+    mpCost2: 20
     scalingStat2: 0
-    scalingMultiplier2: 0
+    scalingMultiplier2: 1
   references:
     version: 2
     RefIds:
-    - rid: 1609082607231565892
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3425318901804957767
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectIsMissable: 0
         EffectHitChance: 0
-        NumHits: 2
-        ShieldsToRemove: 1
-        elementTypes: 0000000008000000
+        NumHits: 1
+        ShieldsToRemove: 0
+        elementTypes: 
         atkType: 0
+        ignoreDef: 0
+    - rid: 3425318901804957768
+      type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectIsMissable: 0
+        EffectHitChance: 0
+        NumHits: 1
+        ShieldsToRemove: 0
+        elementTypes: 06000000
+        atkType: 1
         ignoreDef: 0

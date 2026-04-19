@@ -18,4 +18,6 @@ public interface ITurnEntity
     public void EndTurn();
     public bool hasActed { get; }
     public void SetHasActed(bool value);
+    public bool GetIfHiding();
+    public void RevealChar();
 }

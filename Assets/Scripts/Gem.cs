@@ -19,4 +19,5 @@ public class Gem : Item
     public Ability GemAbility;
     public StatBonusEntry StatBonus;
     public PlayerID charExclusive;
+    void OnValidate() => itemType = ItemType.Gem;
 }

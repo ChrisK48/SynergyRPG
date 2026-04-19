@@ -8,6 +8,7 @@ public class ConsumableItem : Item, ITargetableAction
     public string Name => ItemName;
     public TargetType targetType;
     public TargetType Targets => targetType;
+    void OnValidate() => itemType = ItemType.Consumable;
 
     [SerializeReference]
     public List<ItemEffect> itemEffects = new List<ItemEffect>();

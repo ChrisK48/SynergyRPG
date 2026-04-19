@@ -199,7 +199,7 @@ public class BattleUIManager : MonoBehaviour
 
         if (synergy.Ability != null)
         {
-            stance.StartPrep(new List<SynergyTag> { synergy.UserATag, synergy.UserBTag });
+            stance.StoreTags(new List<SynergyTag> { synergy.UserATag, synergy.UserBTag });
             stance.users[0].StartPrep(new List<SynergyTag> { synergy.UserATag });
             stance.users[1].StartPrep(new List<SynergyTag> { synergy.UserBTag });
         }
@@ -301,7 +301,8 @@ public class BattleUIManager : MonoBehaviour
 
                     user.StartPrep(new List<SynergyTag> { userReqTag });
                     Debug.Log($"User {user.CharName} prepping with tag {userReqTag}");
-
+                    HideSubMenu();
+                    HideCommandMenu();
                     TargetSelectionManager.instance.BeginTargetSelection(
                         new CharBattle[] { user, partnerBattle }, 
                         synergy.Ability
