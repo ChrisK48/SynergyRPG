@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -13,7 +14,6 @@ public abstract class PlayerCharBattle : CharBattle
     public PlayerCharData charData;
     public event Action OnStatsChanged;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         TriggerStatsUpdate();
@@ -41,6 +41,7 @@ public abstract class PlayerCharBattle : CharBattle
 
         attackAbility = data.attackAbility;
         abilities = new List<Ability>(data.abilities);
+        passives = data.passiveSlots;
     }
 
     public void DeductResources(Ability ability)

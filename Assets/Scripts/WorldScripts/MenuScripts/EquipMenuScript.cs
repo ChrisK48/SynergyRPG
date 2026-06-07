@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEditor.Animations;
 
 public class EquipMenuScript : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class EquipMenuScript : MonoBehaviour
     public GameObject SwapEquipContainer;
     public Button EquipButton;
     public Button BackButton;
+    public Button PassiveButton1;
+    public Button PassiveButton2;
+    public Button PassiveButton3;
+    public Button PassiveButton4;
     private PlayerCharData currentChar;
     private int currentCharIndex = 0;
 
@@ -80,6 +85,11 @@ public class EquipMenuScript : MonoBehaviour
         WeaponContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
         ArmorContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
         AccessoryContainer.GetComponentInChildren<EquipSlotUIScript>().UnequipItem = (slot) => UnequipItem(slot);
+
+        PassiveButton1.GetComponentInChildren<PassiveSlotUIScript>().Setup(currentChar, OpenPassiveSelection);
+        PassiveButton2.GetComponentInChildren<PassiveSlotUIScript>().Setup(currentChar, OpenPassiveSelection);
+        PassiveButton3.GetComponentInChildren<PassiveSlotUIScript>().Setup(currentChar, OpenPassiveSelection);
+        PassiveButton4.GetComponentInChildren<PassiveSlotUIScript>().Setup(currentChar, OpenPassiveSelection);
     }
 
     private void SwapInPartyMember()
@@ -278,6 +288,22 @@ public class EquipMenuScript : MonoBehaviour
             }
         }
     }
+    
+    public void OpenPassiveSelection()
+    {
+        EquipSelectionContainer.SetActive(true);
+        foreach(Transform child in EquipSelectionContainer.transform) Destroy(child.gameObject);
+
+        foreach(CharPassive passive in currentChar.learnedPassives)
+        {
+            Button btn = Instantiate(EquipButton, EquipSelectionContainer.transform);
+            btn.GetComponentInChildren<TextMeshProUGUI>().text = passive.passiveName;
+            if(passive == currentChar.passiveSlots[0] || passive == currentChar.passiveSlots[1] || passive == currentChar.passiveSlots[2] || passive == currentChar.passiveSlots[3])
+            {
+                btn.GetComponentInChildren<TextMeshProUGUI>().text += " (Currently Equipped)";
+            }
+        }
+    }
 
     public bool IsMatching(ItemStack itemStack)
     {
@@ -290,4 +316,6 @@ public class EquipMenuScript : MonoBehaviour
 
         return exclusive.HasValue && (exclusive == PlayerID.Any || exclusive == currentChar.playerID);
     }
+
+    public PlayerCharData GetCurrentChar() => currentChar;
 }

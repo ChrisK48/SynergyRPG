@@ -15,6 +15,8 @@ public class PlayerCharData : ScriptableObject
     public EquipmentSlot weaponSlot = new EquipmentSlot { slotType = EquipSlot.Weapon };
     public EquipmentSlot armorSlot = new EquipmentSlot { slotType = EquipSlot.Armor };
     public EquipmentSlot accessorySlot = new EquipmentSlot { slotType = EquipSlot.Accessory };
+    public List<CharPassive> passiveSlots = new List<CharPassive>(4);
+    public List<CharPassive> learnedPassives;
     public int currentLevel;
     public int currentExp;
     public PlayerID playerID;
@@ -40,7 +42,6 @@ public class PlayerCharData : ScriptableObject
         ApplyGemBonuses(accessorySlot.equippedGems);
     }
 
-    // FIX: Extracted the triplicated gem-bonus switch into one shared method.
     private void ApplyGemBonuses(List<Gem> gems)
     {
         foreach (Gem gem in gems)
@@ -70,7 +71,6 @@ public class PlayerCharData : ScriptableObject
         AddAbilitiesFromSlot(accessorySlot);
     }
 
-    // FIX: Extracted repeated ability-gather pattern.
     private void AddAbilitiesFromSlot(EquipmentSlot slot)
     {
         if (slot.IsEmpty) return;

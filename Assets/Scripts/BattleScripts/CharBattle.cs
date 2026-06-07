@@ -8,6 +8,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public string EntityName => CharName;
     public int MaxHp, MaxMp, Atk, Mag, Def, Mdef, Spd, Acc, Eva, Luck;
     protected int hp, mp;
+    public List<CharPassive> passives;
     public int spd => Spd;
     protected bool isAlive = true;
     public List<ActiveBuff> activeBuffs;
@@ -35,6 +36,10 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
 
     public int getHp() => hp;
     public int getMp() => mp;
+    public void setHp(int value)
+    {
+        hp = Mathf.Clamp(value, 0, MaxHp);
+    }
 
     public virtual void Heal(int amt) {
         if (hp == 0) return;
@@ -65,25 +70,50 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     public virtual void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes = null, int shieldsToRemove = 0, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {
         // temp damage calculation
+        Debug.Log(CharName + " is taking " + amt + " " + atkType.ToString() + " base damage.");
+        
+        int damage = CalculateDamage(amt, atkType, elementTypes, ignoreDef);
+
+        foreach (CharPassive passive in passives)
+        {
+            if (passive == null) continue;
+            if (passive.trigger == PassiveTrigger.OnDamageTaken)
+            {
+                passive.passiveEffect.ApplyEffect(this, damage);
+            }
+        }
+
+        int finalDamage = Mathf.Min(damage, hp);
+        Debug.Log(CharName + " takes " + finalDamage + " actual damage.");
+
+        hp = Mathf.Clamp(hp - finalDamage, 0, MaxHp);
+            if (hp == 0) {
+                foreach (CharPassive passive in passives)
+                {
+                    if (passive.trigger == PassiveTrigger.OnLethalHit)
+                    {
+                        passive.passiveEffect.ApplyEffect(this, damage);
+                        return;
+                    }
+                }
+                Die();
+            }
+            
+        onDamageDealt?.Invoke(finalDamage);
+        BattleUIManager.instance.Popup(damage, transform.position, PopupType.Damage);
+    }
+
+    public int CalculateDamage(int amt, AtkType atkType, List<DamageType> elementTypes, bool ignoreDef = false)
+    {
         int damage = 0;
-        Debug.Log(CharName + " is taking " + amt + " " + atkType.ToString() + " damage.");
         if (!ignoreDef)
             if (atkType == AtkType.Physical)
                 damage = Mathf.Max(amt*amt/(amt+Def), 1);
             else
                 damage = Mathf.Max(amt*amt/(amt+Mdef), 1);
-        else
-            damage = amt;
-
-        int finalDamage = Mathf.Min(damage, hp);
-        Debug.Log(CharName + " takes " + finalDamage + " damage.");
-
-        hp = Mathf.Clamp(hp - finalDamage, 0, MaxHp);
-            if (hp == 0)
-                Die();
-
-        onDamageDealt?.Invoke(finalDamage);
-        BattleUIManager.instance.Popup(damage, transform.position, PopupType.Damage);
+            else
+                damage = amt;
+        return damage;
     }
 
     public bool GetIfAlive() => isAlive;

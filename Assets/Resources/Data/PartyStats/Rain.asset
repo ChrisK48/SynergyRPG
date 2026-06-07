@@ -49,6 +49,12 @@ MonoBehaviour:
     slotType: 2
     currentItem: {fileID: 0}
     equippedGems: []
+  passiveSlots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  learnedPassives: []
   currentLevel: 1
   currentExp: 0
   playerID: 2
