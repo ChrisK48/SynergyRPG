@@ -25,7 +25,7 @@ MonoBehaviour:
   BaseLuck: 5
   MaxHp: 150
   MaxMp: 50
-  Atk: 15
+  Atk: 20
   Mag: 25
   Def: 17
   Mdef: 25
@@ -33,14 +33,17 @@ MonoBehaviour:
   Acc: 15
   Eva: 8
   Luck: 5
-  currentHp: 10
+  currentHp: 5
   currentMp: 50
   attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
-  abilities: []
+  abilities:
+  - {fileID: 11400000, guid: 0218d39c498258d41a9c2c4a8bb2311a, type: 2}
   weaponSlot:
     slotType: 0
-    currentItem: {fileID: 0}
-    equippedGems: []
+    currentItem: {fileID: 11400000, guid: 8940c6d2f7dc2184ebfe6042a3400188, type: 2}
+    equippedGems:
+    - {fileID: 0}
+    - {fileID: 11400000, guid: ea990b068d951df4ba293f0a8c0581f4, type: 2}
   armorSlot:
     slotType: 1
     currentItem: {fileID: 0}
@@ -50,14 +53,14 @@ MonoBehaviour:
     currentItem: {fileID: 0}
     equippedGems: []
   passiveSlots:
-  - {fileID: 11400000, guid: 2be67c86fd34bd54491dc9ecdb2cb05d, type: 2}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   learnedPassives:
   - {fileID: 11400000, guid: 2be67c86fd34bd54491dc9ecdb2cb05d, type: 2}
   currentLevel: 1
-  currentExp: 0
+  currentExp: 50
   playerID: 1
   charBattlePrefab: {fileID: 7643124037856912594, guid: 59c7b5f2637b72e44b949a27167e476a, type: 3}
   MenuImage: {fileID: 7817108346809545794, guid: 582c5530b2310dd4e9fd67ec3b695555, type: 3}

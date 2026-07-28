@@ -2183,7 +2183,11 @@ PrefabInstance:
     - target: {fileID: 3383749027689666880, guid: dc8c89d47ea40d845b6c5fd55c2ccf92, type: 3}
       propertyPath: 'enemies.Array.data[0]'
       value: 
-      objectReference: {fileID: 3429810215835097252, guid: f37e3bd294fce734b886112681ba34ca, type: 3}
+      objectReference: {fileID: 2610517544235656324, guid: b01416a4ebe966446b234af1287ee6dc, type: 3}
+    - target: {fileID: 3383749027689666880, guid: dc8c89d47ea40d845b6c5fd55c2ccf92, type: 3}
+      propertyPath: 'enemies.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2610517544235656324, guid: b01416a4ebe966446b234af1287ee6dc, type: 3}
     - target: {fileID: 4670977009760858681, guid: dc8c89d47ea40d845b6c5fd55c2ccf92, type: 3}
       propertyPath: m_Name
       value: BattleTrigger
@@ -5028,7 +5032,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 862828379776706821, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1186016283748462814, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: m_Color.a
@@ -5217,11 +5221,11 @@ PrefabInstance:
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: 'activePartyMembers.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: bd4e6a2bfcc3b6f439cd3b4cd05c068a, type: 2}
+      objectReference: {fileID: 11400000, guid: a35e50ff217aaa44bbdd91b454170aa5, type: 2}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: 'activePartyMembers.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: ef873d53900a9bd48a7391fa3abd4976, type: 2}
+      objectReference: {fileID: 11400000, guid: bd4e6a2bfcc3b6f439cd3b4cd05c068a, type: 2}
     - target: {fileID: 5796858930904362276, guid: fa642d553d2498249af46983510a2de2, type: 3}
       propertyPath: 'unlockedPartyMembers.Array.data[0]'
       value: 

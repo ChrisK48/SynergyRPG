@@ -289,8 +289,9 @@ public class EquipMenuScript : MonoBehaviour
         }
     }
     
-    public void OpenPassiveSelection()
+    public void OpenPassiveSelection(PassiveSlotUIScript slotUI)
     {
+        int equippedIn = -1;
         EquipSelectionContainer.SetActive(true);
         foreach(Transform child in EquipSelectionContainer.transform) Destroy(child.gameObject);
 
@@ -301,7 +302,32 @@ public class EquipMenuScript : MonoBehaviour
             if(passive == currentChar.passiveSlots[0] || passive == currentChar.passiveSlots[1] || passive == currentChar.passiveSlots[2] || passive == currentChar.passiveSlots[3])
             {
                 btn.GetComponentInChildren<TextMeshProUGUI>().text += " (Currently Equipped)";
+                equippedIn = currentChar.passiveSlots.IndexOf(passive);
             }
+
+            btn.onClick.AddListener(() => 
+            {
+                switch(equippedIn)
+                {
+                    case 0:
+                        PassiveButton1.GetComponentInChildren<PassiveSlotUIScript>().UnequipPassive();
+                        break;
+                    case 1:
+                        PassiveButton2.GetComponentInChildren<PassiveSlotUIScript>().UnequipPassive();
+                        break;
+                    case 2:
+                        PassiveButton3.GetComponentInChildren<PassiveSlotUIScript>().UnequipPassive();
+                        break;
+                    case 3:
+                        PassiveButton4.GetComponentInChildren<PassiveSlotUIScript>().UnequipPassive();
+                        break;
+                }
+                slotUI.EquipPassive(passive);
+                EquipSelectionContainer.SetActive(false);
+                currentChar.RefreshAllStats();
+                currentChar.RefreshAbilities();
+                PartyManager.instance.UpdateSynergies();
+            });
         }
     }
 

@@ -50,9 +50,10 @@ public class BattleManager : MonoBehaviour
         {
             // Spawn the clone
             Transform spawnPoint = npcSpawnPoints[i];
-            NpcBattle ncpClone = Instantiate(npcChars[i], spawnPoint.position, spawnPoint.rotation);
-            spawnedNpcs.Add(ncpClone);
-            npcEntities.Add(ncpClone);
+            NpcBattle npcClone = Instantiate(npcChars[i], spawnPoint.position, spawnPoint.rotation);
+            BattleUIManager.instance.GenerateStaggerBar(npcClone);
+            spawnedNpcs.Add(npcClone);
+            npcEntities.Add(npcClone);
         }
 
         playerChars = spawnedPlayers;

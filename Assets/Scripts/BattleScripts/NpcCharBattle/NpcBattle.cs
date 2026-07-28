@@ -8,15 +8,17 @@ public abstract class NpcBattle : CharBattle
 {
     public List<AbilityWeight> AbilityWeights = new List<AbilityWeight>();
     public List<HpGate> HpGates = new List<HpGate>();
+    public List<DamageType> DamageWeaknesses;
     public List<DamageType> DamageResistances;
-    public List<ShieldTag> DamageWeaknesses;
-    public int shieldsToRegain;
+    public int staggerValue;
     public int xpValue;
     public Item StealableItem;
     public int StealMultiplier;
     public int DroppedMoney;
     private bool itemStolen = false;
-    private bool shieldBroken = false;
+    private bool staggered = false;
+    private int currentStagger;
+    public int maxStagger;
     private int DefNotBroken;
     private int MdefNotBroken;
     private bool isDead = false;
@@ -25,7 +27,6 @@ public abstract class NpcBattle : CharBattle
     {
         DefNotBroken = Def;
         MdefNotBroken = Mdef;
-        ResetShields();
     } 
 
     public virtual void PerformAITurn()
@@ -64,8 +65,22 @@ public abstract class NpcBattle : CharBattle
         float damage = HandleWeaknesses(amt, damageTypes);
         damage = HandleResistances(damage, damageTypes);
         amt = (int)damage;
-        base.TakeDamage(amt, atkType, damageTypes, shieldsToRemove, ignoreDef, onDamageDealt);
-        DecrementShieldTags(damageTypes, shieldsToRemove);
+        base.TakeDamage(amt, atkType, damageTypes, shieldsToRemove, ignoreDef, (finalDamage) => {
+            onDamageDealt?.Invoke(finalDamage);
+            CalculateStagger(finalDamage);
+        });
+    }
+
+    private void CalculateStagger(int damageTaken)
+    {
+        int staggerBuildUp = Mathf.RoundToInt((float)damageTaken / MaxHp * 100f);        
+        currentStagger = Mathf.Clamp(currentStagger + staggerBuildUp, 0, maxStagger);
+        BattleUIManager.instance.UpdateStaggerBar(this);
+        Debug.Log($"{CharName} current stagger: {currentStagger}/{maxStagger}");
+        if (currentStagger >= maxStagger && !staggered)
+        {
+            Stagger();
+        }
     }
 
     protected List<ITurnEntity> NpcTargeting(Ability ability)
@@ -140,7 +155,7 @@ public abstract class NpcBattle : CharBattle
         float damage = (float)amt;
         foreach (var weakness in DamageWeaknesses)
         {
-            if (damageTypes.Contains(weakness.element))
+            if (damageTypes.Contains(weakness))
             {
                 damage *= 1.5f;
                 return damage;
@@ -163,51 +178,20 @@ public abstract class NpcBattle : CharBattle
         return damage;
     }
 
-    private void DecrementShieldTags(List<DamageType> elementTypes, int shieldsToRemove)
+    protected virtual void Stagger()
     {
-        if (elementTypes == null) return;
-        foreach (var shieldTag in DamageWeaknesses)
-        {
-            if (elementTypes.Contains(shieldTag.element))
-            {
-                shieldTag.shieldAmount = Mathf.Max(0, shieldTag.shieldAmount - shieldsToRemove);
-                Debug.Log(CharName + "'s " + shieldTag.element + " shield is reduced to " + shieldTag.shieldAmount);
-                if (shieldTag.shieldAmount <= 0)
-                {
-                    BreakShieldTag(shieldTag);
-                }
-            }
-        }
-    }
-
-    private void BreakShieldTag(ShieldTag shieldTag)
-    {
-        Debug.Log(CharName + "'s " + shieldTag.element + " shield is broken!");
-        bool isStillShielded = DamageWeaknesses.Any(tag => tag.shieldAmount > 0);
-        if (!isStillShielded)
-        {
-            TriggerShieldBreak();
-        }
-    }
-
-    protected virtual void TriggerShieldBreak()
-    {
-        Debug.Log(CharName + " has lost all shields and is now vulnerable!");
+        Debug.Log(CharName + " is staggered and now vulnerable!");
         Def = (int)(DefNotBroken * 0.8f); // currently reduces defense by 20% when all shields are broken, can adjust as needed
-        Mdef = (int)(Mdef * 0.8f); // also reduces magic defense by 20%
-        shieldBroken = true;
+        Mdef = (int)(MdefNotBroken * 0.8f); // also reduces magic defense by 20%
+        staggered = true;
         BattleManager.instance.GetTurnManager().RemoveFromTurnOrder(this);
     }
 
-    public bool IsShieldBroken() => shieldBroken;
+    public bool IsStaggered() => staggered;
 
-    public void ResetShields()
+    public void ResetStagger()
     {
-        foreach (var shield in DamageWeaknesses)
-        {
-            shield.ResetShieldAmount();
-        }
-        shieldBroken = false;
+        staggered = false;
         Def = DefNotBroken;
         Mdef = MdefNotBroken;
         Debug.Log(CharName + "'s shields have been reset.");
@@ -219,4 +203,6 @@ public abstract class NpcBattle : CharBattle
     }
 
     public bool GetIfItemStolen() => itemStolen;
+    public int GetCurrentStagger() => currentStagger;
+    public int GetMaxStagger() => maxStagger;
 }

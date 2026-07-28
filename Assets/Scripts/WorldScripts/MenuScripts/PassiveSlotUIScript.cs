@@ -1,21 +1,22 @@
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System;
 
-public class PassiveSlotUIScript : MonoBehaviour
+public class PassiveSlotUIScript : MonoBehaviour, IPointerClickHandler
 {
     public Image SlotImage;
     public Button SlotButton;
     public int slotIndex;
-    [HideInInspector] public Action OpenPassiveSelection;
+    [HideInInspector] public Action<PassiveSlotUIScript> OpenPassiveSelection;
     private CharPassive passive;
     private PlayerCharData currentChar;
 
     void Awake()
     {
-        SlotButton.onClick.AddListener(() => OpenPassiveSelection?.Invoke());
+        SlotButton.onClick.AddListener(() => OpenPassiveSelection?.Invoke(this));
     }
-    public void Setup(PlayerCharData currentChar, Action openPassiveSelection)
+    public void Setup(PlayerCharData currentChar, Action<PassiveSlotUIScript> openPassiveSelection)
     {
         OpenPassiveSelection = openPassiveSelection;
         this.currentChar = currentChar;
@@ -35,5 +36,13 @@ public class PassiveSlotUIScript : MonoBehaviour
         passive = null;
         currentChar.passiveSlots[slotIndex] = null;
         SlotImage.sprite = null;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            UnequipPassive();
+        }
     }
 }

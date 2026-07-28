@@ -15,7 +15,7 @@ MonoBehaviour:
   passiveName: Better Off
   passiveDescription: 
   trigger: 6
-  passiveSprite: {fileID: 0}
+  passiveSprite: {fileID: 8805786357671627095, guid: 3c53e7b0b6b1ef44d87132491c8afd0e, type: 3}
   passiveEffect:
     rid: 6481834514404081736
   references:

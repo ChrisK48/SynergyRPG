@@ -13,53 +13,54 @@ public class TurnManager
     }
 
     public List<ITurnEntity> createTurnOrder()
-{
-    // Use the existing logic to find characters who !hasActed
-    List<ITurnEntity> allChars = new List<ITurnEntity>();
-    
-    allChars.AddRange(BattleManager.instance.playerEntities.Where(pc => 
-        pc is PlayerCharBattle player && player.GetIfAlive() && 
-        !player.GetIfInSynergyStance() && !player.GetIfActed()));
-
-    allChars.AddRange(BattleManager.instance.npcEntities.Where(npc => 
-        npc is NpcBattle enemy && enemy.GetIfAlive() && 
-        !enemy.GetIfInSynergyStance() && !enemy.GetIfActed()));
-
-    var activeStances = BattleManager.instance.GetSynergyStances();
-    if (activeStances != null)
-        allChars.AddRange(activeStances);
-
-    allChars.Sort((a, b) => b.spd.CompareTo(a.spd));
-
-    turnOrder = allChars;
-
-    // FIX: If we rebuild the list mid-round, reset the index to 0.
-    // Since we filtered by '!GetIfActed()', index 0 will ALWAYS be 
-    // the fastest person who still needs a turn.
-    currentTurn = 0;
-
-    Debug.Log("Turn order created: " + string.Join(", ", turnOrder.Select(e => e.EntityName)));
-    return turnOrder;
-}
-
-public ITurnEntity getCurrentChar()
-{
-    // If the list is empty or we finished the round, reset everything
-    if (turnOrder == null || turnOrder.Count == 0 || currentTurn >= turnOrder.Count)
     {
-        // Full Round Reset
-        currentTurn = 0;
-        foreach (var p in BattleManager.instance.playerEntities) p.SetHasActed(false);
-        foreach (var n in BattleManager.instance.npcEntities) n.SetHasActed(false);
+        // Use the existing logic to find characters who !hasActed
+        List<ITurnEntity> allChars = new List<ITurnEntity>();
         
-        createTurnOrder(); 
+        allChars.AddRange(BattleManager.instance.playerEntities.Where(pc => 
+            pc is PlayerCharBattle player && player.GetIfAlive() && 
+            !player.GetIfInSynergyStance() && !player.GetIfActed()));
+
+        allChars.AddRange(BattleManager.instance.npcEntities.Where(npc => 
+            npc is NpcBattle enemy && enemy.GetIfAlive() && 
+            !enemy.GetIfInSynergyStance() && !enemy.GetIfActed() && !enemy.IsStaggered()));
+
+        var activeStances = BattleManager.instance.GetSynergyStances();
+        if (activeStances != null)
+            allChars.AddRange(activeStances);
+
+        allChars.Sort((a, b) => b.spd.CompareTo(a.spd));
+
+        turnOrder = allChars;
+
+        // FIX: If we rebuild the list mid-round, reset the index to 0.
+        // Since we filtered by '!GetIfActed()', index 0 will ALWAYS be 
+        // the fastest person who still needs a turn.
+        currentTurn = 0;
+
+        Debug.Log("Turn order created: " + string.Join(", ", turnOrder.Select(e => e.EntityName)));
+        return turnOrder;
     }
 
-    // Double check to prevent crash if everyone is dead/in stances
-    if (turnOrder.Count == 0) return null;
+    public ITurnEntity getCurrentChar()
+    {
+        // If the list is empty or we finished the round, reset everything
+        if (turnOrder == null || turnOrder.Count == 0 || currentTurn >= turnOrder.Count)
+        {
+            // Full Round Reset
+            currentTurn = 0;
+            foreach (var p in BattleManager.instance.playerEntities) p.SetHasActed(false);
+            foreach (var n in BattleManager.instance.npcEntities) n.SetHasActed(false);
+            
+            createTurnOrder(); 
+        }
 
-    return turnOrder[currentTurn];
-}
+        // Double check to prevent crash if everyone is dead/in stances
+        if (turnOrder.Count == 0) return null;
+
+        return turnOrder[currentTurn];
+    }
+
     public void AdvanceTurn()
     {
         currentTurn++;

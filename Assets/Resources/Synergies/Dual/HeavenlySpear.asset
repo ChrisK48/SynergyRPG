@@ -20,7 +20,6 @@ MonoBehaviour:
   abilityEffects:
   - rid: 3425318901804957767
   - rid: 3425318901804957768
-  - rid: -2
   SynergyTagSets:
   - tag1: 6
     mpCost1: 10
@@ -33,8 +32,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 3425318901804957767
       type: {class: AtkAbilityEffect, ns: , asm: Assembly-CSharp}
       data:

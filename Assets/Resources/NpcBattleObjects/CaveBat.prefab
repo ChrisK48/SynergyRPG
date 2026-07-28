@@ -115,21 +115,17 @@ MonoBehaviour:
   Acc: 0
   Eva: 0
   Luck: 0
+  passives: []
   activeBuffs: []
   AbilityWeights:
   - Ability: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
     Weight: 100
   HpGates: []
+  DamageWeaknesses: 0000000000000000
   DamageResistances: 
-  DamageWeaknesses:
-  - element: 0
-    MaxShieldAmount: 1
-    shieldAmount: 2
-  - element: 0
-    MaxShieldAmount: 2
-    shieldAmount: 2
-  shieldsToRegain: 1
+  staggerValue: 0
   xpValue: 50
   StealableItem: {fileID: 11400000, guid: fef8da9f878199947886f7233f88476b, type: 2}
   StealMultiplier: 0
   DroppedMoney: 5
+  maxStagger: 50

@@ -12,11 +12,13 @@ using System.Runtime.InteropServices;
 public class BattleUIManager : MonoBehaviour
 {
     public static BattleUIManager instance;
+    public Canvas ParentCanvas;
     public Transform partyUIContainer;
     public Transform commandMenuUIContainer;
     public Transform TurnOrderUIContainer;
     public Transform BattleEndContainer;
     public Transform FlowUIContainer;
+    public Transform StaggerUIContainer;
     public GameObject ExpUIPrefab;
     public GameObject CommandMenu;
     public GameObject Submenu;
@@ -26,6 +28,8 @@ public class BattleUIManager : MonoBehaviour
     public RectTransform SynergyButtonContainer;
     public GameObject PopupPrefab;
     public GameObject turnOrderIconPrefab;
+    public GameObject staggerBarPrefab;
+    private Dictionary<NpcBattle, StaggerBar> staggerBars = new Dictionary<NpcBattle, StaggerBar>();
 
     public Button EndBattleButton;
 
@@ -62,6 +66,38 @@ public class BattleUIManager : MonoBehaviour
         }
     }
     
+    public void GenerateStaggerBar(NpcBattle enemy)
+    {
+        GameObject staggerBarObj = Instantiate(staggerBarPrefab, StaggerUIContainer);
+        Vector3 screenPoint = Camera.main.WorldToScreenPoint(enemy.transform.position + new Vector3(0, -.75f, 0));
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            ParentCanvas.transform as RectTransform,
+            screenPoint,
+            ParentCanvas.worldCamera,
+            out Vector2 localPoint
+        );
+
+        staggerBarObj.GetComponent<RectTransform>().anchoredPosition = localPoint;
+        StaggerBar staggerBar = staggerBarObj.GetComponent<StaggerBar>();
+        staggerBar.Setup(enemy);
+
+        if (!staggerBars.ContainsKey(enemy))
+        {
+            staggerBars.Add(enemy, staggerBar);
+        }
+    }
+
+    public void UpdateStaggerBar(NpcBattle enemy)
+    {
+        if (staggerBars.TryGetValue(enemy, out StaggerBar staggerBar))
+        {
+            if (staggerBar != null && staggerBar.staggerSlider != null)
+            {
+                staggerBar.staggerSlider.value = enemy.GetCurrentStagger();
+            }
+        }
+    }
 
     public void ShowCommandMenu(ITurnEntity entity)
     {

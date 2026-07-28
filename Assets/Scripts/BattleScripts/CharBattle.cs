@@ -79,7 +79,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
             if (passive == null) continue;
             if (passive.trigger == PassiveTrigger.OnDamageTaken)
             {
-                passive.passiveEffect.ApplyEffect(this, damage);
+                passive.ActivatePassive(this, amt);
             }
         }
 

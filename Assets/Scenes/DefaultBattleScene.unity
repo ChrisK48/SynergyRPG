@@ -382,6 +382,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91529141}
   m_CullTransparentMesh: 1
+--- !u!1 &131139191
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 131139192}
+  m_Layer: 5
+  m_Name: StaggerUIContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &131139192
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131139191}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1382139931}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &275768413
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,6 +2244,7 @@ RectTransform:
   - {fileID: 1205916298}
   - {fileID: 657055174}
   - {fileID: 433032601}
+  - {fileID: 131139192}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2377,7 +2413,7 @@ PrefabInstance:
     - target: {fileID: 7769556315308250084, guid: 50771f2ae9397ee4cb801ca7b6d30329, type: 3}
       propertyPath: sceneMusic
       value: 
-      objectReference: {fileID: 8300000, guid: 469e0c2f2c8731945b181fa007f04e6f, type: 3}
+      objectReference: {fileID: 8300000, guid: eb6243c372553bb41b619d39639592fc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2674,11 +2710,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e802d4dba6a764d8495f4b855698e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleUIManager
+  ParentCanvas: {fileID: 1382139930}
   partyUIContainer: {fileID: 1354882064}
   commandMenuUIContainer: {fileID: 2101003504}
   TurnOrderUIContainer: {fileID: 1863272251}
   BattleEndContainer: {fileID: 657055174}
   FlowUIContainer: {fileID: 2101003504}
+  StaggerUIContainer: {fileID: 131139192}
   ExpUIPrefab: {fileID: 7422738671629981561, guid: 4b2c576e62c4d34458ee68cdfc948cc3, type: 3}
   CommandMenu: {fileID: 2105288036}
   Submenu: {fileID: 1205916297}
@@ -2688,6 +2726,7 @@ MonoBehaviour:
   SynergyButtonContainer: {fileID: 1052616}
   PopupPrefab: {fileID: 1723852966}
   turnOrderIconPrefab: {fileID: 9057333052356850714, guid: 4cf5e4607238d05499208944fe8d116c, type: 3}
+  staggerBarPrefab: {fileID: 6193224378489151307, guid: fba3c09a34dce224a853d446c81e2015, type: 3}
   EndBattleButton: {fileID: 433032602}
 --- !u!114 &1745198393
 MonoBehaviour:
