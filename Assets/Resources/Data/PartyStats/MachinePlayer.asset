@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06df4cb620dedbe4f97e12788ebd494e, type: 3}
-  m_Name: Eldric
+  m_Name: MachinePlayer
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCharData
   CharName: Eldric
   BaseMaxHp: 150
@@ -33,7 +33,7 @@ MonoBehaviour:
   Acc: 15
   Eva: 8
   Luck: 5
-  currentHp: 5
+  currentHp: 150
   currentMp: 50
   attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   abilities:

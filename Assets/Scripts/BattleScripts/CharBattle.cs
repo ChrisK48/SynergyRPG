@@ -19,6 +19,9 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
     private List<SynergyTag> storedTags = new List<SynergyTag>();
     protected Ability storedAbility;
     protected List<ITurnEntity> storedTargets;
+    protected SynergyAbility storedSynergyAbility;
+    protected CharBattle[] storedSynergyUsers;
+    private bool synergyTurnReached = false;
     protected int startDef;
     protected int startMdef;
     protected bool isDefending = false;
@@ -90,7 +93,7 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
             if (hp == 0) {
                 foreach (CharPassive passive in passives)
                 {
-                    if (passive.trigger == PassiveTrigger.OnLethalHit)
+                    if (passive != null && passive.trigger == PassiveTrigger.OnLethalHit)
                     {
                         passive.passiveEffect.ApplyEffect(this, damage);
                         return;
@@ -194,16 +197,68 @@ public abstract class CharBattle : MonoBehaviour, ITurnEntity
         GetComponentInChildren<SpriteRenderer>().enabled = false;
     }
 
+    public void StoreSynergyAbilityForNextTurn(SynergyAbility ability, CharBattle[] synergyUsers)
+    {
+        storedSynergyAbility = ability;
+        storedSynergyUsers = synergyUsers;
+    }
+
+    public bool GetSynergyTurnReached() => synergyTurnReached;
+
     public void RevealChar()
     {
-        isHiding = false;
-        GetComponentInChildren<SpriteRenderer>().enabled = true;
+        if (storedSynergyAbility != null)
+        {
+            // Mark that THIS character's turn has come up, but don't unhide yet.
+            synergyTurnReached = true;
+
+            bool allUsersReady = System.Array.TrueForAll(storedSynergyUsers, u => u.GetSynergyTurnReached());
+            if (!allUsersReady)
+            {
+                // Still waiting on the rest of the group - stay hidden.
+                return;
+            }
+
+            // Last member has arrived - unhide everyone together and fire the synergy.
+            foreach (var user in storedSynergyUsers)
+            {
+                user.UnhideSprite();
+            }
+
+            foreach (var target in storedTargets)
+            {
+                storedSynergyAbility.ExecuteSynergy(storedSynergyUsers, target);
+            }
+
+            foreach (var user in storedSynergyUsers)
+            {
+                user.ClearStoredSynergy();
+            }
+            return;
+        }
+
+        // Normal (non-synergy) hidden ability reveal, unchanged.
+        UnhideSprite();
         foreach (var target in storedTargets)
         {
             storedAbility.ExecuteAbility(this, target);
         }
         storedAbility = null;
         storedTargets = null;
+    }
+
+    private void UnhideSprite()
+    {
+        isHiding = false;
+        GetComponentInChildren<SpriteRenderer>().enabled = true;
+    }
+
+    public void ClearStoredSynergy()
+    {
+        storedSynergyAbility = null;
+        storedSynergyUsers = null;
+        storedTargets = null;
+        synergyTurnReached = false;
     }
 
     public void EnterSynergyStance(SynergyStance stance)

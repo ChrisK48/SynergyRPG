@@ -23,18 +23,24 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
         if (SkipTurnAndUseNextTurn)
         {
             SynergyStance currentStance = users[0].GetSynergyStance();
-            if(currentStance != null)
+            if (currentStance != null)
             {
                 currentStance.StoreAbilityForNextTurn(this);
                 currentStance.StoreTargetsForNextTurn(targets);
-                currentStance.HideChar();      
+                currentStance.HideChar();
                 onComplete?.Invoke();
                 return;
-            } else
+            }
+            else
             {
-                // logic for not in stance here
-                Debug.Log("Is this triggered?");
+                foreach (CharBattle user in users)
+                {
+                    user.StoreSynergyAbilityForNextTurn(this, users);
+                    user.StoreTargetsForNextTurn(targets);
+                    user.HideChar();
+                }
                 onComplete?.Invoke();
+                return;
             }
         }
 
@@ -52,7 +58,7 @@ public abstract class SynergyAbility : ScriptableObject, ITargetableAction
             } else user.EndPrep();
         }
 
-        if (!users.Any(u => u.GetIfInSynergyStance()) && !BattleUIManager.instance.GetIfFastTracked()) FlowManager.instance.GainFlow(10); // This is also temporary until we have a better system for handling synergy resource costs and flow gain
+        if (!users.Any(u => u.GetIfInSynergyStance()) && !BattleUIManager.instance.GetIfFastTracked()) FlowManager.instance.GainFlow(10);
         onComplete?.Invoke();
     }
 

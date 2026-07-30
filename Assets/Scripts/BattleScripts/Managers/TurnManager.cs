@@ -23,7 +23,7 @@ public class TurnManager
 
         allChars.AddRange(BattleManager.instance.npcEntities.Where(npc => 
             npc is NpcBattle enemy && enemy.GetIfAlive() && 
-            !enemy.GetIfInSynergyStance() && !enemy.GetIfActed() && !enemy.IsStaggered()));
+            !enemy.GetIfInSynergyStance() && !enemy.GetIfActed()));
 
         var activeStances = BattleManager.instance.GetSynergyStances();
         if (activeStances != null)

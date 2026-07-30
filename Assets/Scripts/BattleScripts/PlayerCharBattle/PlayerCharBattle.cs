@@ -70,10 +70,8 @@ public abstract class PlayerCharBattle : CharBattle
 
     public override void TakeDamage(int amt, AtkType atkType, List<DamageType> elementTypes, int shieldsToRemove = 0, bool ignoreDef = false, System.Action<int> onDamageDealt = null)
     {
-        base.TakeDamage(amt, atkType, elementTypes, 0, ignoreDef, (finalDamage) => {
-            onDamageDealt?.Invoke(finalDamage);
-            TriggerStatsUpdate();
-        });
+        base.TakeDamage(amt, atkType, elementTypes, 0, ignoreDef);
+        TriggerStatsUpdate();
     }
 
     public override void Heal(int amt)

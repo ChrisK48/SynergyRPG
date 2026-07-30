@@ -15,18 +15,19 @@ MonoBehaviour:
   synergyName: Double Flame Slash
   description: 
   synergyPowerMultiplier: 1
+  SkipTurnAndUseNextTurn: 0
   targetType: 0
   abilityEffects:
   - rid: 1609082607231565892
   SynergyTagSets:
   - tag1: 1
-    mpCost1: 0
-    scalingStat1: 0
-    scalingMultiplier1: 0
+    mpCost1: 5
+    scalingStat1: 1
+    scalingMultiplier1: 1
     tag2: 7
-    mpCost2: 0
+    mpCost2: 5
     scalingStat2: 0
-    scalingMultiplier2: 0
+    scalingMultiplier2: 1
   references:
     version: 2
     RefIds:

@@ -10,7 +10,6 @@ public abstract class NpcBattle : CharBattle
     public List<HpGate> HpGates = new List<HpGate>();
     public List<DamageType> DamageWeaknesses;
     public List<DamageType> DamageResistances;
-    public int staggerValue;
     public int xpValue;
     public Item StealableItem;
     public int StealMultiplier;
@@ -31,6 +30,12 @@ public abstract class NpcBattle : CharBattle
 
     public virtual void PerformAITurn()
     {
+        if (staggered) {
+            ResetStagger();
+            EndTurn();
+            return;
+        }
+
         Ability selectedAbility = NpcAbilitySelection();
         List <ITurnEntity> targets = NpcTargeting(selectedAbility);
         PerformAbility(selectedAbility, targets);
@@ -194,6 +199,8 @@ public abstract class NpcBattle : CharBattle
         staggered = false;
         Def = DefNotBroken;
         Mdef = MdefNotBroken;
+        currentStagger = 0;
+        BattleUIManager.instance.UpdateStaggerBar(this);
         Debug.Log(CharName + "'s shields have been reset.");
     }
 

@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06df4cb620dedbe4f97e12788ebd494e, type: 3}
-  m_Name: Mira
+  m_Name: ShieldPlayer
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCharData
-  CharName: Mira
-  BaseMaxHp: 100
-  BaseMaxMp: 15
-  BaseAtk: 15
-  BaseMag: 15
-  BaseDef: 10
-  BaseMdef: 15
-  BaseSpd: 15
-  BaseAcc: 15
-  BaseEva: 15
-  BaseLuck: 15
-  MaxHp: 100
-  MaxMp: 15
-  Atk: 15
-  Mag: 15
-  Def: 10
-  Mdef: 15
-  Spd: 15
-  Acc: 15
-  Eva: 15
-  Luck: 15
-  currentHp: 100
-  currentMp: 15
+  CharName: Gladus
+  BaseMaxHp: 250
+  BaseMaxMp: 25
+  BaseAtk: 12
+  BaseMag: 6
+  BaseDef: 25
+  BaseMdef: 20
+  BaseSpd: 8
+  BaseAcc: 10
+  BaseEva: 8
+  BaseLuck: 10
+  MaxHp: 250
+  MaxMp: 25
+  Atk: 12
+  Mag: 6
+  Def: 25
+  Mdef: 20
+  Spd: 8
+  Acc: 10
+  Eva: 8
+  Luck: 10
+  currentHp: 250
+  currentMp: 25
   attackAbility: {fileID: 11400000, guid: de59f131152dc984fbc2452772ede721, type: 2}
   abilities: []
   weaponSlot:
@@ -57,6 +57,6 @@ MonoBehaviour:
   learnedPassives: []
   currentLevel: 1
   currentExp: 0
-  playerID: 3
-  charBattlePrefab: {fileID: -6576123505942400488, guid: e635e93752cd4e342a25c02d9adc663a, type: 3}
-  MenuImage: {fileID: -4037558033643720181, guid: 3b6d11d68884aa64ab0e7c4c28ca17a1, type: 3}
+  playerID: 4
+  charBattlePrefab: {fileID: 3932255046324115680, guid: 04994195d8de16844974f7d4fad7a253, type: 3}
+  MenuImage: {fileID: 5407174444207805271, guid: 192070108b034de438aa9a6766ed591f, type: 3}
